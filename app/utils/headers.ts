@@ -9,6 +9,7 @@ export async function getHeaders(query: string): Promise<Return<string>> {
         return { ok: true, data: header };
     }
     catch (error) {
+        console.error(error);
         return { ok: false, error: "internal", message: 'Failed to get headers' };
     }
 }

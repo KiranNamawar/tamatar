@@ -19,6 +19,7 @@ export async function createUserSession(userAgent: UserAgent, userId: string): P
         });
         return { ok: true, data: session };
     } catch (error) {
+        console.error(error);
         return { ok: false, error: "database", message: 'Failed to create session in database' };
     }
 }

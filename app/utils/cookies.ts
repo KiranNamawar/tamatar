@@ -20,6 +20,7 @@ export async function setAuthCookie(accessToken: string, refreshToken: string): 
         
         return { ok: true, data: undefined };
     } catch (error) {
+        console.error(error);
         return { ok: false, error: "internal", message: 'Failed to set auth cookies' };
     }
 }

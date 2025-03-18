@@ -15,6 +15,7 @@ export async function createUserFromGoogleInfo(userInfo: any): Promise<Return<Us
         });
         return { ok: true, data: user };
     } catch (error) {
+        console.error(error);
         return { ok: false, error: "database", message: 'Failed to create user in database' };
     }
 }
@@ -32,6 +33,7 @@ export async function getUserByEmail(email: string): Promise<Return<User>> {
         return { ok: true, data: user };
 
     } catch (error) {
+        console.error(error);
         return { ok: false, error:"database", message: 'Failed to fetch user from database' };
     }
 }

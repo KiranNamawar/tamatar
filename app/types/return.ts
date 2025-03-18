@@ -20,4 +20,3 @@ export interface SuccessReturn<T> {
 }
 
 export type Return<T> = SuccessReturn<T> | ErrorReturn;
-
