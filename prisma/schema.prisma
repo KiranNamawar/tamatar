@@ -12,7 +12,7 @@ model User {
   email    String   @unique
   name     String?
   password String?
-  googleId String?
+  googleId String?  @unique
   picture  String?
   verifiedEmail Boolean @default(false)
   createdAt DateTime @default(now())
@@ -26,10 +26,14 @@ model Session {
   user      User     @relation(fields: [userId], references: [id])
   refreshToken String
   expiresAt DateTime
+  isRevoked Boolean @default(false)
   os        String?
   osVersion String?
   browser   String?
   browserVersion String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([refreshToken], name: "refresh_token_index")
+  @@index([userId], name: "user_id_index")
 }
