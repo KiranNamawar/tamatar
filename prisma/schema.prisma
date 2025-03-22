@@ -24,7 +24,7 @@ model Session {
   id        String   @id @default(cuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id])
-  refreshToken String
+  refreshToken String @unique
   expiresAt DateTime
   isRevoked Boolean @default(false)
   os        String?
@@ -34,6 +34,5 @@ model Session {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([refreshToken], name: "refresh_token_index")
   @@index([userId], name: "user_id_index")
 }

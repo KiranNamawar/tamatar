@@ -1,6 +1,6 @@
-import { User } from "@prisma/client";
-import { Return } from "../types/return";
-import prisma from "./prisma";
+import { User } from '@prisma/client';
+import { ErrorType, Return } from '../types/return';
+import prisma from './prisma';
 
 export async function createUserFromGoogleInfo(userInfo: any): Promise<Return<User>> {
     try {
@@ -16,7 +16,7 @@ export async function createUserFromGoogleInfo(userInfo: any): Promise<Return<Us
         return { ok: true, data: user };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: "database", message: 'Failed to create user in database' };
+        return { ok: false, error: ErrorType.database, message: 'Failed to create user in database' };
     }
 }
 
@@ -28,12 +28,11 @@ export async function getUserByEmail(email: string): Promise<Return<User>> {
             },
         });
 
-        if (!user) return { ok: false, error:"not-found", message: 'User not found' };
-        
-        return { ok: true, data: user };
+        if (!user) return { ok: false, error: ErrorType.notFound, message: 'User not found' };
 
+        return { ok: true, data: user };
     } catch (error) {
         console.error(error);
-        return { ok: false, error:"database", message: 'Failed to fetch user from database' };
+        return { ok: false, error: ErrorType.database, message: 'Failed to fetch user from database' };
     }
 }

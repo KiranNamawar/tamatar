@@ -1,21 +1,32 @@
-'use client'
+'use client';
 
-import { getQueryParam, getRedirectPath } from "@/app/utils/query-param";
-import { useGoogleLogin } from "@react-oauth/google";
-
+import { useRedirectPath } from '@/hooks/query-param';
+import { googleLoginRequest } from '@/utils/google-auth';
+import { Button } from '@mantine/core';
+import { useGoogleLogin } from '@react-oauth/google';
+import { IconBrandGoogleFilled } from '@tabler/icons-react';
+import { redirect } from 'next/navigation';
 
 export default function LoginPage() {
-    const redirectPath = getRedirectPath();
+    const redirectPath = useRedirectPath();
     const login = useGoogleLogin({
-        onSuccess: (tokenResponse) => {
-            console.log(tokenResponse);
-        }
-    })
+        onSuccess: async (response) => {
+            const res = await googleLoginRequest(response);
+            if (res.status === 200) {
+                redirect(redirectPath);
+            } else if (res.status === 404) {
+                redirect(`/signup?redirectPath=${redirectPath}`);
+            }
+        },
+        onError: (error) => {
+            console.error(error);
+        },
+    });
     return (
-        <div>
-            <p>{ redirectPath }</p>
-            <h1>Login Page</h1>
-            <button className="btn btn-accent" onClick={() =>login()}>Login</button>
+        <div className="w-11/12 md:w-1/2 lg:w-1/3">
+            <Button onClick={() => login()} fullWidth variant="light" leftSection={<IconBrandGoogleFilled />}>
+                Login with Google
+            </Button>
         </div>
     );
 }

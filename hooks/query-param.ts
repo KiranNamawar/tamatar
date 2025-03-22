@@ -1,12 +1,12 @@
 import { useSearchParams } from 'next/navigation';
 
-export function getQueryParam(query: string) {
+export function useQueryParam(query: string) {
     const searchParams = useSearchParams();
     return searchParams.get(query);
 }
 
-export function getRedirectPath() {
-    let redirectPath = getQueryParam('redirectPath');
+export function useRedirectPath() {
+    let redirectPath = useQueryParam('redirectPath');
     if (!redirectPath) {
         redirectPath = '/dashboard';
     }

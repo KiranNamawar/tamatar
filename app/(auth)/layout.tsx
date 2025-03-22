@@ -4,8 +4,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
     return (
         <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ''}>
-            <div>
-                <h1>Auth Layout</h1>
+            <div className="flex flex-col items-center justify-center h-screen">
                 {children}
             </div>
         </GoogleOAuthProvider>
