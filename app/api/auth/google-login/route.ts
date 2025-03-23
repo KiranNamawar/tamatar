@@ -9,6 +9,7 @@ import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/user';
 import { NextRequest } from 'next/server';
 import { Return } from '@/types/return';
 import { User } from '@prisma/client';
+import { sendWelcomeEmail } from '@/utils/resend';
 
 export async function GET(request: NextRequest) {
     try {
@@ -31,6 +32,7 @@ export async function GET(request: NextRequest) {
         }
 
         let newUser: Return<User>;
+        let isSignUp = false;
 
         // Get user details from the database using the user's email
         let user = await getUserByEmail(userInfo.data.email);
@@ -41,8 +43,9 @@ export async function GET(request: NextRequest) {
                 return createResponse(null, newUser.error, newUser.message);
             }
             user = newUser;
+            isSignUp = true;
         }
-     
+        
 
         // Generate an access token for the user
         const accessToken = await generateAccessToken(user.data.id);
@@ -63,6 +66,22 @@ export async function GET(request: NextRequest) {
         );
         if (!authCookie.ok) {
             return createResponse(null, authCookie.error, authCookie.message);
+        }
+
+        if (isSignUp) {
+            // Send a welcome email to the user
+            const welcomeEmail = await sendWelcomeEmail(
+                user.data.email,
+                user.data.name || 'You',
+            );
+            if (!welcomeEmail.ok) {
+                return createResponse(
+                    null,
+                    welcomeEmail.error,
+                    welcomeEmail.message,
+                );
+            }
+            console.log('Welcome email sent');
         }
 
         // Return a successful response indicating the user has logged in
