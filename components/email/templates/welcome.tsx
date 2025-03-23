@@ -44,7 +44,7 @@ export const WelcomeEmailTemplate: React.FC<
                     <Text className="m-2 text-2xl">
                         Welcome to Tamatar Store, {name}! 🎉
                     </Text>
-                    <Text className="m-2">Here's what you can do next:</Text>
+                    <Text className="m-2">Here&apos;s what you can do next:</Text>
                     <Section className="m-2">
                         <Row>
                             <Text className="text-lg">
