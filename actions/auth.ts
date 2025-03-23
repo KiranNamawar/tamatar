@@ -29,3 +29,15 @@ export default async function logoutAction(): Promise<Return<void>> {
 
     return { ok: true, data: undefined };
 }
+
+export async function clearAuthCookiesAction(): Promise<Return<void>> {
+    const deleteCookies = await deleteAuthCookies();
+    if (!deleteCookies.ok)
+        return {
+            ok: false,
+            error: deleteCookies.error,
+            message: deleteCookies.message,
+        };
+
+    return { ok: true, data: undefined };
+}

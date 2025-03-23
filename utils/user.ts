@@ -36,3 +36,25 @@ export async function getUserByEmail(email: string): Promise<Return<User>> {
         return { ok: false, error: ErrorType.database, message: 'Failed to fetch user from database' };
     }
 }
+
+
+export async function deleteUserById(id: string): Promise<Return<User>> {
+    try {
+        const userSession = await prisma.session.deleteMany({
+            where: {
+                userId: id,
+            },
+        });
+        
+        const user = await prisma.user.delete({
+            where: {
+                id,
+            },
+        });
+        console.log('User deleted:', user);
+        return { ok: true, data: user };
+    } catch (error) {
+        console.error(error);
+        return { ok: false, error: ErrorType.database, message: 'Failed to delete user from database' };
+    }
+}

@@ -6,8 +6,10 @@ import { setAuthCookies } from '@/utils/cookies';
 import { getUserAgent } from '@/utils/uaparser';
 import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/user';
 import { createResponse } from '@/utils/response';
-import { ErrorType } from '@/types/return';
+import { ErrorType, Return } from '@/types/return';
 import { NextRequest } from 'next/server';
+import { User } from '@prisma/client';
+import { sendWelcomeEmail } from '@/utils/resend';
 
 export async function GET(request: NextRequest) {
     try {
@@ -23,20 +25,16 @@ export async function GET(request: NextRequest) {
             return createResponse(null, userInfo.error, userInfo.message);
         }
 
-        // Check if user already exists
-        const userExists = await getUserByEmail(userInfo.data.email);
-        if (userExists.ok) {
-            return createResponse(
-                null,
-                ErrorType.conflict,
-                'User already exists',
-            );
-        }
+        let user: Return<User>;
 
-        // Create new user from Google info
-        const user = await createUserFromGoogleInfo(userInfo.data);
+        // Check if user already exists
+        user = await getUserByEmail(userInfo.data.email);
         if (!user.ok) {
-            return createResponse(null, user.error, user.message);
+            // Create new user from Google info
+            user = await createUserFromGoogleInfo(userInfo.data);
+            if (!user.ok) {
+                return createResponse(null, user.error, user.message);
+            }
         }
 
         // Get user agent
@@ -64,6 +62,19 @@ export async function GET(request: NextRequest) {
         );
         if (!authCookie.ok) {
             return createResponse(null, authCookie.error, authCookie.message);
+        }
+
+        // Send welcome email
+        const welcomeEmail = await sendWelcomeEmail(
+            user.data.email,
+            user.data.name || 'You',
+        );
+        if (!welcomeEmail.ok) {
+            return createResponse(
+                null,
+                welcomeEmail.error,
+                welcomeEmail.message,
+            );
         }
 
         // Return success response
