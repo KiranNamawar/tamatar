@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from 'jose';
-import { ErrorType, Return } from '../types/return';
+import { ErrorType, Return } from '../../types/return';
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || '');
 const alg = 'HS256';

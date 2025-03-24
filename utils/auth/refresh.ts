@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { Return, ErrorType } from '../types/return';
+import { Return, ErrorType } from '../../types/return';
 
 export async function refreshAccessToken(
     refreshToken: string,

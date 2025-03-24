@@ -1,11 +1,11 @@
-import { setAuthCookies } from '@/utils/cookies';
-import { getUserInfo } from '@/utils/google-auth';
+import { setAuthCookies } from '@/utils/auth/cookies';
+import { getUserInfo } from '@/utils/auth/google-auth';
 import { getAuthToken } from '@/utils/headers';
 import { getUserAgent } from '@/utils/uaparser';
-import { generateAccessToken } from '@/utils/jwt';
+import { generateAccessToken } from '@/utils/auth/jwt';
 import { createResponse } from '@/utils/response';
-import { createUserSession } from '@/utils/session';
-import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/user';
+import { createUserSession } from '@/utils/auth/session';
+import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/auth/user';
 import { NextRequest } from 'next/server';
 import { Return } from '@/types/return';
 import { User } from '@prisma/client';
@@ -45,7 +45,6 @@ export async function GET(request: NextRequest) {
             user = newUser;
             isSignUp = true;
         }
-        
 
         // Generate an access token for the user
         const accessToken = await generateAccessToken(user.data.id);

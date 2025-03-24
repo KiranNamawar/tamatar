@@ -1,10 +1,10 @@
-import { getUserInfo } from '@/utils/google-auth';
+import { getUserInfo } from '@/utils/auth/google-auth';
 import { getAuthToken } from '@/utils/headers';
-import { createUserSession } from '@/utils/session';
-import { generateAccessToken } from '@/utils/jwt';
-import { setAuthCookies } from '@/utils/cookies';
+import { createUserSession } from '@/utils/auth/session';
+import { generateAccessToken } from '@/utils/auth/jwt';
+import { setAuthCookies } from '@/utils/auth/cookies';
 import { getUserAgent } from '@/utils/uaparser';
-import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/user';
+import { createUserFromGoogleInfo, getUserByEmail } from '@/utils/auth/user';
 import { createResponse } from '@/utils/response';
 import { ErrorType, Return } from '@/types/return';
 import { NextRequest } from 'next/server';

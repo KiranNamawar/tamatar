@@ -1,5 +1,5 @@
-import { ErrorType, Return } from '../types/return';
-import { GoogleResponse } from '../types/google';
+import { ErrorType, Return } from '../../types/return';
+import { GoogleResponse } from '../../types/google';
 
 export async function getUserInfo(token: string): Promise<Return<any>> {
     const res = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {

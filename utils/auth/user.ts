@@ -1,8 +1,10 @@
 import { User } from '@prisma/client';
-import { ErrorType, Return } from '../types/return';
-import prisma from './prisma';
+import { ErrorType, Return } from '../../types/return';
+import prisma from '../prisma';
 
-export async function createUserFromGoogleInfo(userInfo: any): Promise<Return<User>> {
+export async function createUserFromGoogleInfo(
+    userInfo: any,
+): Promise<Return<User>> {
     try {
         const user = await prisma.user.create({
             data: {
@@ -16,7 +18,11 @@ export async function createUserFromGoogleInfo(userInfo: any): Promise<Return<Us
         return { ok: true, data: user };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to create user in database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to create user in database',
+        };
     }
 }
 
@@ -28,15 +34,23 @@ export async function getUserByEmail(email: string): Promise<Return<User>> {
             },
         });
 
-        if (!user) return { ok: false, error: ErrorType.notFound, message: 'User not found' };
+        if (!user)
+            return {
+                ok: false,
+                error: ErrorType.notFound,
+                message: 'User not found',
+            };
 
         return { ok: true, data: user };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to fetch user from database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to fetch user from database',
+        };
     }
 }
-
 
 export async function deleteUserById(id: string): Promise<Return<User>> {
     try {
@@ -45,7 +59,7 @@ export async function deleteUserById(id: string): Promise<Return<User>> {
                 userId: id,
             },
         });
-        
+
         const user = await prisma.user.delete({
             where: {
                 id,
@@ -55,6 +69,10 @@ export async function deleteUserById(id: string): Promise<Return<User>> {
         return { ok: true, data: user };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to delete user from database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to delete user from database',
+        };
     }
 }

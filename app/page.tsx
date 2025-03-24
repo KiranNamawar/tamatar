@@ -1,8 +1,5 @@
+import AppHomeHeader  from '../components/app-home-header';
 
 export default function Home() {
-    return (
-        <div>
-            <h1>Home</h1>
-        </div>
-    );
+    return <AppHomeHeader />;
 }

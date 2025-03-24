@@ -1,8 +1,8 @@
 'use server';
 
 import { Return } from '@/types/return';
-import { deleteAuthCookies, getAuthCookies } from '../utils/cookies';
-import { invalidateSessionByRefreshToken } from '../utils/session';
+import { deleteAuthCookies, getAuthCookies } from '../utils/auth/cookies';
+import { invalidateSessionByRefreshToken } from '../utils/auth/session';
 
 export default async function logoutAction(): Promise<Return<void>> {
     const authCookies = await getAuthCookies();

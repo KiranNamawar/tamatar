@@ -1,9 +1,9 @@
 'use server';
 
 import { Return } from '@/types/return';
-import { deleteAuthCookies, getAccessToken } from '@/utils/cookies';
-import { verifyAccessToken } from '@/utils/jwt';
-import { deleteUserById } from '@/utils/user';
+import { deleteAuthCookies, getAccessToken } from '@/utils/auth/cookies';
+import { verifyAccessToken } from '@/utils/auth/jwt';
+import { deleteUserById } from '@/utils/auth/user';
 
 export async function deleteUserAction(): Promise<Return<void>> {
     const accessToken = await getAccessToken();
@@ -46,6 +46,4 @@ export async function deleteUserAction(): Promise<Return<void>> {
     console.log('Deleted user and cookies');
 
     return { ok: true, data: undefined };
-
-
 }

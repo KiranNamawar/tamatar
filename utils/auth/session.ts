@@ -1,8 +1,11 @@
 import { Session } from '@prisma/client';
-import prisma from './prisma';
-import { ErrorType, Return } from '../types/return';
+import prisma from '../prisma';
+import { ErrorType, Return } from '../../types/return';
 
-export async function createUserSession(userAgent: any, userId: string): Promise<Return<Session>> {
+export async function createUserSession(
+    userAgent: any,
+    userId: string,
+): Promise<Return<Session>> {
     try {
         const session = await prisma.session.create({
             data: {
@@ -18,11 +21,17 @@ export async function createUserSession(userAgent: any, userId: string): Promise
         return { ok: true, data: session };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to create session in database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to create session in database',
+        };
     }
 }
 
-export async function invalidateSessionByRefreshToken(refreshToken: string): Promise<Return<Session>> {
+export async function invalidateSessionByRefreshToken(
+    refreshToken: string,
+): Promise<Return<Session>> {
     try {
         const session = await prisma.session.update({
             where: {
@@ -31,16 +40,22 @@ export async function invalidateSessionByRefreshToken(refreshToken: string): Pro
             data: {
                 isRevoked: true,
                 expiresAt: new Date(),
-            }
+            },
         });
         return { ok: true, data: session };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to invalidate session in database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to invalidate session in database',
+        };
     }
 }
 
-export async function verifySession(refreshToken: string): Promise<Return<Session>> {
+export async function verifySession(
+    refreshToken: string,
+): Promise<Return<Session>> {
     try {
         const session = await prisma.session.findFirst({
             where: {
@@ -52,11 +67,19 @@ export async function verifySession(refreshToken: string): Promise<Return<Sessio
             },
         });
         if (!session) {
-            return { ok: false, error: ErrorType.authentication, message: 'Session is invalid or expired' };
+            return {
+                ok: false,
+                error: ErrorType.authentication,
+                message: 'Session is invalid or expired',
+            };
         }
         return { ok: true, data: session };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.database, message: 'Failed to verify session in database' };
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to verify session in database',
+        };
     }
 }

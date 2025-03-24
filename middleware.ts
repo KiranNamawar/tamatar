@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyAccessToken } from './utils/jwt';
-import { setAuthCookies } from './utils/cookies';
-import { refreshAccessToken } from './utils/refresh';
+import { verifyAccessToken } from './utils/auth/jwt';
+import { setAuthCookies } from './utils/auth/cookies';
+import { refreshAccessToken } from './utils/auth/refresh';
 
 export async function middleware(request: NextRequest) {
     const accessToken = request.cookies.get('accessToken')?.value;

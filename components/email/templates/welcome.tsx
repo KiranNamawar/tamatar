@@ -53,7 +53,7 @@ export const WelcomeEmailTemplate: React.FC<
                         </Row>
                         <Row>
                             <Column className="">
-                                <Img src={`${domain}/link.png`} alt="Link" />
+                                <Img src={`${domain}/link.png`} alt="Link" height={100} width={100} />
                                 <Link
                                     href={`${domain}/url-shortener`}
                                     className="text-yellow-400"
@@ -62,7 +62,7 @@ export const WelcomeEmailTemplate: React.FC<
                                 </Link>
                             </Column>
                             <Column className="">
-                                <Img src={`${domain}/notes.png`} alt="Notes" />
+                                <Img src={`${domain}/notes.png`} alt="Notes" width={100} height={100}/>
                                 <Link
                                     href={`${domain}/notes`}
                                     className="text-yellow-400"
@@ -76,7 +76,7 @@ export const WelcomeEmailTemplate: React.FC<
                         </Row>
                         <Row>
                             <Column className="">
-                                <Img src={`${domain}/user.png`} alt="User" />
+                                <Img src={`${domain}/user.png`} alt="User" height={100} width={100}/>
                                 <Link
                                     href={`${domain}/profile`}
                                     className="text-yellow-400"
@@ -85,7 +85,7 @@ export const WelcomeEmailTemplate: React.FC<
                                 </Link>
                             </Column>
                             <Column className="">
-                                <Img src={`${domain}/settings.png`} alt="Settings" />
+                                <Img src={`${domain}/settings.png`} alt="Settings" height={100} width={100}/>
                                 <Link
                                     href={`${domain}/settings`}
                                     className="text-yellow-400"

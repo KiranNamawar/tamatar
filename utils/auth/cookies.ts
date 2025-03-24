@@ -1,8 +1,11 @@
 import { cookies } from 'next/headers';
-import { ErrorType, Return } from '../types/return';
+import { ErrorType, Return } from '../../types/return';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-export async function setAuthCookies(accessToken: string, refreshToken: string): Promise<Return<void>> {
+export async function setAuthCookies(
+    accessToken: string,
+    refreshToken: string,
+): Promise<Return<void>> {
     try {
         const cookieStore = await cookies();
         cookieStore.set('accessToken', accessToken, {
@@ -22,7 +25,11 @@ export async function setAuthCookies(accessToken: string, refreshToken: string):
         return { ok: true, data: undefined };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.internal, message: 'Failed to set auth cookies' };
+        return {
+            ok: false,
+            error: ErrorType.internal,
+            message: 'Failed to set auth cookies',
+        };
     }
 }
 
@@ -32,13 +39,21 @@ export async function getAccessToken(): Promise<Return<RequestCookie>> {
         const accessToken = cookieStore.get('accessToken');
 
         if (accessToken === undefined) {
-            return { ok: false, error: ErrorType.authorization, message: 'Missing access token' };
+            return {
+                ok: false,
+                error: ErrorType.authorization,
+                message: 'Missing access token',
+            };
         }
 
         return { ok: true, data: accessToken };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.internal, message: 'Failed to get access token' };
+        return {
+            ok: false,
+            error: ErrorType.internal,
+            message: 'Failed to get access token',
+        };
     }
 }
 
@@ -48,17 +63,27 @@ export async function getRefreshToken(): Promise<Return<RequestCookie>> {
         const refreshToken = cookieStore.get('refreshToken');
 
         if (refreshToken === undefined) {
-            return { ok: false, error: ErrorType.authorization, message: 'Missing refresh token' };
+            return {
+                ok: false,
+                error: ErrorType.authorization,
+                message: 'Missing refresh token',
+            };
         }
 
         return { ok: true, data: refreshToken };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.internal, message: 'Failed to get refresh token' };
+        return {
+            ok: false,
+            error: ErrorType.internal,
+            message: 'Failed to get refresh token',
+        };
     }
 }
 
-export async function getAuthCookies(): Promise<Return<{ accessToken: RequestCookie, refreshToken: RequestCookie }>> {
+export async function getAuthCookies(): Promise<
+    Return<{ accessToken: RequestCookie; refreshToken: RequestCookie }>
+> {
     try {
         const accessTokenResult = await getAccessToken();
         if (!accessTokenResult.ok) {
@@ -70,10 +95,20 @@ export async function getAuthCookies(): Promise<Return<{ accessToken: RequestCoo
             return refreshTokenResult;
         }
 
-        return { ok: true, data: { accessToken: accessTokenResult.data, refreshToken: refreshTokenResult.data } };
+        return {
+            ok: true,
+            data: {
+                accessToken: accessTokenResult.data,
+                refreshToken: refreshTokenResult.data,
+            },
+        };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.internal, message: 'Failed to get auth cookies' };
+        return {
+            ok: false,
+            error: ErrorType.internal,
+            message: 'Failed to get auth cookies',
+        };
     }
 }
 
@@ -86,6 +121,10 @@ export async function deleteAuthCookies(): Promise<Return<void>> {
         return { ok: true, data: undefined };
     } catch (error) {
         console.error(error);
-        return { ok: false, error: ErrorType.internal, message: 'Failed to delete auth cookies' };
+        return {
+            ok: false,
+            error: ErrorType.internal,
+            message: 'Failed to delete auth cookies',
+        };
     }
 }

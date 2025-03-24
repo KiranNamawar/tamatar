@@ -1,15 +1,19 @@
-import { ErrorType } from "@/types/return";
-import { getRefreshToken, setAuthCookies } from "@/utils/cookies";
-import { generateAccessToken } from "@/utils/jwt";
-import { createJsonResponse, createResponse } from "@/utils/response";
-import { verifySession } from "@/utils/session";
-import { NextRequest } from "next/server";
+import { ErrorType } from '@/types/return';
+import { getRefreshToken, setAuthCookies } from '@/utils/auth/cookies';
+import { generateAccessToken } from '@/utils/auth/jwt';
+import { createJsonResponse, createResponse } from '@/utils/response';
+import { verifySession } from '@/utils/auth/session';
+import { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {
     try {
         const { refreshToken } = await request.json();
         if (!refreshToken) {
-            return createResponse(null, ErrorType.validation, 'Missing refresh token');
+            return createResponse(
+                null,
+                ErrorType.validation,
+                'Missing refresh token',
+            );
         }
 
         const session = await verifySession(refreshToken);
@@ -22,9 +26,17 @@ export async function POST(request: NextRequest) {
             return createResponse(null, accessToken.error, accessToken.message);
         }
         const token = accessToken.data;
-        return createJsonResponse({'accessToken': token}, 200, 'Successfully refreshed access token');
+        return createJsonResponse(
+            { accessToken: token },
+            200,
+            'Successfully refreshed access token',
+        );
     } catch (error) {
         console.error(error);
-        return createResponse(null, ErrorType.internal, 'Failed  to refresh access token');
+        return createResponse(
+            null,
+            ErrorType.internal,
+            'Failed  to refresh access token',
+        );
     }
 }
