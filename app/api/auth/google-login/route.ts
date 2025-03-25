@@ -55,9 +55,9 @@ export async function GET(request: NextRequest) {
         }
         console.log('User agent parsed successfully:', userAgent.data);
 
-        let newUser: Return<
-            Prisma.UserGetPayload<{ include: { profile: true } }>
-        >;
+        let newUser: Return<Prisma.UserGetPayload<{
+            include: { profile: boolean }
+        }>>;
         let isSignUp = false;
 
         // Get user details from the database using the user's email
