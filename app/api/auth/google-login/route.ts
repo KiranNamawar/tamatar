@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
         console.log('User agent parsed successfully:', userAgent.data);
 
         let newUser: Return<Prisma.UserGetPayload<{
-            include: { profile: boolean }
+            include: { profile: true }
         }>>;
         let isSignUp = false;
 

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "if [ \"$NODE_ENV\" = \"production\" ]; then prisma generate; fi"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@mantine/core": "^7.17.2",
