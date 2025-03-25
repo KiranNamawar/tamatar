@@ -22,11 +22,19 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     let isAuthenticated = false;
+    let ids = {
+        userId: '',
+        profileId: '',
+    };
     const accessToken = await getAccessToken();
     if (accessToken.ok) {
         const userId = await verifyAccessToken(accessToken.data.value);
         if (userId.ok) {
             isAuthenticated = true;
+            ids = {
+                userId: userId.data.userId,
+                profileId: userId.data.profileId,
+            };
         }
     }
 
@@ -36,7 +44,7 @@ export default async function RootLayout({
                 <ColorSchemeScript />
             </head>
             <body className={`antialiased`}>
-                <AuthProvider isAuthenticated={isAuthenticated}>
+                <AuthProvider isAuthenticated={isAuthenticated} userId={ids.userId} profileId={ids.profileId}>
                     <MantineProvider defaultColorScheme="dark">
                         {children}
                     </MantineProvider>

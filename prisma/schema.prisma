@@ -8,31 +8,82 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
-  name     String?
-  password String?
-  googleId String?  @unique
-  picture  String?
-  verifiedEmail Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  sessions Session[]
+  id            String    @id @default(cuid())
+  profile       Profile?
+  email         String    @unique
+  name          String?
+  password      String?
+  googleId      String?   @unique
+  picture       String?
+  verifiedEmail Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
 }
 
 model Session {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  refreshToken String @unique
-  expiresAt DateTime
-  isRevoked Boolean @default(false)
-  os        String?
-  osVersion String?
-  browser   String?
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshToken   String   @unique
+  expiresAt      DateTime
+  isRevoked      Boolean  @default(false)
+  os             String?
+  osVersion      String?
+  browser        String?
   browserVersion String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([userId], name: "user_id_index")
+}
+
+model Profile {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  urls      Url[]
+  folders   Folder[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Folder {
+  id        String   @id @default(cuid())
+  profileId String   
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  name      String
+  urls      Url[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([userId], name: "user_id_index")
+  @@index([profileId, name], name: "profile_id_name_index")
+}
+
+model Url {
+  id          String     @id @default(cuid())
+  profileId   String
+  profile     Profile    @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  originalUrl String
+  shortCode   String     @unique
+  folderId    String?
+  folder      Folder?    @relation(fields: [folderId], references: [id])
+  visits      UrlVisit[]
+  expiresAt   DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([profileId, shortCode], name: "profile_id_short_code_index")
+}
+
+model UrlVisit {
+  id        String   @id @default(cuid())
+  urlId     String
+  url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  referer   String?
+  browser   String?
+  os        String?
+  ip        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
