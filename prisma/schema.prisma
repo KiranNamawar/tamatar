@@ -32,6 +32,7 @@ model Session {
   osVersion      String?
   browser        String?
   browserVersion String?
+  device         String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -50,7 +51,7 @@ model Profile {
 
 model Folder {
   id        String   @id @default(cuid())
-  profileId String   
+  profileId String
   profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
   name      String
   urls      Url[]
@@ -77,13 +78,16 @@ model Url {
 }
 
 model UrlVisit {
-  id        String   @id @default(cuid())
-  urlId     String
-  url       Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
-  referer   String?
-  browser   String?
-  os        String?
-  ip        String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String   @id @default(cuid())
+  urlId          String
+  url            Url      @relation(fields: [urlId], references: [id], onDelete: Cascade)
+  referer        String?
+  browser        String?
+  browserVersion String?
+  os             String?
+  osVersion      String?
+  device         String?
+  ip             String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
