@@ -17,6 +17,7 @@
     "@react-oauth/google": "^0.12.1",
     "@sentry/nextjs": "9",
     "@tanstack/react-form": "^1.1.0",
+    "@types/bcrypt": "^5.0.2",
     "bcrypt": "^5.1.1",
     "google-auth-library": "^9.15.1",
     "jose": "^6.0.10",
