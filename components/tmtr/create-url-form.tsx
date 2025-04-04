@@ -15,7 +15,7 @@ export default function TmtrCreateUrlForm() {
         initialState,
     );
     return (
-        <form action={formAction} className='flex flex-col gap-4 border rounded-2xl p-4 border-blue-400'>
+        <form action={formAction} className='flex flex-col gap-4 m-5 border rounded-2xl p-4 border-blue-400'>
             <TextInput
                 label="Original URL"
                 name="originalUrl"

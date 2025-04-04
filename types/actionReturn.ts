@@ -3,7 +3,7 @@ export type ActionReturn<T> = {
     data: T;
 } | {
     status: 'error';
-    error: string;
+    error: string | string[];
 } | {
     status: 'idle';
 }

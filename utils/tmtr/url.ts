@@ -150,3 +150,71 @@ export async function createUrlVisit(
         };
     }
 }
+
+/**
+ * Fetches all URLs associated with a specific profile ID.
+ * @param profileId - The ID of the profile whose URLs are to be fetched.
+ * @return A promise containing the result of the URL fetch operation.
+ * */
+export async function getUrlsByProfileId(
+    profileId: string,
+): Promise<Return<Url[]>> {
+    console.log('[getUrlsByProfileId] Fetching URLs for profile ID:');
+
+    try {
+        const urls = await prisma.url.findMany({
+            where: {
+                profileId,
+            },
+        });
+
+        console.log('[getUrlsByProfileId] URLs fetched successfully:', urls);
+        return {
+            ok: true,
+            data: urls,
+        };
+    } catch (error) {
+        console.error('[getUrlsByProfileId] Error fetching URLs:', error);
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Error fetching URLs',
+        };
+    }
+}
+
+/**
+ * Fetches all URL visits associated with a specific URL ID.
+ * @param urlId - The ID of the URL whose visits are to be fetched.
+ * @return A promise containing the result of the URL visit fetch operation.
+ * */
+export async function getUrlVisits(urlId: string): Promise<Return<UrlVisit[]>> {
+    console.log('[getUrlVisits] Fetching URL visits for URL ID:', urlId);
+
+    try {
+        const urlVisits = await prisma.urlVisit.findMany({
+            where: {
+                urlId,
+            },
+            orderBy: {
+                createdAt: 'desc',
+            }
+        });
+
+        console.log(
+            '[getUrlVisits] URL visits fetched successfully:',
+            urlVisits,
+        );
+        return {
+            ok: true,
+            data: urlVisits,
+        };
+    } catch (error) {
+        console.error('[getUrlVisits] Error fetching URL visits:', error);
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Error fetching URL visits',
+        };
+    }
+}

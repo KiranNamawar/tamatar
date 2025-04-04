@@ -129,3 +129,37 @@ export async function deleteUserById(id: string): Promise<Return<User>> {
         };
     }
 }
+
+
+export async function createUser(user: Prisma.UserCreateInput): Promise<Return<Prisma.UserGetPayload<{ include: { profile: true}}>>> {
+    console.log('Starting createUser...');
+    console.log('User data:', user);
+
+    try {
+        // Create the user in the database
+        const newUser = await prisma.user.create({
+            data: {
+                ...user,
+            },
+        });
+        console.log('User created successfully:', newUser);
+
+        const profile = await prisma.profile.create({
+            data: {
+                userId: newUser.id,
+            },
+        });
+        console.log('Profile created successfully:', profile);
+
+        return { ok: true, data: { ...newUser, profile } };
+
+    } catch (error) {
+        console.error('Failed to create user in database:', error);
+        return {
+            ok: false,
+            error: ErrorType.database,
+            message: 'Failed to create user in database',
+        };
+    }
+
+}
