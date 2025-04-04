@@ -23,8 +23,9 @@ export default function GoogleLoginButton() {
         },
     });
     return (
-        <Button onClick={() => login()} fullWidth variant="light" leftSection={<IconBrandGoogleFilled />}>
+        <button onClick={() => login()} className='btn btn-soft w-full'>
+            <IconBrandGoogleFilled className="mr-2" />
             Login with Google
-        </Button>
+        </button>
     );
 }

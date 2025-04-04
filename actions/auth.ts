@@ -223,10 +223,7 @@ export async function loginAction(
     const user = await getUserByEmail(email); // Check if the user exists
     if (!user.ok) {
         console.error('User not found:', user.message);
-        return {
-            status: 'error',
-            error: user.message,
-        }; // Return error if user not found
+        redirect('/signup'); // Redirect to signup if the user is not found
     }
     console.log('User found:', user.data);
 

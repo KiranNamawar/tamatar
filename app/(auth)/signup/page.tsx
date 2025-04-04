@@ -6,12 +6,17 @@ export default function SignupPage() {
     return (
         <main className="w-11/12 md:w-1/2 lg:w-1/3">
             <h1 className="text-2xl font-bold">Sign Up</h1>
-            <p className="text-sm text-gray-500 mb-4">Create an account to get started.</p>
+            <p className="mb-4 text-sm text-gray-500">
+                Create an account to get started.
+            </p>
             <SignUpForm />
-            <p className="divider text-sm text-gray-500 mb-4">Already have an account?</p>
-            <p className="text-sm text-gray-500 mb-4">Login to your account.</p>
-            <Link href="/login" className="btn btn-secondary mb-4">Login</Link>
-            <p className="divider text-sm text-gray-500 mb-4">or</p>
+            <p className="m-2 text-sm text-gray-500">
+                Already have an account? {' '}
+                <Link href="/login" className="link">
+                    Login
+                </Link>
+            </p>
+            <p className="divider mb-4 text-sm text-gray-500">or</p>
             <GoogleSignupButton />
         </main>
     );

@@ -10,15 +10,12 @@ export default function LoginPage() {
                 Welcome back! Please login to your account.
             </p>
             <LoginForm />
-            <p className="divider mb-4 text-sm text-gray-500">
-                Don&apos;t have an account?
+            <p className="m-2 text-sm text-gray-500">
+                Don&apos;t have an account?{' '}
+                <Link href="/signup" className="link">
+                    Signup
+                </Link>
             </p>
-            <p className="mb-4 text-sm text-gray-500">
-                Create an account to get started.
-            </p>
-            <Link href="/signup" className="btn btn-secondary mb-4">
-                Sign Up
-            </Link>
             <p className="divider mb-4 text-sm text-gray-500">or</p>
             <GoogleLoginButton />
         </main>

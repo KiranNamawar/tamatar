@@ -1,5 +1,6 @@
 'use client'
 import { loginAction } from "@/actions/auth";
+import { useRedirectPath } from "@/hooks/query-param";
 import { ActionReturn } from "@/types/actionReturn";
 import { useActionState } from "react";
 
@@ -13,13 +14,14 @@ export default function LoginForm() {
         loginAction,
         initialState,
     );
+    const redirectPath = useRedirectPath();
     if (state.status === 'success') {
         // Redirect to the home page after successful login
-        window.location.href = '/dashboard';
+        window.location.href = redirectPath || '/dashboard';
     }
     return (
         <form action={formAction} className="flex flex-col gap-4">
-            <label className="input">
+            <label className="input w-full">
                 Email
                 <input
                     type="email"
@@ -29,7 +31,7 @@ export default function LoginForm() {
                     placeholder="Enter your email"
                 />
             </label>
-            <label className="input">
+            <label className="input w-full">
                 Password
                 <input
                     type="password"

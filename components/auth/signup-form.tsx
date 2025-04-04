@@ -1,6 +1,7 @@
 'use client';
 
 import { signUpAction } from '@/actions/auth';
+import { useRedirectPath } from '@/hooks/query-param';
 import { ActionReturn } from '@/types/actionReturn';
 import { useActionState } from 'react';
 
@@ -13,15 +14,15 @@ export default function SignUpForm() {
         signUpAction,
         initialState,
     );
-
+    const redirectPath = useRedirectPath();
     if (state.status === 'success') {
         // Redirect to the home page after successful signup
-        window.location.href = '/dashboard';
+        window.location.href = redirectPath || '/dashboard';
     }
 
     return (
-        <form action={formAction} className="flex flex-col gap-4 w-full">
-            <label className="input">
+        <form action={formAction} className="flex flex-col gap-4">
+            <label className="input w-full">
                 Name
                 <input
                     type="text"
@@ -31,7 +32,7 @@ export default function SignUpForm() {
                     placeholder="Enter your name"
                 />
             </label>
-            <label className="input">
+            <label className="input w-full">
                 Email
                 <input
                     type="email"
@@ -41,7 +42,7 @@ export default function SignUpForm() {
                     placeholder="Enter your email"
                 />
             </label>
-            <label className="input">
+            <label className="input w-full">
                 Password
                 <input
                     type="password"
@@ -53,7 +54,7 @@ export default function SignUpForm() {
                     placeholder="Enter your password"
                 />
             </label>
-            <label className="input">
+            <label className="input w-full">
                 Confirm Password
                 <input
                     type="password"

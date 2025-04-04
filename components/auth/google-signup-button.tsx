@@ -5,7 +5,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { redirect } from 'next/navigation';
 import { googleSignupRequest } from '@/utils/auth/google-auth';
 import { IconBrandGoogleFilled } from '@tabler/icons-react';
-import { Button } from '@mantine/core';
 
 export default function GoogleSignupButton() {
     const redirectPath = useRedirectPath();
@@ -23,13 +22,12 @@ export default function GoogleSignupButton() {
         },
     });
     return (
-        <Button
+        <button
             onClick={() => login()}
-            leftSection={<IconBrandGoogleFilled />}
-            fullWidth
-            variant="light"
+            className='btn btn-soft w-full'
         >
-            SignUp wih Google
-        </Button>
+            <IconBrandGoogleFilled className="mr-2" />
+            Signup wih Google
+        </button>
     );
 }
