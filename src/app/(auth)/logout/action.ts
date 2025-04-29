@@ -1,5 +1,17 @@
 'use server';
 
+/**
+ * Logout Action Handler
+ *
+ * This module handles the logout process, including session invalidation, cookie deletion,
+ * and error handling. Ensures that user sessions are securely terminated and all relevant
+ * authentication cookies are removed.
+ *
+ * Responsibilities:
+ * - Invalidate the user's refresh token/session in the database
+ * - Delete authentication cookies
+ * - Return standardized error objects on failure
+ */
 import { Return } from '@/types/return';
 import { handleAppError, throwAppError } from '@/utils/error';
 import logger from '@/utils/logger';
@@ -8,6 +20,11 @@ import { updateSession } from '@/lib/db';
 
 const log = logger.child({ file: 'src/app/(auth)/logout/action.ts' });
 
+/**
+ * Handles user logout and session invalidation.
+ *
+ * @returns Promise resolving to a Return object indicating success or error
+ */
 export async function logoutAction(): Promise<Return<void>> {
     try {
         const res = await getAuthCookies();

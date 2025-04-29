@@ -1,5 +1,22 @@
 'use client';
 
+/**
+ * LoginForm Component
+ *
+ * Renders the login form UI, manages form state, handles validation and submission logic,
+ * and integrates with the server-side loginAction for authentication.
+ *
+ * Props:
+ * - redirectPath: The path to redirect to after successful login.
+ *
+ * Features:
+ * - Uses react-hook-form and zod for validation.
+ * - Handles server-side and client-side errors.
+ * - Integrates with Google login and provides navigation links to signup/forgot-password.
+ * - Uses useActionState for server actions and pending state.
+ *
+ * @param redirectPath - The path to redirect to after successful login
+ */
 import { useActionState, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
@@ -13,15 +30,22 @@ import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../google/button';
 import Link from 'next/link';
 
-// LoginForm handles user login, form validation, and submission logic.
+/**
+ * LoginForm handles user login, form validation, and submission logic.
+ *
+ * @param redirectPath - Where to redirect after successful login
+ */
 export default function LoginForm({ redirectPath }: { redirectPath: string }) {
     // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(loginAction, null);
-    // Local state for tracking form-level errors.
+    // Local state for tracking form-level errors (server or validation errors)
     const [formError, setFormError] = useState<ErrorObject | undefined>(
         undefined,
     );
-    // Memoized default form values, including user agent for analytics or security.
+    /**
+     * Memoized default form values.
+     * Includes user agent for analytics/security and preserves email on failed attempts.
+     */
     const defaultValues = useMemo(
         () => ({
             email: formState?.fields?.email ?? '',
@@ -31,12 +55,15 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
         [formState?.fields?.email],
     );
     const router = useRouter();
-    // useEffect listens for successful login and handles redirection and error updates.
+    /**
+     * useEffect:
+     * - Redirects to the desired path after successful login.
+     * - Updates form-level error state when formState changes.
+     */
     useEffect(() => {
         if (formState?.success) {
             router.replace(redirectPath);
         }
-
         setFormError(formState?.formError || undefined);
     }, [formState, redirectPath, router]);
     // Render the login form UI.

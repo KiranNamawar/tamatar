@@ -23,7 +23,25 @@ import {
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-// OtpForm handles OTP verification, including form validation, submission, and resend logic.
+/**
+ * OtpForm Component
+ *
+ * Renders the OTP verification form UI, manages form state, handles validation and submission logic,
+ * and integrates with the server-side verifyOtpAction for OTP verification.
+ *
+ * Props:
+ * - context: The token or context required for OTP verification.
+ * - redirectPath: The path to redirect to after successful OTP verification.
+ *
+ * Features:
+ * - Uses react-hook-form and zod for validation.
+ * - Handles server-side and client-side errors.
+ * - Supports OTP resend logic.
+ * - Uses useActionState for server actions and pending state.
+ *
+ * @param context - Token/context required for OTP verification
+ * @param redirectPath - Where to redirect after successful OTP verification
+ */
 export default function OtpForm({
     context,
     redirectPath,

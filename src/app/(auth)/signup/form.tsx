@@ -1,5 +1,22 @@
 'use client';
 
+/**
+ * SignupForm Component
+ *
+ * Renders the signup form UI, manages form state, handles validation and submission logic,
+ * and integrates with the server-side signupAction for user registration.
+ *
+ * Props:
+ * - redirectPath: The path to redirect to after successful signup and verification.
+ *
+ * Features:
+ * - Uses react-hook-form and zod for validation.
+ * - Handles server-side and client-side errors.
+ * - Provides password strength feedback and integrates with Google signup.
+ * - Uses useActionState for server actions and pending state.
+ *
+ * @param redirectPath - The path to redirect to after successful signup
+ */
 import { useActionState, useEffect, useMemo, useState } from 'react';
 import { signupAction } from './action';
 import { FormAlert, FormFieldWrapper, FormWrapper } from '@/components/form';
@@ -16,17 +33,26 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
-// SignupForm handles user registration, form validation, and submission logic.
+/**
+ * SignupForm handles user registration, form validation, and submission logic.
+ *
+ * @param redirectPath - Where to redirect after successful signup
+ */
 export default function SignupForm({ redirectPath }: { redirectPath: string }) {
     // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(signupAction, null);
-    // Local state for tracking form-level errors.
+    // Local state for tracking form-level errors (server or validation errors)
     const [formError, setFormError] = useState<ErrorObject | undefined>(
         undefined,
     );
-    // State for tracking password strength (used for password feedback UI).
+    /**
+     * State for tracking password strength (used for password feedback UI).
+     */
     const [passwordStrength, setPasswordStrength] = useState<number>(0);
-    // Memoized default form values, including user agent for analytics or security.
+    /**
+     * Memoized default form values.
+     * Includes user agent for analytics/security and preserves entered fields on failed attempts.
+     */
     const defaultValues = useMemo(
         () => ({
             firstName: formState?.fields?.firstName || '',
@@ -40,7 +66,11 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
     );
 
     const router = useRouter();
-    // useEffect listens for successful signup and handles redirection and error updates.
+    /**
+     * useEffect:
+     * - Shows a toast and redirects to verification after successful signup.
+     * - Updates form-level error state when formState changes.
+     */
     useEffect(() => {
         if (formState?.success) {
             toast.success('Please check your email to verify your account.');
@@ -48,7 +78,6 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                 `/verify?redirectPath=${redirectPath}&context=${formState?.metadata?.context}`,
             );
         }
-
         setFormError(formState?.formError || undefined);
     }, [formState, redirectPath, router]);
     // Render the signup form UI.

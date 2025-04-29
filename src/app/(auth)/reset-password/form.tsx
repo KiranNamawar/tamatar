@@ -1,5 +1,24 @@
 'use client';
 
+/**
+ * ResetPasswordForm Component
+ *
+ * Renders the reset password form UI, manages form state, handles validation and submission logic,
+ * and integrates with the server-side resetPasswordAction for password reset.
+ *
+ * Props:
+ * - redirectPath: The path to redirect to after successful password reset.
+ * - token: The reset token for verifying the password reset request.
+ *
+ * Features:
+ * - Uses react-hook-form and zod for validation.
+ * - Handles server-side and client-side errors.
+ * - Provides password strength feedback.
+ * - Uses useActionState for server actions and pending state.
+ *
+ * @param redirectPath - The path to redirect to after successful password reset
+ * @param token - The reset token for verifying the password reset request
+ */
 import { useActionState, useEffect, useState } from 'react';
 import { resetPasswordAction } from './action';
 import { FormAlert, FormFieldWrapper, FormWrapper } from '@/components/form';
@@ -12,7 +31,12 @@ import { calculatePasswordStrength } from '../utils/password-strength';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
-// ResetPasswordForm handles the password reset process, including validation and submission.
+/**
+ * ResetPasswordForm handles the password reset process, including validation and submission.
+ *
+ * @param redirectPath - Where to redirect after successful password reset
+ * @param token - The reset token for verifying the password reset request
+ */
 export default function ResetPasswordForm({
     redirectPath,
     token,
@@ -26,12 +50,20 @@ export default function ResetPasswordForm({
         null,
     );
     const router = useRouter();
-    // Local state for tracking form-level errors.
+    /**
+     * Local state for tracking form-level errors.
+     */
     const [formError, setFormError] = useState<ErrorObject | null>(null);
-    // State for tracking password strength (used for password feedback UI).
+    /**
+     * State for tracking password strength (used for password feedback UI).
+     */
     const [passwordStrength, setPasswordStrength] = useState<number>(0);
 
-    // useEffect listens for successful password reset and handles redirection and error updates.
+    /**
+     * useEffect:
+     * - Shows a toast and redirects to login after successful password reset.
+     * - Updates form-level error state when formState changes.
+     */
     useEffect(() => {
         if (formState?.success) {
             toast.success('Password Reset successfully, Login..');

@@ -1,10 +1,19 @@
 'use server';
 
 /**
- * Login action handler
+ * Login action handler for the authentication flow.
  *
- * This module handles user login form submissions, validates credentials,
- * and establishes user sessions upon successful authentication.
+ * This module handles user login form submissions, validates credentials using a Zod schema,
+ * checks user existence and password correctness, and establishes a user session upon successful authentication.
+ * All errors and important events are logged using a scoped logger.
+ *
+ * Responsibilities:
+ * - Validate incoming form data
+ * - Retrieve user by email
+ * - Check if user exists and has a password (not just social login)
+ * - Compare password securely
+ * - Set up session on success
+ * - Return standardized error objects on failure
  */
 import { FormActionReturn } from '@/types/return';
 import { handleAppError } from '@/utils/error';
@@ -16,29 +25,23 @@ import { comparePassword } from '../utils/password';
 import { setupSession } from '../utils/session';
 
 /**
- * Logger instance scoped to this file for consistent logging context
+ * Logger instance scoped to this file for consistent logging context.
  */
 const log = logger.child({ file: 'src/app/(auth)/login/action.ts' });
 
 /**
- * Process a login form submission
- *
- * @param state - Current form state (if any)
- * @param formData - Form data from the login submission
- * @returns Form action result with success status or error information
- */
-/**
  * Handles user login: validates credentials, checks password, and creates session.
- * @param prev - Previous form action return or null.
- * @param formData - FormData containing login fields.
- * @returns Promise resolving to success or error.
+ *
+ * @param prev - Previous form action return or null (used for progressive enhancement)
+ * @param formData - FormData containing login fields (email, password, userAgent)
+ * @returns Promise resolving to a FormActionReturn indicating success or detailed error
  */
 export async function loginAction(
     prev: FormActionReturn<void> | null,
     formData: FormData,
 ): Promise<FormActionReturn<void>> {
     try {
-        // Validate form input against schema
+        // 1. Validate form input against the login schema
         const validationResult = validateForm(formData, loginSchema);
         if (!validationResult.success) {
             log.info(
@@ -48,13 +51,15 @@ export async function loginAction(
             return validationResult;
         }
 
+        // 2. Extract validated data
         const { email, password, userAgent } = validationResult.data!;
         log.debug({ email }, 'Attempting login');
 
-        // Retrieve user by email
+        // 3. Retrieve user by email
         const user = await getUserByEmail(email);
         if (!user.success) {
             log.info({ email }, 'Login attempt failed: User not found');
+            // Security: Do not reveal whether email or password was wrong
             return {
                 success: false,
                 formError: {
@@ -64,7 +69,7 @@ export async function loginAction(
             };
         }
 
-        // Check if user has a password (might be a social login only user)
+        // 4. Check if user has a password (not just a social login)
         if (!user.data?.password) {
             log.info(
                 { userId: user.data!.id },
@@ -74,12 +79,12 @@ export async function loginAction(
                 success: false,
                 formError: {
                     id: 'InvalidCredentials',
-                    message: 'Try login with google',
+                    message: 'Try login with Google',
                 },
             };
         }
 
-        // Verify password
+        // 5. Verify password securely
         const isPasswordValid = await comparePassword(
             password,
             user.data.password,
@@ -89,6 +94,7 @@ export async function loginAction(
                 { userId: user.data.id },
                 'Login attempt failed: Invalid password',
             );
+            // Security: Do not reveal whether email or password was wrong
             return {
                 success: false,
                 formError: {
@@ -98,16 +104,16 @@ export async function loginAction(
             };
         }
 
-        // Set up user session
+        // 6. Set up user session
         await setupSession(user.data.id, userAgent);
 
-        // Log successful login and session creation
+        // 7. Log successful login and session creation
         log.info({ userId: user.data.id, email }, 'User logged in and session created successfully');
         return {
             success: true,
         };
     } catch (error) {
-        // Handle and log errors using the custom utility
+        // 8. Handle and log errors using the custom utility
         return {
             success: false,
             formError: handleAppError(

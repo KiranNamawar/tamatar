@@ -1,5 +1,18 @@
 'use server';
 
+/**
+ * Google OAuth Action Handler
+ *
+ * This module handles Google OAuth authentication, including fetching the Google user profile,
+ * registering new users, logging in existing users, and setting up the session. All logic is modular,
+ * typed, and error-handled. Logging is performed for all major events and errors.
+ *
+ * Responsibilities:
+ * - Fetch and validate Google user profile
+ * - Register new users if not found
+ * - Log in existing users by Google ID or email
+ * - Set up session and handle errors
+ */
 import {
     isUsernameUnique,
     createUser,
@@ -105,24 +118,29 @@ export async function googleAction(
         }
 
         // Check if the user exists by Google ID or email
+        // Try to find the user by their Google ID (sub). This is the primary lookup for returning users.
         let user = await getUserByGoogleId(userInfo.sub);
         if (user.success) {
+            // User found by Google ID: proceed to session setup.
             log.info({ email: userInfo.email }, 'User found by Google ID');
         } else {
+            // No user found by Google ID. Try to find by email (for users who signed up with email/password first).
             log.info({ email: userInfo.email }, 'User not found by Google ID');
             user = await getUserByEmail(userInfo.email);
             if (user.success) {
+                // User found by email: update their record to link Google ID and sync profile fields.
                 log.info({ email: userInfo.email }, 'User found by email');
 
-                // Update the user with Google ID and other details if necessary
+                // Update the user with Google ID and fill in missing details from Google profile if needed.
                 user = await updateUser(user.data!.id, {
-                    googleId: userInfo.sub,
-                    firstName: user.data!.firstName || userInfo.given_name,
+                    googleId: userInfo.sub, // Link Google account
+                    firstName: user.data!.firstName || userInfo.given_name, // Prefer existing name, fallback to Google
                     lastName: user.data!.lastName || userInfo.family_name,
                     picture: user.data!.picture || userInfo.picture,
                 });
 
                 if (!user.success) {
+                    // If update fails, return an error
                     log.error(
                         { email: userInfo.email },
                         'Failed to update user with Google ID',
@@ -141,12 +159,13 @@ export async function googleAction(
                     'User updated with Google ID',
                 );
             } else {
+                // No user found by either Google ID or email: create a brand new user.
                 log.info(
                     { email: userInfo.email },
                     'User not found, creating new user',
                 );
 
-                // Create a new user if none exists
+                // Create a new user with all relevant Google profile info.
                 user = await createUser({
                     email: userInfo.email,
                     googleId: userInfo.sub,
@@ -154,7 +173,7 @@ export async function googleAction(
                     lastName: userInfo.family_name,
                     picture: userInfo.picture,
                     verifiedEmail: userInfo.email_verified,
-                    username,
+                    username, // Either from email prefix or random fallback
                 });
 
                 log.info(
@@ -164,14 +183,16 @@ export async function googleAction(
             }
         }
 
-        // Set up a session for the user and log in
+        // At this point, user is either found or created. Set up a session so they're logged in.
         await setupSession(user.data!.id, userAgent);
         log.info({ userId: user.data?.id }, 'User logged in and session created successfully');
 
+        // Return success to the client (frontend will handle redirect/UI)
         return {
             success: true,
         };
     } catch (error) {
+        // Catch any unexpected errors (network, DB, etc.) and return a standardized error object.
         return {
             success: false,
             error: handleAppError(

@@ -9,6 +9,25 @@ import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
 import Image from 'next/image';
 
+/**
+ * GoogleButton Component
+ *
+ * Renders a button for Google OAuth authentication. Handles login/signup via Google,
+ * invokes the googleAction server action, and manages UI state and error handling.
+ *
+ * Props:
+ * - redirectPath: Where to redirect after successful Google login/signup.
+ * - route: 'login' or 'signup', determines the context of the button.
+ *
+ * Features:
+ * - Integrates with @react-oauth/google for OAuth flow.
+ * - Handles server-side and client-side errors.
+ * - Uses useActionState for pending state and error feedback.
+ * - Displays loading spinner during authentication.
+ *
+ * @param redirectPath - Where to redirect after successful Google login/signup
+ * @param route - 'login' or 'signup' (button context)
+ */
 export default function GoogleButton({
     redirectPath,
     route,

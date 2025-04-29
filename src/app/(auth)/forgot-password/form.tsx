@@ -1,5 +1,21 @@
 'use client';
 
+/**
+ * ForgotPasswordForm Component
+ *
+ * Renders the forgot password form UI, manages form state, handles validation and submission logic,
+ * and integrates with the server-side forgotPasswordAction for password reset initiation.
+ *
+ * Props:
+ * - redirectPath: The path to redirect to after successful OTP submission.
+ *
+ * Features:
+ * - Uses react-hook-form and zod for validation.
+ * - Handles server-side and client-side errors.
+ * - Uses useActionState for server actions and pending state.
+ *
+ * @param redirectPath - The path to redirect to after successful OTP submission
+ */
 import { FormFieldWrapper, FormWrapper } from '@/components/form';
 import React, { useActionState, useEffect } from 'react';
 import { forgotPasswordAction } from './action';
@@ -9,7 +25,11 @@ import { SubmitButton } from '@/components/ui/submit-button';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
-// ForgotPasswordForm handles the forgot password process, including form validation and submission.
+/**
+ * ForgotPasswordForm handles the forgot password process, including form validation and submission.
+ *
+ * @param redirectPath - Where to redirect after successful OTP submission
+ */
 export default function ForgotPasswordForm({
     redirectPath,
 }: {
@@ -23,7 +43,10 @@ export default function ForgotPasswordForm({
 
     const router = useRouter();
 
-    // useEffect listens for successful OTP submission and redirects the user to the verification page.
+    /**
+     * useEffect:
+     * - Shows a toast and redirects to verification after successful OTP submission.
+     */
     useEffect(() => {
         if (formState?.success) {
             toast.success('OTP sent successfully');
