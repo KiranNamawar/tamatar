@@ -47,6 +47,7 @@ export async function logoutAction(): Promise<Return<void>> {
             );
         }
         await deleteAuthCookies();
+        log.info('User logged out successfully');
         return { success: true };
     } catch (error) {
         return {

@@ -76,7 +76,7 @@ export const deleteAuthCookies = async (): Promise<Return<null>> => {
         await deleteCookie('accessToken');
 
         await deleteCookie('refreshToken');
-
+        log.info('Auth cookies deleted successfully');
         return {
             success: true,
             data: null,

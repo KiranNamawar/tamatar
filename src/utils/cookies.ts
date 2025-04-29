@@ -96,6 +96,7 @@ export const deleteCookie = async (
     try {
         const cookieStore = await cookies();
         cookieStore.delete(name);
+        log.info(`Cookie ${name} deleted successfully`);
     } catch (error) {
         throwAppError('deleteCookie', 'Failed to delete cookie', log, error);
     }
