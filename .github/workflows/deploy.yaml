@@ -8,6 +8,8 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        env: 
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
 
         steps:
             - name: Checkout code
