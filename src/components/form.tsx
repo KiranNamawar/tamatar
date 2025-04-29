@@ -5,6 +5,11 @@
  *
  * This module provides reusable form components that integrate with react-hook-form
  * and zod for validation, with support for server-side errors.
+ *
+ * Components:
+ * - FormWrapper: Main wrapper for form state, validation, and submission.
+ * - FormFieldWrapper: Wrapper for consistent field rendering and error display.
+ * - FormAlert: Displays form-level error messages.
  */
 import { useEffect, useRef, startTransition, ReactNode } from 'react';
 import {
@@ -32,6 +37,7 @@ import { AlertCircle } from 'lucide-react';
  * Client-side logger for form-related events
  * Uses console methods with consistent formatting
  */
+// Simple logger for debugging form events in development.
 const logger = {
     debug: (context: Record<string, any>, message: string) => {
         console.debug(`[Form] ${message}`, context);
@@ -53,7 +59,8 @@ const logger = {
 type ServerErrors<T> = Partial<Record<keyof T, string[]>>;
 
 /**
- * Main form wrapper component that handles form state and submission
+ * FormWrapper: Main wrapper component that handles form state, validation, and submission.
+ * Integrates with react-hook-form and zod schema, and displays server-side errors.
  *
  * @param action - Server action to call on form submission
  * @param schema - Zod schema for form validation
@@ -136,17 +143,19 @@ export function FormWrapper<TSchema extends ZodSchema>({
 }
 
 /**
- * Alert component for displaying form-level errors
+ * FormAlert: Alert component for displaying form-level errors
  *
  * @param id - Error identifier
  * @param message - Error message to display
  */
 export function FormAlert({ id, message }: { id: string; message: string }) {
+    // If no message is provided, return null
     if (!message) return null;
 
     // Log form-level errors when they're displayed
     logger.warn({ id, message }, 'Displaying form error alert');
 
+    // Render the alert component with the provided message
     return (
         <Alert variant="destructive">
             <AlertCircle className="h-5 w-5" />
@@ -157,7 +166,7 @@ export function FormAlert({ id, message }: { id: string; message: string }) {
 }
 
 /**
- * Wrapper for individual form fields with consistent styling and error handling
+ * FormFieldWrapper: Wrapper for individual form fields with consistent styling and error handling
  *
  * @param control - Form control from react-hook-form
  * @param name - Field name

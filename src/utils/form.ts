@@ -6,7 +6,7 @@ import logger from '@/utils/logger';
 const log = logger.child({ file: 'src/utils/form.ts' });
 
 /**
- * Type definition for form validation results.
+ * Represents the result of a form validation operation.
  *
  * @template T - The type of the validated data
  *
@@ -26,7 +26,7 @@ type ValidationResult<T> =
       };
 
 /**
- * Type guard to check if the provided data is a FormData instance.
+ * Checks if the provided data is a FormData instance.
  *
  * @param data - The data to check
  * @returns True if data is FormData, false otherwise
@@ -37,10 +37,10 @@ function isFormData(data: unknown): data is FormData {
 }
 
 /**
- * Normalizes form data into a consistent Record format.
+ * Converts form data (FormData or plain object) into a normalized Record<string, unknown>.
  *
- * @param formData - The form data to normalize (either FormData or Record)
- * @returns A normalized Record object with form values
+ * @param formData - The form data to normalize (FormData or Record)
+ * @returns A normalized object containing form field values
  */
 function normalizeFormData(
     formData: FormData | Record<string, unknown>,
@@ -54,7 +54,7 @@ function normalizeFormData(
 }
 
 /**
- * Converts all form values to strings.
+ * Converts all form values to strings for consistent validation.
  *
  * @param formValues - The form values to convert
  * @returns A Record with all values converted to strings
@@ -74,10 +74,13 @@ function convertToStringFields(
 }
 
 /**
- * Normalizes Zod validation errors into a consistent format.
+ * Normalizes Zod validation errors into a consistent format for UI consumption.
  *
  * @param error - The Zod validation error
  * @returns A Record mapping field names to arrays of error messages
+ *
+ * This function takes a Zod validation error and returns a Record<string, string[]>.
+ * Each key in the Record corresponds to a field in the form, and its value is an array of error messages.
  */
 function normalizeValidationErrors<TSchema extends z.ZodTypeAny>(
     error: z.ZodError<z.infer<TSchema>>,
@@ -102,15 +105,18 @@ function normalizeValidationErrors<TSchema extends z.ZodTypeAny>(
 }
 
 /**
- * Validates form data against a Zod schema (synchronous version).
+ * Validates form data synchronously against a Zod schema.
  *
  * @template TSchema - The Zod schema type
- * @param formData - The form data to validate (either FormData or Record)
+ * @param formData - The form data to validate (FormData or Record)
  * @param schema - The Zod schema to validate against
  * @returns A ValidationResult containing either the validated data or validation errors
  *
  * This function handles both FormData objects and plain JavaScript objects,
  * normalizing them before validation.
+ *
+ * If the validation is successful, it returns a ValidationResult with success=true and the parsed data.
+ * If the validation fails, it returns a ValidationResult with success=false, the original form fields, and an error Record.
  */
 export function validateForm<TSchema extends z.ZodTypeAny>(
     formData: FormData | Record<string, unknown>,
@@ -148,15 +154,18 @@ export function validateForm<TSchema extends z.ZodTypeAny>(
 }
 
 /**
- * Validates form data against a Zod schema asynchronously.
+ * Validates form data asynchronously against a Zod schema (for async refinements).
  *
  * @template TSchema - The Zod schema type
- * @param formData - The form data to validate (either FormData or Record)
+ * @param formData - The form data to validate (FormData or Record)
  * @param schema - The Zod schema to validate against
  * @returns A Promise resolving to a FormActionReturn with a validation result
  *
  * This function is useful when the schema contains async validation rules.
  * It handles both FormData objects and plain JavaScript objects.
+ *
+ * If the validation is successful, it returns a FormActionReturn with success=true and the parsed data.
+ * If the validation fails, it returns a FormActionReturn with success=false, the original form fields, and an error Record.
  */
 export async function validateFormAsync<TSchema extends z.ZodTypeAny>(
     formData: FormData | Record<string, unknown>,

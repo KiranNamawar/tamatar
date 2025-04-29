@@ -5,7 +5,8 @@ import { UtilityReturn } from '@/types/return';
 const log = logger.child({ file: 'src/utils/env.ts' });
 
 /**
- * Safely retrieves an environment variable and throws an error if it's not set.
+ * Retrieves an environment variable and throws an error if it's not set.
+ *
  * @param variable - The name of the environment variable to retrieve
  * @returns The value of the environment variable
  * @throws AppError if the environment variable is not set
@@ -27,6 +28,7 @@ export const getEnvironmentVariable = (
 
 /**
  * Retrieves an environment variable with a fallback value if not set.
+ *
  * @param variable - The name of the environment variable to retrieve
  * @param defaultValue - The default value to use if the environment variable is not set
  * @param sensitive - Whether the value is sensitive and should be masked in logs

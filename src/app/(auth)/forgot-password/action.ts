@@ -15,21 +15,32 @@ const log = logger.child({ file: 'src/app/(auth)/forgot-password/action.ts' });
 
 const generateOtp = customAlphabet('0123456789', 6);
 
+/**
+ * Handles forgot password: validates form, checks user, creates OTP, and sends verification email.
+ * @param prev - Previous form action return or null.
+ * @param formData - FormData containing forgot password fields.
+ * @returns Promise resolving to success or error with context token.
+ */
 export async function forgotPasswordAction(
     prev: FormActionReturn<{ context: string }> | null,
     formData: FormData,
 ): Promise<FormActionReturn<{ context: string }>> {
     try {
+        // Validate form data
         const validationResult = validateForm(
             formData,
             forgotPasswordSchema,
         );
         if (!validationResult.success) {
+            log.info({ errors: validationResult.errors }, 'Forgot password form validation failed');
             return validationResult;
         }
         const { email } = validationResult.data;
+
+        // Check if user exists
         const user = await getUserByEmail(email);
         if (!user.success) {
+            log.info({ email }, 'Forgot password: User not found');
             return {
                 success: false,
                 errors: {
@@ -37,6 +48,8 @@ export async function forgotPasswordAction(
                 },
             };
         }
+
+        // Generate OTP for password reset
         const otp = await createOtp({
             code: generateOtp(),
             expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 minutes
@@ -48,12 +61,15 @@ export async function forgotPasswordAction(
             },
         });
 
+        // Send verification email
         await sendVerificationEmail(
             user.data?.firstName || '',
             user.data?.email || '',
             otp.data?.code || '',
         );
+        log.info({ email }, 'Forgot password OTP and email sent');
 
+        // Return context token for verification
         return {
             success: true,
             metadata: {
@@ -67,6 +83,7 @@ export async function forgotPasswordAction(
             },
         };
     } catch (error) {
+        // Handle and log errors using the custom utility
         return {
             success: false,
             errors: {

@@ -20,7 +20,7 @@ const resend = new Resend(getEnvironmentVariable('RESEND_API_KEY'));
 /**
  * Logger instance scoped to this file for consistent logging context
  */
-const log = logger.child({ file: 'src/lib/email/index.ts' });
+const log = logger.child({ file: 'src/lib/email/send.ts' });
 
 /**
  * Sends an email using Resend with a React component as the email body.

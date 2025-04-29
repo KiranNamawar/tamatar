@@ -13,11 +13,15 @@ import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../google/button';
 import Link from 'next/link';
 
+// LoginForm handles user login, form validation, and submission logic.
 export default function LoginForm({ redirectPath }: { redirectPath: string }) {
+    // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(loginAction, null);
+    // Local state for tracking form-level errors.
     const [formError, setFormError] = useState<ErrorObject | undefined>(
         undefined,
     );
+    // Memoized default form values, including user agent for analytics or security.
     const defaultValues = useMemo(
         () => ({
             email: formState?.fields?.email ?? '',
@@ -27,6 +31,7 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
         [formState?.fields?.email],
     );
     const router = useRouter();
+    // useEffect listens for successful login and handles redirection and error updates.
     useEffect(() => {
         if (formState?.success) {
             router.replace(redirectPath);
@@ -34,8 +39,10 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
 
         setFormError(formState?.formError || undefined);
     }, [formState, redirectPath, router]);
+    // Render the login form UI.
     return (
         <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+            {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
                 schema={loginSchema}
@@ -45,6 +52,7 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
             >
                 {(form) => (
                     <>
+                        {/* Email input field */}
                         <FormFieldWrapper
                             control={form.control}
                             name="email"
@@ -59,6 +67,7 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
                                 />
                             )}
                         </FormFieldWrapper>
+                        {/* Password input field with a link to forgot password */}
                         <FormFieldWrapper
                             control={form.control}
                             name="password"
@@ -84,6 +93,7 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
                             name="userAgent"
                             value={navigator.userAgent}
                         />
+                        {/* Submit button triggers the login action */}
                         <SubmitButton
                             pending={form.formState.isSubmitting || pending}
                             title={'Login'}
@@ -92,12 +102,15 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
                     </>
                 )}
             </FormWrapper>
+            {/* Separator and Google login option */}
             <Separator />
             <GoogleButton redirectPath={redirectPath} route="login" />
+            {/* Display form-level errors if present */}
             {formError && (
                 <FormAlert id={formError.id} message={formError.message} />
             )}
 
+            {/* Link to signup page for new users */}
             <p className="text-muted-foreground text-center text-sm">
                 Don&apos;t have an account?{' '}
                 <Link

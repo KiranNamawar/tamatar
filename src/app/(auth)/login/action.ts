@@ -27,6 +27,12 @@ const log = logger.child({ file: 'src/app/(auth)/login/action.ts' });
  * @param formData - Form data from the login submission
  * @returns Form action result with success status or error information
  */
+/**
+ * Handles user login: validates credentials, checks password, and creates session.
+ * @param prev - Previous form action return or null.
+ * @param formData - FormData containing login fields.
+ * @returns Promise resolving to success or error.
+ */
 export async function loginAction(
     prev: FormActionReturn<void> | null,
     formData: FormData,
@@ -94,13 +100,14 @@ export async function loginAction(
 
         // Set up user session
         await setupSession(user.data.id, userAgent);
-        log.info({ email: email }, 'Session created successfully');
 
-        log.info({ userId: user.data.id }, 'User logged in successfully');
+        // Log successful login and session creation
+        log.info({ userId: user.data.id, email }, 'User logged in and session created successfully');
         return {
             success: true,
         };
     } catch (error) {
+        // Handle and log errors using the custom utility
         return {
             success: false,
             formError: handleAppError(

@@ -3,25 +3,30 @@ import { throwAppError } from './error';
 import logger from './logger';
 import { UtilityReturn } from '@/types/return';
 
+// Logger instance for this utility file
 const log = logger.child({ file: 'src/utils/cookies.ts' });
 
 /**
- * Get a specific cookie by name
+ * Retrieves the value of a specific cookie by name.
+ *
  * @param name - Name of the cookie to retrieve
- * @returns The value of the cookie or undefined if not found
+ * @returns Promise resolving to the cookie value or undefined if not found
+ * @throws AppError if cookie retrieval fails
  */
 export const getCookie = async (
     name: string,
 ): Promise<UtilityReturn<string | undefined>> => {
     try {
         const cookieStore = await cookies();
-
         return cookieStore.get(name)?.value;
     } catch (error) {
         throwAppError('getCookie', 'Failed to get cookie', log, error);
     }
 };
 
+/**
+ * Options for setting a cookie. Mirrors the Set-Cookie attributes.
+ */
 interface Options {
     // Specifies the value for the Domain Set-Cookie attribute.
     domain?: string | undefined;
@@ -50,15 +55,20 @@ interface Options {
     // Specifies the value for the SameSite Set-Cookie attribute.
     sameSite?: true | false | 'lax' | 'strict' | 'none' | undefined;
 
-    // Specifies the boolean value for the Secure Set-Cookie attribute.
+    /**
+     * Specifies the boolean value for the Secure Set-Cookie attribute.
+     */
     secure?: boolean | undefined;
 }
 
 /**
- * Set a cookie with the specified name and value
+ * Sets a cookie with the specified name, value, and options.
+ *
  * @param name - Name of the cookie to set
  * @param value - Value of the cookie to set
- * @param options - Options for the cookie (e.g., expires, httpOnly, secure, sameSite)
+ * @param options - Additional options for the cookie (domain, expires, httpOnly, etc.)
+ * @returns Promise resolving when the cookie is set
+ * @throws AppError if setting the cookie fails
  */
 export const setCookie = async (
     name: string,
@@ -67,15 +77,18 @@ export const setCookie = async (
 ): Promise<UtilityReturn<void>> => {
     try {
         const cookieStore = await cookies();
-        cookieStore.set(name, value, options);
+        cookieStore.set({ name, value, ...options });
     } catch (error) {
         throwAppError('setCookie', 'Failed to set cookie', log, error);
     }
 };
 
 /**
- * Delete a specific cookie by name
+ * Deletes a specific cookie by name.
+ *
  * @param name - Name of the cookie to delete
+ * @returns Promise resolving when the cookie is deleted
+ * @throws AppError if deletion fails
  */
 export const deleteCookie = async (
     name: string,

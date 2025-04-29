@@ -16,12 +16,17 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
+// SignupForm handles user registration, form validation, and submission logic.
 export default function SignupForm({ redirectPath }: { redirectPath: string }) {
+    // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(signupAction, null);
+    // Local state for tracking form-level errors.
     const [formError, setFormError] = useState<ErrorObject | undefined>(
         undefined,
     );
+    // State for tracking password strength (used for password feedback UI).
     const [passwordStrength, setPasswordStrength] = useState<number>(0);
+    // Memoized default form values, including user agent for analytics or security.
     const defaultValues = useMemo(
         () => ({
             firstName: formState?.fields?.firstName || '',
@@ -35,6 +40,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
     );
 
     const router = useRouter();
+    // useEffect listens for successful signup and handles redirection and error updates.
     useEffect(() => {
         if (formState?.success) {
             toast.success('Please check your email to verify your account.');
@@ -45,8 +51,10 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
 
         setFormError(formState?.formError || undefined);
     }, [formState, redirectPath, router]);
+    // Render the signup form UI.
     return (
         <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+            {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
                 schema={signupSchema}
@@ -56,6 +64,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
             >
                 {(form) => (
                     <>
+                        {/* First and last name fields side by side */}
                         <div className='flex items-center justify-between'>
                             <FormFieldWrapper
                                 control={form.control}
@@ -85,6 +94,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                                 )}
                             </FormFieldWrapper>
                         </div>
+                        {/* Email input field */}
                         <FormFieldWrapper
                             control={form.control}
                             name="email"
@@ -98,6 +108,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                                 />
                             )}
                         </FormFieldWrapper>
+                        {/* Password input field with password strength indicator */}
                         <FormFieldWrapper
                             control={form.control}
                             name="password"
@@ -125,6 +136,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                                 />
                             )}
                         </FormFieldWrapper>
+                        {/* Confirm password input field */}
                         <FormFieldWrapper
                             control={form.control}
                             name="confirmPassword"
@@ -142,22 +154,26 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                             name="userAgent"
                             value={navigator.userAgent}
                         />
+                        {/* Submit button triggers the signup action */}
                         <SubmitButton
                             pending={form.formState.isSubmitting || pending}
                             title={'Sign Up'}
                             className="w-full"
                         />
+                        {/* Separator and Google signup option */}
                         <Separator />
                         <GoogleButton
                             redirectPath={redirectPath}
                             route="signup"
                         />
+                        {/* Display form-level errors if present */}
                         {formError && (
                             <FormAlert
                                 id={formError.id}
                                 message={formError.message}
                             />
                         )}
+                        {/* Link to login page for users who already have an account */}
                         <p className="text-muted-foreground text-center text-sm">
                             Already have an account?{' '}
                             <Link

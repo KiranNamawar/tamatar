@@ -12,7 +12,7 @@ import pino from 'pino';
 const logger =
     process.env.NODE_ENV === 'production'
         ? pino({
-              level: 'warn',
+              level: 'info',
               transport: {
                   target: 'pino-datadog-transport',
                   options: {

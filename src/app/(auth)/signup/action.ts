@@ -15,6 +15,7 @@ import {
     isUsernameUnique,
 } from '@/lib/db';
 import { sendVerificationEmail } from '@/lib/email';
+import { hashPassword } from '../utils/password';
 
 const log = logger.child({ file: 'src/app/(auth)/signup/action.ts' });
 
@@ -25,11 +26,18 @@ const log = logger.child({ file: 'src/app/(auth)/signup/action.ts' });
 const generateUsername = customAlphabet('abcdefghijklmnopqrstuvwxyz', 6);
 const generateOtp = customAlphabet('0123456789', 6);
 
+/**
+ * Handles user signup: validates form, creates user, generates OTP, and sends verification email.
+ * @param prev - Previous form action return or null.
+ * @param formData - FormData containing signup fields.
+ * @returns Promise resolving to success or error with context token.
+ */
 export async function signupAction(
     prev: FormActionReturn<{ context: string }> | null,
     formData: FormData,
 ): Promise<FormActionReturn<{ context: string }>> {
     try {
+        // Validate form data
         const validationResult = validateForm(formData, signupSchema);
         if (!validationResult.success) {
             log.info(
@@ -42,6 +50,7 @@ export async function signupAction(
             validationResult.data!;
         log.debug({ email }, 'Attempting signup');
 
+        // Check if user already exists
         let user = await getUserByEmail(email);
         if (user.success) {
             log.info({ email }, 'Signup attempt failed: User already exists');
@@ -54,6 +63,7 @@ export async function signupAction(
             };
         }
 
+        // Ensure username uniqueness
         let username = email.split('@')[0];
         const isUnique = await isUsernameUnique(username);
         if (!isUnique.success) {
@@ -64,14 +74,16 @@ export async function signupAction(
             username = generateUsername();
         }
 
+        // Create user in database
         user = await createUser({
             firstName,
             lastName,
             email,
-            password,
+            password: await hashPassword(password), 
             username,
         });
 
+        // Generate OTP for email verification
         const otp = await createOtp({
             code: generateOtp(),
             expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
@@ -83,12 +95,17 @@ export async function signupAction(
             purpose: OtpPurpose.SIGNUP,
         });
 
+        // Send verification email
         await sendVerificationEmail(
             user.data?.firstName || '',
             user.data?.email || '',
             otp.data?.code || '',
         );
 
+        // Log successful signup and verification email
+        log.info({ email, userId: user.data?.id }, 'User signed up successfully, verification email sent.');
+
+        // Return context token for verification
         return {
             success: true,
             metadata: {
@@ -102,6 +119,7 @@ export async function signupAction(
             },
         };
     } catch (error) {
+        // Handle and log errors using the custom utility
         return {
             success: false,
             formError: handleAppError(

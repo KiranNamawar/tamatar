@@ -52,6 +52,7 @@ export async function googleAction(
     userAgent?: string,
 ): Promise<ActionReturn<void>> {
     try {
+        // Start Google authentication process
         log.info('Starting Google authentication process');
 
         // Fetch user information from Google using the provided token
@@ -76,6 +77,7 @@ export async function googleAction(
             };
         }
 
+        // Parse user information from Google response
         const userInfo = (await res.json()) as GoogleUserProfile;
         log.info({ email: userInfo.email }, 'Fetched user info from Google');
 
@@ -162,11 +164,10 @@ export async function googleAction(
             }
         }
 
-        // Set up a session for the user
+        // Set up a session for the user and log in
         await setupSession(user.data!.id, userAgent);
-        log.info({ email: userInfo.email }, 'Session created successfully');
+        log.info({ userId: user.data?.id }, 'User logged in and session created successfully');
 
-        log.info({ userId: user.data?.id }, 'User logged in successfully');
         return {
             success: true,
         };

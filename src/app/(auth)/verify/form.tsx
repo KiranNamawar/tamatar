@@ -23,6 +23,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
+// OtpForm handles OTP verification, including form validation, submission, and resend logic.
 export default function OtpForm({
     context,
     redirectPath,
@@ -30,10 +31,12 @@ export default function OtpForm({
     context: string;
     redirectPath: string;
 }) {
+    // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(
         verifyOtpAction,
         null,
     );
+    // Memoized default form values, including context token and user agent.
     const defaultValues = useMemo(
         () => ({
             code: '',
@@ -58,7 +61,7 @@ export default function OtpForm({
         }
     }, [formState, redirectPath, router]);
 
-    //Resend OTP logic
+    // Resend OTP logic: Handles the resend action and timer for OTP requests.
     const [isResendDisabled, setIsResendDisabled] = useState(false);
     const [resendTimer, setResendTimer] = useState(30); // 30 seconds countdown
 
