@@ -39,7 +39,7 @@ jobs:
                   script: |
                       cd ./tamatar-store
                       git pull origin main
-                      npm install --production
+                      npm install
                       npm run build
                       pm2 restart tamatar-store
                       pm2 save
