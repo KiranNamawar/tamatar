@@ -16,16 +16,12 @@ export const signupSchema = z
          * - Required field
          * - Max 100 characters
          */
-        firstName: z
+        name: z
             .string()
-            .min(1, { message: 'First name is required' })
+            .min(1, { message: 'Name is required' })
             .max(100, {
-                message: 'First name must be less than 100 characters',
+                message: 'Name must be less than 100 characters',
             }),
-        /**
-         * User's last name (optional).
-         */
-        lastName: z.string().optional(),
         /**
          * User's email address.
          * - Required field

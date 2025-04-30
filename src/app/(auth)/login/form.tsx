@@ -29,6 +29,7 @@ import { loginAction } from './action';
 import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../google/button';
 import Link from 'next/link';
+import { AtSign } from 'lucide-react';
 
 /**
  * LoginForm handles user login, form validation, and submission logic.
@@ -90,6 +91,7 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
                                 <Input
                                     type="email"
                                     placeholder="Email"
+                                    icon={<AtSign size={16} />}
                                     {...field}
                                 />
                             )}

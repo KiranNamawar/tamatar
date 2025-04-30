@@ -32,6 +32,7 @@ import { ErrorObject } from '@/utils/error';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { AtSign, User } from 'lucide-react';
 
 /**
  * SignupForm handles user registration, form validation, and submission logic.
@@ -55,8 +56,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
      */
     const defaultValues = useMemo(
         () => ({
-            firstName: formState?.fields?.firstName || '',
-            lastName: formState?.fields?.lastName || '',
+            name: formState?.fields?.name || '',
             email: formState?.fields?.email || '',
             password: '',
             confirmPassword: '',
@@ -94,35 +94,20 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                 {(form) => (
                     <>
                         {/* First and last name fields side by side */}
-                        <div className='flex items-center justify-between'>
-                            <FormFieldWrapper
-                                control={form.control}
-                                name="firstName"
-                                label="First Name"
-                            >
-                                {(field) => (
-                                    <Input
-                                        type="text"
-                                        placeholder="First Name"
-                                        {...field}
-                                    />
-                                )}
-                            </FormFieldWrapper>
-
-                            <FormFieldWrapper
-                                control={form.control}
-                                name="lastName"
-                                label="Last Name"
-                            >
-                                {(field) => (
-                                    <Input
-                                        type="text"
-                                        placeholder="Last Name"
-                                        {...field}
-                                    />
-                                )}
-                            </FormFieldWrapper>
-                        </div>
+                        <FormFieldWrapper
+                            control={form.control}
+                            name="name"
+                            label="Name"
+                        >
+                            {(field) => (
+                                <Input
+                                    type="text"
+                                    placeholder="Name"
+                                    icon={<User size={16} />}
+                                    {...field}
+                                />
+                            )}
+                        </FormFieldWrapper>
                         {/* Email input field */}
                         <FormFieldWrapper
                             control={form.control}
@@ -133,6 +118,7 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                                 <Input
                                     type="email"
                                     placeholder="Email"
+                                    icon={<AtSign size={16} />}
                                     {...field}
                                 />
                             )}

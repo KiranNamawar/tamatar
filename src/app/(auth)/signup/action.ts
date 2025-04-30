@@ -66,10 +66,10 @@ export async function signupAction(
             return validationResult;
         }
         // 2. Extract validated data
-        const { firstName, lastName, email, password } =
+        const { name, email, password } =
             validationResult.data!;
         log.debug({ email }, 'Attempting signup');
-
+        const [firstName, lastName] = name.split(' ');
         // 3. Check if user already exists by email
         let user = await getUserByEmail(email);
         if (user.success) {
