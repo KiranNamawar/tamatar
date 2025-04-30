@@ -75,8 +75,18 @@ export async function forgotPasswordAction(
         }
 
         // 4. Generate OTP for password reset
+        const code = generateOtp();
+
+        // 5. Send verification email with OTP
+        const mail = await sendVerificationEmail(
+            user.data?.firstName || '',
+            user.data?.email || '',
+            code,
+        );
+
+        // 6. Create OTP in the database
         const otp = await createOtp({
-            code: generateOtp(),
+            code,
             expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 min expiry
             purpose: OtpPurpose.FORGOT_PASSWORD,
             user: {
@@ -84,19 +94,13 @@ export async function forgotPasswordAction(
                     id: user.data?.id,
                 },
             },
+            mailId: mail.data?.id,
         });
 
-        // 5. Send verification email with OTP
-        await sendVerificationEmail(
-            user.data?.firstName || '',
-            user.data?.email || '',
-            otp.data?.code || '',
-        );
-
-        // 6. Log successful OTP and verification email
+        // 7. Log successful OTP and verification email
         log.info({ email, userId: user.data?.id }, 'Forgot password OTP generated, verification email sent.');
 
-        // 7. Return context token for verification
+        // 8. Return context token for verification
         return {
             success: true,
             metadata: {
@@ -110,7 +114,7 @@ export async function forgotPasswordAction(
             },
         };
     } catch (error) {
-        // 8. Handle and log errors using the custom utility
+        // 9. Handle and log errors using the custom utility
         return {
             success: false,
             formError: handleAppError(

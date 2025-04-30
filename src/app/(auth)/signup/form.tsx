@@ -33,6 +33,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { AtSign, User } from 'lucide-react';
+import AuthFormContainer from '../components/auth-form-container';
 
 /**
  * SignupForm handles user registration, form validation, and submission logic.
@@ -82,7 +83,8 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
     }, [formState, redirectPath, router]);
     // Render the signup form UI.
     return (
-        <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+        <AuthFormContainer>
+            {' '}
             {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
@@ -201,6 +203,6 @@ export default function SignupForm({ redirectPath }: { redirectPath: string }) {
                     </>
                 )}
             </FormWrapper>
-        </div>
+        </AuthFormContainer>
     );
 }

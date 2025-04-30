@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import AuthFormContainer from '../components/auth-form-container';
 
 /**
  * OtpForm Component
@@ -115,7 +116,7 @@ export default function OtpForm({
     }, [isResendDisabled]);
 
     return (
-        <div className="mb-4 w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+        <AuthFormContainer>
             <FormWrapper
                 action={formAction}
                 schema={otpSchema}
@@ -181,6 +182,6 @@ export default function OtpForm({
                     </>
                 )}
             </FormWrapper>
-        </div>
+        </AuthFormContainer>
     );
 }

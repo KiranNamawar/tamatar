@@ -30,6 +30,7 @@ import PasswordStrength from '../components/password-strength';
 import { calculatePasswordStrength } from '../utils/password-strength';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import AuthFormContainer from '../components/auth-form-container';
 
 /**
  * ResetPasswordForm handles the password reset process, including validation and submission.
@@ -73,7 +74,8 @@ export default function ResetPasswordForm({
     }, [formState, redirectPath, router]);
     // Render the reset password form UI.
     return (
-        <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+        <AuthFormContainer>
+            {' '}
             {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
@@ -145,6 +147,6 @@ export default function ResetPasswordForm({
                     </>
                 )}
             </FormWrapper>
-        </div>
+        </AuthFormContainer>
     );
 }

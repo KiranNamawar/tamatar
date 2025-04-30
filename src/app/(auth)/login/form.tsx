@@ -30,6 +30,8 @@ import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../google/button';
 import Link from 'next/link';
 import { AtSign } from 'lucide-react';
+import AuthFormContainer from '../components/auth-form-container';
+import { toast } from 'sonner';
 
 /**
  * LoginForm handles user login, form validation, and submission logic.
@@ -63,13 +65,20 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
      */
     useEffect(() => {
         if (formState?.success) {
-            router.replace(redirectPath);
+            if (formState.metadata?.context) {
+                toast.info('Check your email for verification');
+                router.replace(`/verify?redirectPath=${redirectPath}&context=${formState?.metadata?.context}`)
+            } else {
+                toast.success('Login successful');
+                router.replace(redirectPath);
+            }
         }
         setFormError(formState?.formError || undefined);
     }, [formState, redirectPath, router]);
     // Render the login form UI.
     return (
-        <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+        <AuthFormContainer>
+            {' '}
             {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
@@ -138,7 +147,6 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
             {formError && (
                 <FormAlert id={formError.id} message={formError.message} />
             )}
-
             {/* Link to signup page for new users */}
             <p className="text-muted-foreground text-center text-sm">
                 Don&apos;t have an account?{' '}
@@ -149,6 +157,6 @@ export default function LoginForm({ redirectPath }: { redirectPath: string }) {
                     Sign Up
                 </Link>
             </p>
-        </div>
+        </AuthFormContainer>
     );
 }

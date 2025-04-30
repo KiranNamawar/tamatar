@@ -20,9 +20,12 @@ import { handleAppError } from '@/utils/error';
 import { validateForm } from '@/utils/form';
 import logger from '@/utils/logger';
 import { loginSchema } from './schema';
-import { getUserByEmail } from '@/lib/db';
+import { getUnverifiedUserByEmail, getUserByEmail } from '@/lib/db';
 import { comparePassword } from '../utils/password';
 import { setupSession } from '../utils/session';
+import { createToken } from '@/utils/jwt';
+import { OtpPurpose } from '@/generated/prisma';
+import { sendOtp } from '../utils/otp';
 
 /**
  * Logger instance scoped to this file for consistent logging context.
@@ -37,9 +40,9 @@ const log = logger.child({ file: 'src/app/(auth)/login/action.ts' });
  * @returns Promise resolving to a FormActionReturn indicating success or detailed error
  */
 export async function loginAction(
-    prev: FormActionReturn<void> | null,
+    prev: FormActionReturn<void | { context: string }> | null,
     formData: FormData,
-): Promise<FormActionReturn<void>> {
+): Promise<FormActionReturn<void | { context: string }>> {
     try {
         // 1. Validate form input against the login schema
         const validationResult = validateForm(formData, loginSchema);
@@ -56,8 +59,9 @@ export async function loginAction(
         log.debug({ email }, 'Attempting login');
 
         // 3. Retrieve user by email
-        const user = await getUserByEmail(email);
+        let user = await getUserByEmail(email);
         if (!user.success) {
+            // User not found in both verified and unverified states
             log.info({ email }, 'Login attempt failed: User not found');
             // Security: Do not reveal whether email or password was wrong
             return {
@@ -104,11 +108,42 @@ export async function loginAction(
             };
         }
 
+        // 6. Check if user is unverified
+        if (!user.data.verifiedEmail) {
+            log.info(
+                { userId: user.data.id },
+                'User is unverified, sending OTP for verification',
+            );
+            // If the user is unverified, send an OTP for email verification
+            // and return a context token for the verification flow
+            await sendOtp({
+                userId: user.data.id,
+                name: user.data.firstName || user.data.username,
+                purpose: OtpPurpose.LOGIN,
+                email,
+            });
+            return {
+                success: true,
+                metadata: {
+                    context: await createToken(
+                        {
+                            userId: user.data.id,
+                            purpose: OtpPurpose.LOGIN,
+                        },
+                        10,
+                    ),
+                },
+            };
+        }
+
         // 6. Set up user session
         await setupSession(user.data.id, userAgent);
 
         // 7. Log successful login and session creation
-        log.info({ userId: user.data.id, email }, 'User logged in and session created successfully');
+        log.info(
+            { userId: user.data.id, email },
+            'User logged in and session created successfully',
+        );
         return {
             success: true,
         };

@@ -28,10 +28,9 @@ import { otpSchema } from './schema';
 import { customAlphabet } from 'nanoid';
 import { sendVerificationEmail } from '@/lib/email';
 import { verifyToken } from '@/utils/jwt';
+import { sendOtp } from '../utils/otp';
 
 const log = logger.child({ file: 'src/app/(auth)/verify/action.ts' });
-
-const generateOtp = customAlphabet('0123456789', 6);
 
 /**
  * Handles OTP verification for signup and password reset.
@@ -47,18 +46,25 @@ export async function verifyOtpAction(
     /**
      * Previous form action return or null.
      */
-    prev: FormActionReturn<undefined | { context: string; redirect: string }> | null,
+    prev: FormActionReturn<
+        undefined | { context: string; redirect: string }
+    > | null,
     /**
      * FormData containing OTP and token.
      */
     formData: FormData,
-): Promise<FormActionReturn<undefined | { context: string; redirect: string }>> {
+): Promise<
+    FormActionReturn<undefined | { context: string; redirect: string }>
+> {
     try {
         // 1. Validate the OTP form data using the schema (checks code length, token presence, etc.)
         const validationResult = validateForm(formData, otpSchema);
         if (!validationResult.success) {
             // If validation fails, log and return errors to the client
-            log.info({ errors: validationResult.errors }, 'OTP verification form validation failed');
+            log.info(
+                { errors: validationResult.errors },
+                'OTP verification form validation failed',
+            );
             return validationResult;
         }
         // Extract validated fields
@@ -66,8 +72,8 @@ export async function verifyOtpAction(
 
         // 2. Verify the token (JWT or similar) to extract userId and purpose (SIGNUP or FORGOT_PASSWORD)
         const { userId, purpose } = await verifyToken(token);
-        log.debug({ userId, purpose }, 'OTP verification: Token verified'); 
-        
+        log.debug({ userId, purpose }, 'OTP verification: Token verified');
+
         if (!userId) {
             // If token is invalid, log and return error
             log.info({ token }, 'OTP verification: Invalid token');
@@ -108,10 +114,10 @@ export async function verifyOtpAction(
         }
         log.info({ userId }, 'User email verified');
 
-        // 5. If this was a signup flow, set up a new session for the user
-        if (purpose === OtpPurpose.SIGNUP) {
+        // 5. If this was a signup or login flow, set up a new session for the user
+        if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
             await setupSession(userId, userAgent);
-            log.info({ userId }, 'Session created after signup verification');
+            log.info({ userId }, 'Session created after otp verification');
         }
 
         // 6. If this was a password reset flow, provide context and redirect for the next step
@@ -121,8 +127,8 @@ export async function verifyOtpAction(
                 metadata: {
                     context: token, // Pass the token for the reset-password page
                     redirect: '/reset-password',
-                }
-            }
+                },
+            };
         }
 
         // 7. If everything succeeded, return success
@@ -155,25 +161,6 @@ export async function resendOtpAction(token: string): Promise<Return<void>> {
         // Verify token
         const { userId, purpose } = await verifyToken(token);
 
-        // Generate new OTP
-        const otp = await createOtp({
-            code: generateOtp(),
-            expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min
-            user: {
-                connect: {
-                    id: userId,
-                },
-            },
-            purpose,
-        });
-        if (!otp.success) {
-            log.error({ userId }, 'Failed to create OTP for resend');
-            return {
-                success: false,
-                error: 'Failed to create OTP',
-            };
-        }
-
         // Fetch user to get email
         const user = await getUserById(userId);
         if (!user.success) {
@@ -184,14 +171,15 @@ export async function resendOtpAction(token: string): Promise<Return<void>> {
             };
         }
 
-        // Send verification email
-        await sendVerificationEmail(
-            user.data?.firstName || '',
-            user.data?.email || '',
-            otp.data?.code || '',
-        );
-        log.info({ userId }, 'Resent OTP email');
+        // Send OTP email
+        await sendOtp({
+            userId,
+            name: user.data?.firstName || '',
+            purpose,
+            email: user.data?.email || '',
+        });
 
+        // If everything succeeded, return success
         return {
             success: true,
         };

@@ -24,7 +24,9 @@ const log = logger.child({ file: 'src/lib/db/user.ts' });
 export async function getUserByEmail(email: string): Promise<Return<User>> {
     try {
         const user = await prisma.user.findUnique({
-            where: { email },
+            where: {
+                email,
+             },
         });
 
         // Handle expected error: user not found
@@ -38,6 +40,38 @@ export async function getUserByEmail(email: string): Promise<Return<User>> {
         throwAppError(
             'getUserByEmail',
             `Failed to get user by email: ${email}`,
+            log,
+            error,
+        );
+    }
+}
+
+/**
+ * Get an unverified user by their email address
+ *
+ * @param email - The email address to search for
+ * @returns A Return object with the unverified user data or error information
+ */
+export async function getUnverifiedUserByEmail(
+    email: string,
+): Promise<Return<User>> {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                email,
+                verifiedEmail: false,
+            },
+        });
+        // Handle expected error: user not found
+        if (!user) {
+            log.warn({ email }, 'User not found by email');
+            return { success: false, error: 'User not found' };
+        }
+        return { success: true, data: user };
+    } catch (error) {
+        throwAppError(
+            'getUnverifiedUserByEmail',
+            `Failed to get unverified user by email: ${email}`,
             log,
             error,
         );

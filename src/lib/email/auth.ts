@@ -18,8 +18,8 @@ export async function sendVerificationEmail(
     email: string,
     otp: string,
 ): Promise<Return<{ id: string }>> {
-    const subject = 'Verify your email address';
-    const from = 'verification@tamatar.store';
+    const subject = 'Welcome to Tamatar Store! Verify your email address';
+    const from = 'Tamatar Store <verification@tamatar.store>';
 
     // Log entry (do not log OTP for security)
     log.info({ email, function: 'sendVerificationEmail' }, 'Attempting to send verification email.');

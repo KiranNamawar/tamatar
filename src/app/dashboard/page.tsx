@@ -9,9 +9,9 @@ export default function Dashboard() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <p>Welcome to the dashboard!</p>
+        <div className="flex min-h-screen flex-col items-center justify-center gap-3 p-4">
+            <h1 className="text-2xl font-bold">Dashboard</h1>
+            <p className="">Welcome to the dashboard!</p>
             <Button
                 onClick={async () => {
                     setLoading(true);

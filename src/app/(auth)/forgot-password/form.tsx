@@ -24,6 +24,8 @@ import { Input } from '@/components/ui/input';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import AuthFormContainer from '../components/auth-form-container';
+import { AtSign } from 'lucide-react';
 
 /**
  * ForgotPasswordForm handles the forgot password process, including form validation and submission.
@@ -56,7 +58,7 @@ export default function ForgotPasswordForm({
 
     // Render the forgot password form UI.
     return (
-        <div className="w-full space-y-4 rounded-lg border-2 p-4 shadow-md">
+        <AuthFormContainer>
             {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
@@ -77,16 +79,21 @@ export default function ForgotPasswordForm({
                                 <Input
                                     type="email"
                                     placeholder="Enter your email"
+                                    icon={<AtSign size={16} />}
                                     {...field}
                                     autoFocus
                                 />
                             )}
                         </FormFieldWrapper>
                         {/* Submit button triggers the forgot password action */}
-                        <SubmitButton title="Send OTP" pending={pending} className='w-full' />
+                        <SubmitButton
+                            title="Send OTP"
+                            pending={pending}
+                            className="w-full"
+                        />
                     </>
                 )}
             </FormWrapper>
-        </div>
+        </AuthFormContainer>
     );
 }

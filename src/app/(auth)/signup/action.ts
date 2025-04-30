@@ -34,6 +34,7 @@ import {
 } from '@/lib/db';
 import { sendVerificationEmail } from '@/lib/email';
 import { hashPassword } from '../utils/password';
+import { sendOtp } from '../utils/otp';
 
 const log = logger.child({ file: 'src/app/(auth)/signup/action.ts' });
 
@@ -66,8 +67,7 @@ export async function signupAction(
             return validationResult;
         }
         // 2. Extract validated data
-        const { name, email, password } =
-            validationResult.data!;
+        const { name, email, password } = validationResult.data!;
         log.debug({ email }, 'Attempting signup');
         const [firstName, lastName] = name.split(' ');
         // 3. Check if user already exists by email
@@ -99,33 +99,19 @@ export async function signupAction(
             firstName,
             lastName,
             email,
-            password: await hashPassword(password), 
+            password: await hashPassword(password),
             username,
         });
 
-        // 6. Generate OTP for email verification
-        const otp = await createOtp({
-            code: generateOtp(),
-            expiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 min expiry
-            user: {
-                connect: {
-                    id: user.data?.id,
-                },
-            },
+        // 6. Send verification email with OTP
+        await sendOtp({
+            userId: user.data!.id,
+            name: firstName,
             purpose: OtpPurpose.SIGNUP,
+            email,
         });
 
-        // 7. Send verification email with OTP
-        await sendVerificationEmail(
-            user.data?.firstName || '',
-            user.data?.email || '',
-            otp.data?.code || '',
-        );
-
-        // 8. Log successful signup and verification email
-        log.info({ email, userId: user.data?.id }, 'User signed up successfully, verification email sent.');
-
-        // 9. Return context token for verification
+        // 7. Return context token for verification
         return {
             success: true,
             metadata: {
@@ -139,7 +125,7 @@ export async function signupAction(
             },
         };
     } catch (error) {
-        // 10. Handle and log errors using the custom utility
+        // 8. Handle and log errors using the custom utility
         return {
             success: false,
             formError: handleAppError(
