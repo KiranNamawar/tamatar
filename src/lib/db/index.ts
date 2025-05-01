@@ -12,7 +12,10 @@ export { prisma } from './client';
 export * from './user';
 
 // Export all session-related database functions
-export * from './session';
+export * from './auth/session';
 
 // Export all OTP-related database functions
-export * from './otp';
+export * from './auth/otp';
+
+// Export all link-related database functions
+export * from './tmtr/link';

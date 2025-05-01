@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
 }
 
 datasource db {
@@ -21,8 +22,10 @@ model User {
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  session       Session[]
-  otp           Otp[]
+  sessions      Session[]
+  otps          Otp[]
+  links         Link[]
+  tags          Tag[]
 }
 
 enum Role {
@@ -30,36 +33,15 @@ enum Role {
   ADMIN
 }
 
-model Session {
+model Tag {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  isValid   Boolean  @default(true)
-  userAgent String?
-  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String   @unique
+  color     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  links     Link[]
 
   @@index([userId])
-}
-
-model Otp {
-  id        String     @id @default(cuid())
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
-  code      String     @unique
-  purpose   OtpPurpose @default(VERIFY_EMAIL)
-  mailId   String?
-  expiresAt DateTime
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-
-  @@index([userId])
-}
-
-enum OtpPurpose {
-  SIGNUP
-  LOGIN
-  FORGOT_PASSWORD
-  VERIFY_EMAIL
 }

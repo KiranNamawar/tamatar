@@ -1,0 +1,33 @@
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  isValid   Boolean  @default(true)
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Otp {
+  id        String     @id @default(cuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String     @unique
+  purpose   OtpPurpose @default(VERIFY_EMAIL)
+  mailId    String?
+  expiresAt DateTime
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+enum OtpPurpose {
+  SIGNUP
+  LOGIN
+  FORGOT_PASSWORD
+  VERIFY_EMAIL
+}

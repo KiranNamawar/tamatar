@@ -1,9 +1,8 @@
 export default function Page() {
     return (
         <div>
-            <header>
-                <h1>Dev</h1>
-            </header>
+            <h1>TMTR</h1>
+            <p>TMTR page content goes here.</p>
         </div>
     )
 }

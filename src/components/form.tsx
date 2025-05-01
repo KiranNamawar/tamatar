@@ -136,6 +136,11 @@ export function FormWrapper<TSchema extends ZodSchema>({
                     });
                 })}
             >
+                <div aria-live="polite" className="sr-only">
+                    {Object.values(form.formState.errors)
+                        .map((error) => error!.message)
+                        .join(', ')}
+                </div>
                 {children(form)}
             </form>
         </Form>
