@@ -4,7 +4,7 @@
  * This module provides functions for interacting with the Otp model in the database.
  * It uses the shared Prisma client instance and implements consistent error handling.
  */
-import { prisma } from './client';
+import { prisma } from '../client';
 import { Otp, Prisma, OtpPurpose } from '@/generated/prisma';
 import { throwAppError } from '@/utils/error';
 import logger from '@/utils/logger';

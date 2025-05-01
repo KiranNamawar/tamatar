@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useGoogleLogin } from '@react-oauth/google';
-import { googleAction } from '@/app/(auth)/google/action';
+import { googleAction } from '@/app/(auth)/components/google/action';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
@@ -81,7 +81,12 @@ export default function GoogleButton({
                 <Loader className="animate-spin" />
             ) : (
                 <>
-                    <Image src="/google.svg" alt="Google" width={20} height={20} />
+                    <Image
+                        src="/google.svg"
+                        alt="Google"
+                        width={20}
+                        height={20}
+                    />
                     <span>
                         {route === 'signup'
                             ? 'Sign up with Google'

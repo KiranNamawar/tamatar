@@ -21,11 +21,11 @@ import { validateForm } from '@/utils/form';
 import logger from '@/utils/logger';
 import { loginSchema } from './schema';
 import { getUnverifiedUserByEmail, getUserByEmail } from '@/lib/db';
-import { comparePassword } from '../utils/password';
-import { setupSession } from '../utils/session';
+import { comparePassword } from '../../utils/password';
+import { setupSession } from '../../utils/session';
 import { createToken } from '@/utils/jwt';
 import { OtpPurpose } from '@/generated/prisma';
-import { sendOtp } from '../utils/otp';
+import { sendOtp } from '../../utils/otp';
 
 /**
  * Logger instance scoped to this file for consistent logging context.

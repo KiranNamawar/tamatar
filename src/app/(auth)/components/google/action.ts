@@ -24,7 +24,7 @@ import { ActionReturn } from '@/types/return';
 import { handleAppError } from '@/utils/error';
 import logger from '@/utils/logger';
 import { customAlphabet } from 'nanoid';
-import { setupSession } from '../utils/session';
+import { setupSession } from '../../utils/session';
 
 const log = logger.child({ file: 'src/app/(auth)/google/action.ts' });
 
@@ -185,7 +185,10 @@ export async function googleAction(
 
         // At this point, user is either found or created. Set up a session so they're logged in.
         await setupSession(user.data!.id, userAgent);
-        log.info({ userId: user.data?.id }, 'User logged in and session created successfully');
+        log.info(
+            { userId: user.data?.id },
+            'User logged in and session created successfully',
+        );
 
         // Return success to the client (frontend will handle redirect/UI)
         return {

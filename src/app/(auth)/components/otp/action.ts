@@ -22,15 +22,15 @@ import {
 import { FormActionReturn, Return } from '@/types/return';
 import { handleAppError } from '@/utils/error';
 import logger from '@/utils/logger';
-import { setupSession } from '../utils/session';
+import { setupSession } from '../../utils/session';
 import { validateForm } from '@/utils/form';
 import { otpSchema } from './schema';
 import { customAlphabet } from 'nanoid';
 import { sendVerificationEmail } from '@/lib/email';
 import { verifyToken } from '@/utils/jwt';
-import { sendOtp } from '../utils/otp';
+import { sendOtp } from '../../utils/otp';
 
-const log = logger.child({ file: 'src/app/(auth)/verify/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/otp/action.ts' });
 
 /**
  * Handles OTP verification for signup and password reset.
@@ -46,16 +46,12 @@ export async function verifyOtpAction(
     /**
      * Previous form action return or null.
      */
-    prev: FormActionReturn<
-        undefined | { context: string; redirect: string }
-    > | null,
+    prev: FormActionReturn<undefined | { next: string }> | null,
     /**
      * FormData containing OTP and token.
      */
     formData: FormData,
-): Promise<
-    FormActionReturn<undefined | { context: string; redirect: string }>
-> {
+): Promise<FormActionReturn<undefined | { next: string }>> {
     try {
         // 1. Validate the OTP form data using the schema (checks code length, token presence, etc.)
         const validationResult = validateForm(formData, otpSchema);
@@ -125,8 +121,7 @@ export async function verifyOtpAction(
             return {
                 success: true,
                 metadata: {
-                    context: token, // Pass the token for the reset-password page
-                    redirect: '/reset-password',
+                    next: 'reset',
                 },
             };
         }

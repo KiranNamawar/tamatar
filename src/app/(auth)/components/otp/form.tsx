@@ -22,7 +22,6 @@ import {
 } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import AuthFormContainer from '../components/auth-form-container';
 
 /**
  * OtpForm Component
@@ -46,9 +45,11 @@ import AuthFormContainer from '../components/auth-form-container';
 export default function OtpForm({
     context,
     redirectPath,
+    onSuccess,
 }: {
     context: string;
-    redirectPath: string;
+        redirectPath: string;
+    onSuccess?: (next: string) => void;
 }) {
     // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(
@@ -70,15 +71,14 @@ export default function OtpForm({
     useEffect(() => {
         if (formState?.success) {
             toast.success('OTP verified successfully');
-            if (formState.metadata) {
-                router.replace(
-                    `${formState.metadata.redirect}?context=${formState.metadata.context}&redirectPath=${redirectPath}`,
-                );
+            if (formState.metadata?.next) {
+                toast.success('Otp verified successfully');
+                onSuccess?.(formState.metadata.next);
             } else {
                 router.replace(redirectPath);
             }
         }
-    }, [formState, redirectPath, router]);
+    }, [formState, onSuccess, redirectPath, router]);
 
     // Resend OTP logic: Handles the resend action and timer for OTP requests.
     const [isResendDisabled, setIsResendDisabled] = useState(false);
@@ -116,7 +116,6 @@ export default function OtpForm({
     }, [isResendDisabled]);
 
     return (
-        <AuthFormContainer>
             <FormWrapper
                 action={formAction}
                 schema={otpSchema}
@@ -182,6 +181,5 @@ export default function OtpForm({
                     </>
                 )}
             </FormWrapper>
-        </AuthFormContainer>
     );
 }

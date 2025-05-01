@@ -9,8 +9,9 @@
  *
  * @param searchParams - Promise resolving to an object with optional redirectPath
  */
-import AuthLayout from '../components/auth-layout';
+import AuthLayout from '../../components/auth-layout';
 import SignupForm from './form';
+import SignupWrapper from './wrapper';
 
 export default async function SignUpPage({
     searchParams,
@@ -24,7 +25,7 @@ export default async function SignUpPage({
             title="Signup"
             description="Please create an account to access your dashboard."
         >
-            <SignupForm redirectPath={redirectPath} />
+            <SignupWrapper redirectPath={redirectPath} />
         </AuthLayout>
     );
 }

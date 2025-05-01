@@ -19,7 +19,7 @@ import logger from '@/utils/logger';
 import { resetPasswordSchema } from './schema';
 import { verifyToken } from '@/utils/jwt';
 import { updateUser } from '@/lib/db';
-import { hashPassword } from '../utils/password';
+import { hashPassword } from '../../utils/password';
 import { OtpPurpose } from '@/generated/prisma';
 
 const log = logger.child({ file: 'src/app/(auth)/reset-password/action.ts' });
@@ -40,7 +40,10 @@ export async function resetPasswordAction(
         const validationResult = validateForm(formData, resetPasswordSchema);
         if (!validationResult.success) {
             // Log and return form validation errors
-            log.info({ errors: validationResult.errors }, 'Reset password form validation failed');
+            log.info(
+                { errors: validationResult.errors },
+                'Reset password form validation failed',
+            );
             return validationResult;
         }
         // 2. Extract validated data

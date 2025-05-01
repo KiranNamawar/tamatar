@@ -4,7 +4,7 @@
  * This module provides functions for interacting with the Session model in the database.
  * It uses the shared Prisma client instance and implements consistent error handling.
  */
-import { prisma } from './client';
+import { prisma } from '../client';
 import { Session, Prisma } from '@/generated/prisma';
 import { throwAppError } from '@/utils/error';
 import logger from '@/utils/logger';

@@ -9,8 +9,8 @@
  *
  * @param searchParams - Promise resolving to an object with redirectPath
  */
-import AuthLayout from '../components/auth-layout';
-import ForgotPasswordForm from './form';
+import AuthLayout from '../../components/auth-layout';
+import ForgotPasswordWrapper from './wrapper';
 
 export default async function ForgotPassword({
     searchParams,
@@ -24,7 +24,7 @@ export default async function ForgotPassword({
             title="Forgot Password"
             description="Enter your email address to reset your password."
         >
-            <ForgotPasswordForm redirectPath={redirectPath} />
+            <ForgotPasswordWrapper redirectPath={redirectPath} />
         </AuthLayout>
     );
 }

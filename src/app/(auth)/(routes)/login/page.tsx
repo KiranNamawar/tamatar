@@ -9,8 +9,8 @@
  *
  * @param searchParams - Promise resolving to an object with optional redirectPath
  */
-import AuthLayout from '../components/auth-layout';
-import LoginForm from './form';
+import AuthLayout from '../../components/auth-layout';
+import LoginWrapper from './wrapper';
 
 export default async function LoginPage({
     searchParams,
@@ -24,7 +24,7 @@ export default async function LoginPage({
             title="Login"
             description="Please login to access your account."
         >
-            <LoginForm redirectPath={redirectPath} />
+            <LoginWrapper redirectPath={redirectPath} />
         </AuthLayout>
     );
 }

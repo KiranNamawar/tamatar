@@ -22,9 +22,7 @@ import { forgotPasswordAction } from './action';
 import { forgotPasswordSchema } from './schema';
 import { Input } from '@/components/ui/input';
 import { SubmitButton } from '@/components/ui/submit-button';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import AuthFormContainer from '../components/auth-form-container';
 import { AtSign } from 'lucide-react';
 
 /**
@@ -34,8 +32,10 @@ import { AtSign } from 'lucide-react';
  */
 export default function ForgotPasswordForm({
     redirectPath,
+    onSuccess,
 }: {
-    redirectPath: string;
+        redirectPath: string;
+        onSuccess: (context: string) => void;
 }) {
     // useActionState manages form state, handles submission, and tracks pending status.
     const [formState, formAction, pending] = useActionState(
@@ -43,7 +43,6 @@ export default function ForgotPasswordForm({
         null,
     );
 
-    const router = useRouter();
 
     /**
      * useEffect:
@@ -52,14 +51,12 @@ export default function ForgotPasswordForm({
     useEffect(() => {
         if (formState?.success) {
             toast.success('OTP sent successfully');
-            router.replace('/verify?context=' + formState?.metadata?.context);
+            onSuccess(formState?.metadata?.context || '');
         }
-    }, [formState, redirectPath, router]);
+    }, [formState, onSuccess]);
 
     // Render the forgot password form UI.
     return (
-        <AuthFormContainer>
-            {/* FormWrapper handles form context, validation, and error display */}
             <FormWrapper
                 action={formAction}
                 defaultValues={{ email: '' }}
@@ -94,6 +91,5 @@ export default function ForgotPasswordForm({
                     </>
                 )}
             </FormWrapper>
-        </AuthFormContainer>
     );
 }

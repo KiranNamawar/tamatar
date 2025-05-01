@@ -33,8 +33,8 @@ import {
     isUsernameUnique,
 } from '@/lib/db';
 import { sendVerificationEmail } from '@/lib/email';
-import { hashPassword } from '../utils/password';
-import { sendOtp } from '../utils/otp';
+import { hashPassword } from '../../utils/password';
+import { sendOtp } from '../../utils/otp';
 
 const log = logger.child({ file: 'src/app/(auth)/signup/action.ts' });
 
