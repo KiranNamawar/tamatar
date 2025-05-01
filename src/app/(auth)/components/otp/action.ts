@@ -15,6 +15,7 @@
 import { OtpPurpose } from '@/generated/prisma';
 import {
     createOtp,
+    deleteOtp,
     getOtpByCodeAndUserId,
     getUserById,
     updateUser,
@@ -109,6 +110,8 @@ export async function verifyOtpAction(
             };
         }
         log.info({ userId }, 'User email verified');
+
+        await deleteOtp(otp.data!.id);
 
         // 5. If this was a signup or login flow, set up a new session for the user
         if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
