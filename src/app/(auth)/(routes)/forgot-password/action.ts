@@ -26,7 +26,7 @@ import { customAlphabet } from 'nanoid';
 import { OtpPurpose } from '@/generated/prisma';
 import { createToken } from '@/utils/jwt';
 
-const log = logger.child({ file: 'src/app/(auth)/forgot-password/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/(routes)/forgot-password/action.ts' });
 
 const generateOtp = customAlphabet('0123456789', 6);
 

@@ -26,7 +26,7 @@ import logger from '@/utils/logger';
 import { customAlphabet } from 'nanoid';
 import { setupSession } from '../../utils/session';
 
-const log = logger.child({ file: 'src/app/(auth)/google/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/components/google/action.ts' });
 
 /**
  * Generate a random username with 6 lowercase letters

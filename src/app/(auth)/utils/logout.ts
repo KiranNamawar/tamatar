@@ -15,10 +15,10 @@
 import { Return } from '@/types/return';
 import { handleAppError, throwAppError } from '@/utils/error';
 import logger from '@/utils/logger';
-import { deleteAuthCookies, getAuthCookies } from '../utils/cookies';
+import { deleteAuthCookies, getAuthCookies } from './cookies';
 import { updateSession } from '@/lib/db';
 
-const log = logger.child({ file: 'src/app/(auth)/logout/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/utils/logout/action.ts' });
 
 /**
  * Handles user logout and session invalidation.

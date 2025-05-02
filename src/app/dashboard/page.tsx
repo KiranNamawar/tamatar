@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { logoutAction } from '../(auth)/logout/action';
+import { logoutAction } from '../(auth)/utils/logout';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';

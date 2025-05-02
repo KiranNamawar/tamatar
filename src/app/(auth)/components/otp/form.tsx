@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { Loader } from 'lucide-react';
+import { useTimer } from 'react-timer-hook';
 
 /**
  * OtpForm Component
@@ -48,7 +50,7 @@ export default function OtpForm({
     onSuccess,
 }: {
     context: string;
-        redirectPath: string;
+    redirectPath: string;
     onSuccess?: (next: string) => void;
 }) {
     // useActionState manages form state, handles submission, and tracks pending status.
@@ -81,105 +83,97 @@ export default function OtpForm({
     }, [formState, onSuccess, redirectPath, router]);
 
     // Resend OTP logic: Handles the resend action and timer for OTP requests.
-    const [isResendDisabled, setIsResendDisabled] = useState(false);
-    const [resendTimer, setResendTimer] = useState(30); // 30 seconds countdown
+    const [isResendDisabled, setIsResendDisabled] = useState(true); // Initially disabled
+    const [isResending, setIsResending] = useState(false);
+
+    const { seconds, restart } = useTimer({
+        expiryTimestamp: new Date(new Date().getTime() + 30000), // 30 seconds countdown
+        onExpire: () => setIsResendDisabled(false),
+    });
 
     const handleResendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
+        setIsResending(true);
 
         const response = await resendOtpAction(context);
         if (response.success) {
             toast.success('OTP resent successfully');
             setIsResendDisabled(true);
-            setResendTimer(30); // Reset timer to 30 seconds
+            restart(new Date(new Date().getTime() + 30000)); // Restart timer
         } else {
             toast.error(response.error || 'Failed to resend OTP');
         }
+        setIsResending(false);
     };
 
-    // Countdown logic
-    useEffect(() => {
-        let timer: NodeJS.Timeout;
-        if (isResendDisabled) {
-            timer = setInterval(() => {
-                setResendTimer((prev) => {
-                    if (prev <= 1) {
-                        clearInterval(timer);
-                        setIsResendDisabled(false);
-                        return 0;
-                    }
-                    return prev - 1;
-                });
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [isResendDisabled]);
-
     return (
-            <FormWrapper
-                action={formAction}
-                schema={otpSchema}
-                defaultValues={defaultValues}
-                serverErrors={formState?.errors}
-            >
-                {(form) => (
-                    <>
-                        <FormField
-                            control={form.control}
-                            name="code"
-                            render={({ field }) => (
-                                <FormItem className="mb-4 flex w-full flex-col items-center">
-                                    <FormLabel>Enter OTP</FormLabel>
-                                    <FormControl>
-                                        <InputOTP
-                                            autoFocus
-                                            maxLength={6}
-                                            pattern={REGEXP_ONLY_DIGITS}
-                                            {...field}
-                                        >
-                                            <InputOTPGroup>
-                                                <InputOTPSlot index={0} />
-                                                <InputOTPSlot index={1} />
-                                                <InputOTPSlot index={2} />
-                                                <InputOTPSlot index={3} />
-                                                <InputOTPSlot index={4} />
-                                                <InputOTPSlot index={5} />
-                                            </InputOTPGroup>
-                                        </InputOTP>
-                                    </FormControl>
-                                    <FormDescription>
-                                        Enter the OTP sent to your email
-                                        address.
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
+        <FormWrapper
+            action={formAction}
+            schema={otpSchema}
+            defaultValues={defaultValues}
+            serverErrors={formState?.errors}
+        >
+            {(form) => (
+                <>
+                    <FormField
+                        control={form.control}
+                        name="code"
+                        render={({ field }) => (
+                            <FormItem className="mb-4 flex w-full flex-col items-center">
+                                <FormLabel>Enter OTP</FormLabel>
+                                <FormControl>
+                                    <InputOTP
+                                        autoFocus
+                                        maxLength={6}
+                                        pattern={REGEXP_ONLY_DIGITS}
+                                        {...field}
+                                    >
+                                        <InputOTPGroup>
+                                            <InputOTPSlot index={0} />
+                                            <InputOTPSlot index={1} />
+                                            <InputOTPSlot index={2} />
+                                            <InputOTPSlot index={3} />
+                                            <InputOTPSlot index={4} />
+                                            <InputOTPSlot index={5} />
+                                        </InputOTPGroup>
+                                    </InputOTP>
+                                </FormControl>
+                                <FormDescription>
+                                    Enter the OTP sent to your email address.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <input type="hidden" name="token" value={context} />
+                    <input
+                        type="hidden"
+                        name="userAgent"
+                        value={navigator.userAgent}
+                    />
+                    <div className="flex items-center justify-between">
+                        <Button
+                            variant="secondary"
+                            type="button"
+                            onClick={handleResendOtp}
+                            disabled={isResendDisabled || isResending}
+                        >
+                            {isResending ? (
+                                <Loader className="animate-spin" />
+                            ) : isResendDisabled ? (
+                                `Resend in ${seconds}s` // Use seconds from useTimer
+                            ) : (
+                                'Resend OTP'
                             )}
+                        </Button>
+                        <SubmitButton
+                            title="Verify OTP"
+                            pending={form.formState.isSubmitting || pending}
                         />
-                        <input type="hidden" name="token" value={context} />
-                        <input
-                            type="hidden"
-                            name="userAgent"
-                            value={navigator.userAgent}
-                        />
-                        <div className="flex items-center justify-between">
-                            <Button
-                                variant="link"
-                                type="button"
-                                className="text-blue-500"
-                                onClick={handleResendOtp}
-                                disabled={isResendDisabled}
-                            >
-                                {isResendDisabled
-                                    ? `Resend in ${resendTimer}s`
-                                    : 'Resend OTP'}
-                            </Button>
-                            <SubmitButton
-                                title="Verify OTP"
-                                pending={form.formState.isSubmitting || pending}
-                            />
-                        </div>
-                    </>
-                )}
-            </FormWrapper>
+                    </div>
+                </>
+            )}
+        </FormWrapper>
     );
 }

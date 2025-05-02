@@ -36,7 +36,7 @@ import { sendVerificationEmail } from '@/lib/email';
 import { hashPassword } from '../../utils/password';
 import { sendOtp } from '../../utils/otp';
 
-const log = logger.child({ file: 'src/app/(auth)/signup/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/(routes)/signup/action.ts' });
 
 /**
  * Generate a random username with 6 lowercase letters.

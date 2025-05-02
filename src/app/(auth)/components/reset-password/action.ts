@@ -22,7 +22,7 @@ import { updateUser } from '@/lib/db';
 import { hashPassword } from '../../utils/password';
 import { OtpPurpose } from '@/generated/prisma';
 
-const log = logger.child({ file: 'src/app/(auth)/reset-password/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/components/reset-password/action.ts' });
 
 /**
  * Handles password reset: validates form, verifies token, updates password.

@@ -31,7 +31,7 @@ import { sendVerificationEmail } from '@/lib/email';
 import { verifyToken } from '@/utils/jwt';
 import { sendOtp } from '../../utils/otp';
 
-const log = logger.child({ file: 'src/app/(auth)/otp/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/components/otp/action.ts' });
 
 /**
  * Handles OTP verification for signup and password reset.

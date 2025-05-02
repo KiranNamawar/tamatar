@@ -14,12 +14,12 @@
  */
 import { getSessionById } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
-import { generateAccessToken } from '../utils/jwt';
-import { setAuthCookies } from '../utils/cookies';
+import { generateAccessToken } from '../../utils/jwt';
+import { setAuthCookies } from '../../utils/cookies';
 import { handleAppError } from '@/utils/error';
 import logger from '@/utils/logger';
 
-const log = logger.child({ file: 'src/app/(auth)/refresh/route.ts' });
+const log = logger.child({ file: 'src/app/(auth)/(routes)/refresh/route.ts' });
 
 /**
  * POST /refresh

@@ -30,7 +30,7 @@ import { sendOtp } from '../../utils/otp';
 /**
  * Logger instance scoped to this file for consistent logging context.
  */
-const log = logger.child({ file: 'src/app/(auth)/login/action.ts' });
+const log = logger.child({ file: 'src/app/(auth)/(routes)/login/action.ts' });
 
 /**
  * Handles user login: validates credentials, checks password, and creates session.
