@@ -26,8 +26,6 @@ import logger from '@/utils/logger';
 import { setupSession } from '../../utils/session';
 import { validateForm } from '@/utils/form';
 import { otpSchema } from './schema';
-import { customAlphabet } from 'nanoid';
-import { sendVerificationEmail } from '@/lib/email';
 import { verifyToken } from '@/utils/jwt';
 import { sendOtp } from '../../utils/otp';
 

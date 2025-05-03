@@ -146,7 +146,7 @@ export async function createUser(
     userData: Prisma.UserCreateInput,
 ): Promise<Return<User>> {
     try {
-        const user = await prisma.user.create({
+        const user = await prisma.user.create({  
             data: userData,
         });
 

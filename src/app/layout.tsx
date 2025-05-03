@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/theme-provider';
-import React from 'react';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
     title: 'Tamatar Store',
@@ -23,7 +23,7 @@ export default function RootLayout({
                     enableSystem
                     disableTransitionOnChange
                 >
-                    {children}
+                    <Providers>{children}</Providers>
                     <Toaster />
                 </ThemeProvider>
             </body>

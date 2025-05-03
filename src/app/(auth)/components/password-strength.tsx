@@ -68,7 +68,7 @@ export default function PasswordStrength({ strength }: { strength: number }) {
                 </PopoverTrigger>
                 <PopoverContent>
                     <p className="mb-1 text-sm font-semibold">Password must contains at least: </p>
-                    <ul className="list-disc space-y-1 pl-4 text-sm text-gray-300">
+                    <ul className="list-disc space-y-1 pl-4 text-sm dark:text-gray-300">
                         <li>8 characters</li>
                         <li>one uppercase letter</li>
                         <li>one lowercase letter</li>

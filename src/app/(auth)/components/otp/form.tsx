@@ -7,7 +7,13 @@ import {
 } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { Button } from '@/components/ui/button';
-import { useActionState, useEffect, useMemo, useState } from 'react';
+import {
+    useActionState,
+    useEffect,
+    useMemo,
+    useState,
+    useTransition,
+} from 'react';
 import { SubmitButton } from '@/components/ui/submit-button';
 import { FormWrapper } from '@/components/form';
 import { resendOtpAction, verifyOtpAction } from './action';
@@ -84,7 +90,7 @@ export default function OtpForm({
 
     // Resend OTP logic: Handles the resend action and timer for OTP requests.
     const [isResendDisabled, setIsResendDisabled] = useState(true); // Initially disabled
-    const [isResending, setIsResending] = useState(false);
+    const [isResending, startResendTransition] = useTransition();
 
     const { seconds, restart } = useTimer({
         expiryTimestamp: new Date(new Date().getTime() + 30000), // 30 seconds countdown
@@ -94,17 +100,16 @@ export default function OtpForm({
     const handleResendOtp = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        setIsResending(true);
-
-        const response = await resendOtpAction(context);
-        if (response.success) {
-            toast.success('OTP resent successfully');
-            setIsResendDisabled(true);
-            restart(new Date(new Date().getTime() + 30000)); // Restart timer
-        } else {
-            toast.error(response.error || 'Failed to resend OTP');
-        }
-        setIsResending(false);
+        startResendTransition(async () => {
+            const response = await resendOtpAction(context);
+            if (response.success) {
+                toast.success('OTP resent successfully');
+                setIsResendDisabled(true);
+                restart(new Date(new Date().getTime() + 30000)); // Restart timer
+            } else {
+                toast.error(response.error || 'Failed to resend OTP');
+            }
+        });
     };
 
     return (

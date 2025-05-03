@@ -1,6 +1,5 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { logoutAction } from '../(auth)/utils/logout';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Loader } from 'lucide-react';
@@ -15,9 +14,11 @@ export default function Dashboard() {
             <Button
                 onClick={async () => {
                     setLoading(true);
-                    const res = await logoutAction();
-                    if (res.success) {
+                    const res = await fetch('/logout');
+                    if (res.ok) {
                         router.push('/login');
+                    } else {
+                        console.error('Logout failed');
                     }
                     setLoading(false);
                 }}
