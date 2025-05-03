@@ -2,7 +2,6 @@
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Loader } from 'lucide-react';
 
 export default function Dashboard() {
     const router = useRouter();
@@ -22,8 +21,9 @@ export default function Dashboard() {
                     }
                     setLoading(false);
                 }}
+                pending={loading}
             >
-                {loading ? <Loader className="animate-spin" /> : 'Logout'}
+                Logout
             </Button>
         </div>
     );

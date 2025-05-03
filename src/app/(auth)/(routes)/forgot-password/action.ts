@@ -85,7 +85,7 @@ export async function forgotPasswordAction(
         );
 
         // 6. Create OTP in the database
-        const otp = await createOtp({
+        await createOtp({
             code,
             expiresAt: new Date(Date.now() + 1000 * 60 * 10), // 10 min expiry
             purpose: OtpPurpose.FORGOT_PASSWORD,

@@ -21,7 +21,6 @@ import { useActionState, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
-import { SubmitButton } from '@/components/ui/submit-button';
 import { FormAlert, FormFieldWrapper, FormWrapper } from '@/components/form';
 import { ErrorObject } from '@/utils/error';
 import { loginSchema } from './schema';
@@ -30,8 +29,8 @@ import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../../components/google/button';
 import Link from 'next/link';
 import { AtSign } from 'lucide-react';
-import AuthFormContainer from '../../components/auth-form-container';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 
 /**
  * LoginForm handles user login, form validation, and submission logic.
@@ -132,11 +131,13 @@ export default function LoginForm({
                         value={navigator.userAgent}
                     />
                     {/* Submit button triggers the login action */}
-                    <SubmitButton
+                    <Button
                         pending={form.formState.isSubmitting || pending}
-                        title={'Login'}
                         className="w-full"
-                    />
+                        type='submit'
+                    >
+                        Login
+                    </Button>
                     <Separator />
                     <GoogleButton redirectPath={redirectPath} route="login" />
                     {/* Display form-level errors if present */}

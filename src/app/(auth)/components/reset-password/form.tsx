@@ -24,13 +24,12 @@ import { resetPasswordAction } from './action';
 import { FormAlert, FormFieldWrapper, FormWrapper } from '@/components/form';
 import { resetPasswordSchema } from './schema';
 import { PasswordInput } from '@/components/ui/password-input';
-import { SubmitButton } from '@/components/ui/submit-button';
 import { ErrorObject } from '@/utils/error';
 import PasswordStrength from '../password-strength';
 import { calculatePasswordStrength } from '../../utils/password-strength';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
-import AuthFormContainer from '../auth-form-container';
+import { Button } from '@/components/ui/button';
 
 /**
  * ResetPasswordForm handles the password reset process, including validation and submission.
@@ -128,11 +127,9 @@ export default function ResetPasswordForm({
                     </FormFieldWrapper>
                     <input type="hidden" name="token" value={context} />
                     {/* Submit button triggers the reset password action */}
-                    <SubmitButton
-                        title="Reset Password"
-                        pending={pending}
-                        className="w-full"
-                    />
+                    <Button pending={pending} className="w-full" type="submit">
+                        Reset Password
+                    </Button>
                     {formError && (
                         <FormAlert
                             id={formError.id}

@@ -14,7 +14,6 @@ import {
     useState,
     useTransition,
 } from 'react';
-import { SubmitButton } from '@/components/ui/submit-button';
 import { FormWrapper } from '@/components/form';
 import { resendOtpAction, verifyOtpAction } from './action';
 import { otpSchema } from './schema';
@@ -28,7 +27,6 @@ import {
 } from '@/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Loader } from 'lucide-react';
 import { useTimer } from 'react-timer-hook';
 
 /**
@@ -162,20 +160,19 @@ export default function OtpForm({
                             variant="secondary"
                             type="button"
                             onClick={handleResendOtp}
-                            disabled={isResendDisabled || isResending}
+                            disabled={isResendDisabled}
+                            pending={isResending}
                         >
-                            {isResending ? (
-                                <Loader className="animate-spin" />
-                            ) : isResendDisabled ? (
-                                `Resend in ${seconds}s` // Use seconds from useTimer
-                            ) : (
-                                'Resend OTP'
-                            )}
+                            {isResendDisabled
+                                ? `Resend in ${seconds}s` // Use seconds from useTimer
+                                : 'Resend OTP'}
                         </Button>
-                        <SubmitButton
-                            title="Verify OTP"
+                        <Button
                             pending={form.formState.isSubmitting || pending}
-                        />
+                            type='submit'
+                        >
+                            Verify OTP
+                        </Button>
                     </div>
                 </>
             )}

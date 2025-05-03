@@ -5,7 +5,6 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { googleAction } from '@/app/(auth)/components/google/action';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Loader } from 'lucide-react';
 import { toast } from 'sonner';
 import Image from 'next/image';
 
@@ -70,30 +69,21 @@ export default function GoogleButton({
     return (
         <Button
             variant="outline"
-            disabled={loading}
             onClick={() => {
                 setLoading(true);
                 login();
             }}
             className="w-full"
+            pending={loading}
         >
-            {loading ? (
-                <Loader className="animate-spin" />
-            ) : (
-                <>
-                    <Image
-                        src="/google.svg"
-                        alt="Google"
-                        width={20}
-                        height={20}
-                    />
-                    <span>
-                        {route === 'signup'
-                            ? 'Sign up with Google'
-                            : 'Login with Google'}
-                    </span>
-                </>
-            )}
+            <>
+                <Image src="/google.svg" alt="Google" width={20} height={20} />
+                <span>
+                    {route === 'signup'
+                        ? 'Sign up with Google'
+                        : 'Login with Google'}
+                </span>
+            </>
         </Button>
     );
 }

@@ -25,15 +25,13 @@ import { calculatePasswordStrength } from '../../utils/password-strength';
 import PasswordStrength from '../../components/password-strength';
 import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/ui/password-input';
-import { SubmitButton } from '@/components/ui/submit-button';
 import { Separator } from '@/components/ui/separator';
 import GoogleButton from '../../components/google/button';
 import { ErrorObject } from '@/utils/error';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { AtSign, User } from 'lucide-react';
-import AuthFormContainer from '../../components/auth-form-container';
+import { Button } from '@/components/ui/button';
 
 /**
  * SignupForm handles user registration, form validation, and submission logic.
@@ -170,11 +168,13 @@ export default function SignupForm({
                         value={navigator.userAgent}
                     />
                     {/* Submit button triggers the signup action */}
-                    <SubmitButton
+                    <Button
                         pending={form.formState.isSubmitting || pending}
-                        title={'Sign Up'}
                         className="w-full"
-                    />
+                        type='submit'
+                    >
+                        Sign Up
+                    </Button>
                     {/* Separator and Google signup option */}
                     <Separator />
                     <GoogleButton redirectPath={redirectPath} route="signup" />

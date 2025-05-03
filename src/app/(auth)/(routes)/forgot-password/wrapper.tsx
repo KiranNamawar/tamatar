@@ -18,7 +18,6 @@ export default function ForgotPasswordWrapper({
         <AuthFormContainer>
             {step === 'forgot' && (
                 <ForgotPasswordForm
-                    redirectPath={redirectPath}
                     onSuccess={(context) => {
                         setContext(context);
                         setStep('verify');
