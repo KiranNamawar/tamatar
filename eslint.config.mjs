@@ -1,7 +1,7 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
-import { pluginQuery } from '@tanstack/eslint-plugin-query';
+import pluginQuery from '@tanstack/eslint-plugin-query';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -16,15 +16,15 @@ const eslintConfig = [
     {
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-vars': 'warn',
             '@typescript-eslint/no-unused-expressions': 'off',
             '@typescript-eslint/no-this-alias': 'off',
             '@typescript-eslint/no-require-imports': 'off',
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/no-wrapper-object-types': 'off',
             '@typescript-eslint/no-unsafe-function-type': 'off',
-            "@typescript-eslint/no-unnecessary-type-constraint": "off",
-            "prefer-const": "off",
+            '@typescript-eslint/no-unnecessary-type-constraint': 'off',
+            'prefer-const': 'warn',
         },
     },
 ];
