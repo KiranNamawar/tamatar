@@ -1,0 +1,49 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "email": "email dev"
+  },
+  "prisma": {
+    "schema": "./prisma"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.2.13",
+    "@types/react": "^19.1.4",
+    "pino-pretty": "^13.0.0",
+    "prisma": "^6.8.2",
+    "react-email": "^4.0.15"
+  },
+  "dependencies": {
+    "@envelop/core": "^5.2.3",
+    "@envelop/response-cache": "^7.1.3",
+    "@escape.tech/graphql-armor": "^3.1.5",
+    "@pothos/core": "^4.6.2",
+    "@pothos/plugin-prisma": "^4.8.1",
+    "@pothos/plugin-zod": "^4.2.1",
+    "@prisma/client": "^6.8.2",
+    "@react-email/components": "^0.0.41",
+    "@whatwg-node/server-plugin-cookies": "^1.0.5",
+    "graphql": "^16.11.0",
+    "graphql-scalars": "^1.24.2",
+    "graphql-yoga": "^5.13.4",
+    "jose": "^6.0.11",
+    "nanoid": "^5.1.5",
+    "pino": "^9.7.0",
+    "pino-datadog-transport": "^3.0.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "resend": "^4.5.1",
+    "typescript": "^5.8.3",
+    "zod": "^3.25.7"
+  }
+}
