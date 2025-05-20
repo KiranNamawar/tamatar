@@ -19,5 +19,12 @@ export default defineConfig({
   },
   server: {
     allowedHosts: ['tamatar.store']
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'index.html'),
+      }
+    }
   }
 });
