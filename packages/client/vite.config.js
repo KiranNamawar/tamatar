@@ -16,5 +16,8 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
     },
+  },
+  server: {
+    allowedHosts: ['tamatar.store']
   }
 });
