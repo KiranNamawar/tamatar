@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prod": "doppler run start",
+    "prod": "doppler run bun start",
     "start": "bun run src/index.ts",
     "dev": "bun --watch src/index.ts",
     "email": "email dev"
