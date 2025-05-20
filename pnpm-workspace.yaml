@@ -1,11 +1,2 @@
 packages:
   - packages/*
-onlyBuiltDependencies:
-  - '@biomejs/biome'
-  - '@prisma/client'
-  - '@prisma/engines'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - pino-datadog-transport
-  - prisma
-  - sharp
