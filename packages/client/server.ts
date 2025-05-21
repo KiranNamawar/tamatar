@@ -4,7 +4,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 const port = 5000;
-const distDir = "./dist";
+const distDir = join(process.cwd(), "dist");
 const htmlFilePath = join(distDir, "index.html");
 const htmlContent = readFileSync(htmlFilePath, "utf8");
 
