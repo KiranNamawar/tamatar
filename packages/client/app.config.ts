@@ -15,6 +15,9 @@ const config = defineConfig({
       tailwindcss(),
     ],
   },
+  server: {
+    preset: 'bun',
+  }
 })
 
 export default config
