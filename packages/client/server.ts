@@ -1,26 +1,50 @@
 // server.ts
 import { serve } from "bun";
-import { readFileSync } from "node:fs"; // To read the HTML file
+import { readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 
 const port = 5000;
-const htmlFilePath = "./dist/index.html"; // Path to your HTML file
-
-// Read the HTML file once when the server starts
+const distDir = "./dist";
+const htmlFilePath = join(distDir, "index.html");
 const htmlContent = readFileSync(htmlFilePath, "utf8");
 
 serve({
 	port,
 	fetch(request) {
 		const url = new URL(request.url);
+		let filePath = join(distDir, url.pathname);
 
-		// Serve the HTML file for the root path
+		// If root, serve index.html
 		if (url.pathname === "/") {
 			return new Response(htmlContent, {
 				headers: { "Content-Type": "text/html; charset=utf-8" },
 			});
 		}
 
-		// Handle other paths if needed (e.g., 404 for not found)
+		// Try to serve static files
+		if (existsSync(filePath) && !filePath.endsWith("/")) {
+			const ext = filePath.split(".").pop();
+			const contentType =
+				(
+					{
+						js: "application/javascript",
+						css: "text/css",
+						html: "text/html",
+						png: "image/png",
+						jpg: "image/jpeg",
+						jpeg: "image/jpeg",
+						ico: "image/x-icon",
+						json: "application/json",
+						svg: "image/svg+xml",
+					} as Record<string, string>
+				)[ext ?? ""] || "application/octet-stream";
+
+			return new Response(readFileSync(filePath), {
+				headers: { "Content-Type": contentType },
+			});
+		}
+
+		// Fallback to 404
 		return new Response("404 Not Found", { status: 404 });
 	},
 	error(error) {
