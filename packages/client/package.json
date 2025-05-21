@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vinxi dev",
-    "start": "bun run .output/server/index.mjs --port 5000",
+    "start": "doppler run --command \"PORT=5000 bun run ./.output/server/index.mjs\"",
     "build": "vinxi build",
     "serve": "vite preview",
     "test": "vitest run",
