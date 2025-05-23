@@ -50,4 +50,24 @@ builder.prismaObject("Otp", {
         createdAt: t.expose("createdAt", { type: "DateTime" }),
         updatedAt: t.expose("updatedAt", { type: "DateTime" }),
     }),
+});// AuthPayload
+
+interface AuthPayload {
+	accessToken: string | null;
+	refreshToken: string | null;
+}
+
+const authPayloadRef = builder.objectRef<AuthPayload>("AuthPayload");
+
+authPayloadRef.implement({
+    fields: (t) => ({
+        accessToken: t.exposeString("accessToken", {
+            nullable: true,
+        }),
+        refreshToken: t.exposeString("refreshToken", {
+            nullable: true,
+        }),
+    }),
 });
+
+export const AuthPayload = authPayloadRef; // Export the reference for use in other parts of the code

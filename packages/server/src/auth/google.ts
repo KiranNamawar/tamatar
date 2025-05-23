@@ -12,12 +12,12 @@ import {
 	ACCESS_TOKEN_EXPIRY_IN_MINUTES,
 	REFRESH_TOKEN_EXPIRY_IN_MINUTES,
 } from "@/lib/types/constants";
-import type { CookieListItem } from "@/lib/types/cookies";
 import { createToken } from "@/lib/utils/jwt";
+import { AuthPayload } from "./object";
 
 builder.mutationField("google", (t) =>
 	t.field({
-		type: "String",
+		type: AuthPayload,
 		args: {
 			token: t.arg.string({ required: true }),
 		},
@@ -83,24 +83,17 @@ builder.mutationField("google", (t) =>
 				userAgent: context.request.headers.get("user-agent"),
 			});
 
-			const options: CookieListItem = {
-				name: "refreshToken",
-				value: session.id,
-				httpOnly: true,
-				secure: process.env.NODE_ENV === "production",
-				sameSite: "lax",
-				expires: new Date(
-					Date.now() + REFRESH_TOKEN_EXPIRY_IN_MINUTES * 60 * 1000, // 30 days
-				),
-			};
-			await context.cookies.set(options);
-
-			return await createToken({
+			const accessToken = await createToken({
 				payload: {
 					sub: user.data.id,
 				},
 				expiresInMinutes: ACCESS_TOKEN_EXPIRY_IN_MINUTES,
 			});
+
+			return {
+				accessToken,
+				refreshToken: session.id,
+			};
 		},
 	}),
 );

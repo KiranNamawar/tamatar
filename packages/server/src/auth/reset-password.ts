@@ -1,12 +1,9 @@
-import { OtpPurpose } from "@/generated/prisma";
 import { updateUser } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { PASSWORD_SCHEMA } from "@/lib/types/constants";
 import { AppError, ErrorCode } from "@/lib/utils/error";
 import { verifyToken } from "@/lib/utils/jwt";
-import { password } from "bun";
-import { z } from "zod";
 import { hashPassword } from "./utils";
+import { resetPasswordForm } from "@shared/schema"
 
 builder.mutationField("resetPassword", (t) =>
 	t.field({
@@ -16,15 +13,7 @@ builder.mutationField("resetPassword", (t) =>
 			confirmPassword: t.arg.string({ required: true }),
 		},
 		validate: {
-			schema: z
-				.object({
-					password: PASSWORD_SCHEMA,
-					confirmPassword: z.string().trim(),
-				})
-				.refine((data) => data.password === data.confirmPassword, {
-					message: "Passwords do not match",
-					path: ["confirmPassword"],
-				}),
+			schema: resetPasswordForm,
 		},
 		resolve: async (_, { password }, context: any) => {
 			const { accessToken } = context;

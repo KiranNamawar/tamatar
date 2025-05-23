@@ -32,7 +32,6 @@
     "@pothos/plugin-zod": "^4.2.1",
     "@prisma/client": "^6.8.2",
     "@react-email/components": "^0.0.41",
-    "@whatwg-node/server-plugin-cookies": "^1.0.5",
     "graphql": "^16.11.0",
     "graphql-scalars": "^1.24.2",
     "graphql-yoga": "^5.13.4",

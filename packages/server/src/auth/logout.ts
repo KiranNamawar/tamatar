@@ -1,4 +1,4 @@
-import { getSessionById, updateSession } from "@/lib/db";
+import { updateSession } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError, ErrorCode } from "@/lib/utils/error";
 
@@ -15,11 +15,6 @@ builder.mutationField("logout", (t) =>
 
 			await updateSession(context.refreshToken, {
 				isValid: false,
-			});
-
-			// Clear the refresh token cookie
-			context.cookies.delete({
-				name: "refreshToken",
 			});
 
 			return true;

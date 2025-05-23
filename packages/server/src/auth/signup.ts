@@ -1,9 +1,8 @@
 import { createUser, getUserByEmail } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { PASSWORD_SCHEMA } from "@/lib/types/constants";
 import { AppError, ErrorCode } from "@/lib/utils/error";
-import { z } from "zod";
 import { generateUsername, hashPassword } from "./utils";
+import { signupForm } from "@shared/schema";
 
 builder.mutationField("signup", (t) =>
 	t.field({
@@ -15,21 +14,7 @@ builder.mutationField("signup", (t) =>
 			confirmPassword: t.arg.string({ required: true }),
 		},
 		validate: {
-			schema: z
-				.object({
-					name: z
-						.string()
-						.trim()
-						.min(1, "Name is required")
-						.max(50, "Name is too long"),
-					email: z.string().trim().email("Invalid email format"),
-					password: PASSWORD_SCHEMA,
-					confirmPassword: z.string().trim(),
-				})
-				.refine((data) => data.password === data.confirmPassword, {
-					message: "Passwords do not match",
-					path: ["confirmPassword"],
-				}),
+			schema: signupForm,
 		},
 		resolve: async (_, { name, email, password }, context: any) => {
 			// Check if the user already exists

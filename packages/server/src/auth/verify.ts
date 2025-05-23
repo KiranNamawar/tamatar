@@ -8,7 +8,7 @@ import {
 } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError, ErrorCode } from "@/lib/utils/error";
-import { createToken, verifyToken } from "@/lib/utils/jwt";
+import { createToken } from "@/lib/utils/jwt";
 import { z } from "zod";
 import { generateOtpCode } from "./utils";
 import {
@@ -18,11 +18,11 @@ import {
 	REFRESH_TOKEN_EXPIRY_IN_MINUTES,
 } from "@/lib/types/constants";
 import { sendOtp } from "@/lib/email/otp";
-import type { CookieListItem } from "@/lib/types/cookies";
+import { AuthPayload } from "./object";
 
 builder.mutationField("verify", (t) =>
 	t.field({
-		type: "String",
+		type: AuthPayload,
 		args: {
 			email: t.arg.string({
 				required: true,
@@ -92,38 +92,39 @@ builder.mutationField("verify", (t) =>
 					userAgent: context.request.headers.get("user-agent"),
 				});
 
-				// Set the refresh token in the cookie
-				const options: CookieListItem = {
-					name: "refreshToken",
-					value: session.id,
-					httpOnly: true,
-					sameSite: "lax",
-					secure: process.env.NODE_ENV === "production",
-					expires: session.expiresAt,
-					path: "/",
-				};
-				await context.cookies.set(options);
-
-				// Create and return access token
-				return await createToken({
+				// Create access token
+				const accessToken = await createToken({
 					payload: {
 						sub: user.data.id,
 					},
 					expiresInMinutes: ACCESS_TOKEN_EXPIRY_IN_MINUTES, // 2 hours
 				});
+
+				return {
+					accessToken,
+					refreshToken: session.id,
+				};
 			}
 
 			if (purpose === OtpPurpose.FORGOT_PASSWORD) {
 				// this token is used to reset the password
-				return await createToken({
+				const resetToken = await createToken({
 					payload: {
 						sub: user.data.id,
 					},
 					expiresInMinutes: 10, // 10 minutes
 				});
+
+				return {
+					accessToken: resetToken,
+					refreshToken: null,
+				};
 			}
 
-			return "Verification successful";
+			return {
+				accessToken: null,
+				refreshToken: null,
+			};
 		},
 	}),
 );
@@ -143,7 +144,7 @@ builder.mutationField("sendOtp", (t) =>
 				required: true,
 			}),
 		},
-		resolve: async (_, { email, purpose }, context) => {
+		resolve: async (_, { email, purpose }) => {
 			// Check if the user already exists
 			const user = await getUserByEmail(email);
 			if (!user.success) {

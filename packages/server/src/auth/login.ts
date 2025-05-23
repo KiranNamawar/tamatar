@@ -1,30 +1,24 @@
 import { createSession, getUserByEmail } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError, ErrorCode } from "@/lib/utils/error";
-import { z } from "zod";
 import { comparePassword } from "./utils";
 import {
 	ACCESS_TOKEN_EXPIRY_IN_MINUTES,
 	REFRESH_TOKEN_EXPIRY_IN_MINUTES,
 } from "@/lib/types/constants";
 import { createToken } from "@/lib/utils/jwt";
-import type { CookieListItem } from "@/lib/types/cookies";
+import { loginForm } from "@shared/schema";
+import { AuthPayload } from "./object";
 
 builder.mutationField("login", (t) =>
 	t.field({
-		type: "String",
+		type: AuthPayload,
 		args: {
 			email: t.arg.string({ required: true }),
 			password: t.arg.string({ required: true }),
 		},
 		validate: {
-			schema: z.object({
-				email: z.string().trim().email("Invalid email format"),
-				password: z
-					.string()
-					.trim()
-					.min(8, "Password must be at least 8 characters long"),
-			}),
+			schema: loginForm
 		},
 		resolve: async (_, { email, password }, context: any) => {
 
@@ -74,25 +68,17 @@ builder.mutationField("login", (t) =>
 				userAgent: context.request.headers.get("user-agent"),
 			});
 
-			// Set the refresh token in the cookie
-			const options: CookieListItem = {
-				name: "refreshToken",
-				value: session.id,
-				path: "/",
-				httpOnly: true,
-				sameSite: "lax",
-				secure: process.env.NODE_ENV === "production",
-				expires: new Date(session.expiresAt),
-			};
-			await context.cookies?.set(options);
-
-			// Create and return access token
-			return await createToken({
+			const accessToken = await createToken({
 				payload: {
 					sub: user.data.id,
 				},
 				expiresInMinutes: ACCESS_TOKEN_EXPIRY_IN_MINUTES,
 			});
+
+			return {
+				accessToken,
+				refreshToken: session.id,
+			};
 		},
 	}),
 );
