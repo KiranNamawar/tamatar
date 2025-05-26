@@ -1,7 +1,7 @@
 import type { Otp, Prisma } from "@/generated/prisma";
 import prisma from "./prisma";
 import type { Return } from "../types/return";
-import { ErrorCode } from "../utils/error";
+import { ErrorCode } from "@shared/constant";
 
 export async function createOtp(params: Prisma.OtpCreateInput) {
 	return await prisma.otp.create({

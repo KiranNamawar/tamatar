@@ -7,7 +7,8 @@ import {
 	updateUser,
 } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 import { createToken } from "@/lib/utils/jwt";
 import { z } from "zod";
 import { generateOtpCode } from "./utils";
@@ -16,9 +17,10 @@ import {
 	OTP_CODE_LENGTH,
 	OTP_EXPIRATION_TIME_IN_MINUTES,
 	REFRESH_TOKEN_EXPIRY_IN_MINUTES,
-} from "@/lib/types/constants";
+} from "@shared/constant";
 import { sendOtp } from "@/lib/email/otp";
 import { AuthPayload } from "./object";
+import { otpForm } from "@shared/schema";
 
 builder.mutationField("verify", (t) =>
 	t.field({
@@ -26,24 +28,17 @@ builder.mutationField("verify", (t) =>
 		args: {
 			email: t.arg.string({
 				required: true,
-				validate: {
-					schema: z.string().trim().email("Invalid email format"),
-				},
 			}),
 			code: t.arg.string({
 				required: true,
-				validate: {
-					schema: z
-						.string()
-						.min(6, "Code must be at least 6 digits")
-						.max(6, "Code must be at most 6 digits")
-						.regex(/^[0-9]+$/, "Code must be a 6-digit number"),
-				},
 			}),
 			purpose: t.arg({
-				type: OtpPurpose,
 				required: true,
+				type: OtpPurpose
 			}),
+		},
+		validate: {
+			schema: otpForm
 		},
 		resolve: async (_, { email, code, purpose }, context: any) => {
 			const user = await getUserByEmail(email);

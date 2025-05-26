@@ -1,6 +1,7 @@
 import { updateUser } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 import { verifyToken } from "@/lib/utils/jwt";
 import { hashPassword } from "./utils";
 import { resetPasswordForm } from "@shared/schema"

@@ -1,11 +1,12 @@
 import { createSession, getUserByEmail } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 import { comparePassword } from "./utils";
 import {
 	ACCESS_TOKEN_EXPIRY_IN_MINUTES,
 	REFRESH_TOKEN_EXPIRY_IN_MINUTES,
-} from "@/lib/types/constants";
+} from "@shared/constant";
 import { createToken } from "@/lib/utils/jwt";
 import { loginForm } from "@shared/schema";
 import { AuthPayload } from "./object";

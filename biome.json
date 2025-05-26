@@ -20,7 +20,11 @@
       "rules": {
         "recommended": true,
         "style": {
-          "useConst": "warn"
+          "useConst": "warn",
+          "useNumberNamespace": "warn"
+        },
+        "suspicious": {
+          "noExplicitAny": "info"
         }
       }
     },

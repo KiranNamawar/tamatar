@@ -1,4 +1,4 @@
-import { getClient } from "@/graphql/client";
+import { graphqlRequest } from "@/graphql/client";
 import { graphql } from "@/graphql/graphql";
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -16,8 +16,13 @@ const testQuery = graphql(`
 function RouteComponent() {
 	const { data } = useQuery({
 		queryKey: ["test"],
-		queryFn: () => getClient().request(testQuery),
+		queryFn: () => graphqlRequest({ query: testQuery }),
 	});
 
-	return <div>{data?.test}</div>;
+	return (
+		<div>
+			your test query result: <br />
+			{data?.success ? data.data.test : "Error fetching test query"}
+		</div>
+	);
 }

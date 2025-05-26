@@ -170,7 +170,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\kiran\\Dev\\Web\\tamatar\\packages\\server\\src\\generated\\prisma",
+      "value": "C:\\Users\\kiran\\Dev\\TamatarStore\\tamatar\\packages\\server\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -184,7 +184,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\kiran\\Dev\\Web\\tamatar\\packages\\server\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\kiran\\Dev\\TamatarStore\\tamatar\\packages\\server\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -197,6 +197,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

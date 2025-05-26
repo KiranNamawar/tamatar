@@ -1,5 +1,6 @@
 import { Prisma } from "@/generated/prisma";
-import { AppError, ErrorCode } from "../utils/error";
+import { AppError } from "../utils/error";
+import { ErrorCode } from "@shared/constant";
 
 export class DatabaseError extends AppError {
 	constructor(error: any) {

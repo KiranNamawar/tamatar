@@ -2,7 +2,7 @@ import type { Prisma, Session } from "@/generated/prisma";
 import prisma from "./prisma";
 import { DatabaseError } from "./error";
 import type { Return } from "../types/return";
-import { ErrorCode } from "../utils/error";
+import { ErrorCode } from "@shared/constant";
 
 export async function createSession(props: Prisma.SessionCreateInput) {
 	try {

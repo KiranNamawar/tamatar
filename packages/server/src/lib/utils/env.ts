@@ -1,4 +1,5 @@
-import { AppError, ErrorCode } from "./error";
+import { AppError } from "./error";
+import { ErrorCode } from "@shared/constant";
 
 export function getEnvVariable(key: string) {
 	const value = process.env[key];

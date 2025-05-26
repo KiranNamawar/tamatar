@@ -1,6 +1,7 @@
 import { updateSession } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 
 builder.mutationField("logout", (t) =>
 	t.field({

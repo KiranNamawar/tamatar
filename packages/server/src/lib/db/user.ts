@@ -1,6 +1,6 @@
 import type { Prisma, User } from "@/generated/prisma";
 import prisma from "./prisma";
-import { AppError, ErrorCode } from "../utils/error";
+import { ErrorCode } from "@shared/constant";
 import { DatabaseError } from "./error";
 import type { Return } from "../types/return";
 

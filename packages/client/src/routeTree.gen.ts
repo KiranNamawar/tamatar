@@ -12,7 +12,12 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TestImport } from './routes/test'
+import { Route as DashboardImport } from './routes/dashboard'
+import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
+import { Route as AuthSignupImport } from './routes/auth/signup'
+import { Route as AuthLoginImport } from './routes/auth/login'
+import { Route as AuthForgotPasswordImport } from './routes/auth/forgot-password'
 
 // Create/Update Routes
 
@@ -22,10 +27,40 @@ const TestRoute = TestImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const DashboardRoute = DashboardImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthRouteRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AuthSignupRoute = AuthSignupImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthLoginRoute = AuthLoginImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
+
+const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AuthRouteRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -39,6 +74,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRoute
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
     '/test': {
       id: '/test'
       path: '/test'
@@ -46,43 +95,121 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TestImport
       parentRoute: typeof rootRoute
     }
+    '/auth/forgot-password': {
+      id: '/auth/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/auth/forgot-password'
+      preLoaderRoute: typeof AuthForgotPasswordImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthRouteImport
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupImport
+      parentRoute: typeof AuthRouteImport
+    }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteRouteChildren {
+  AuthForgotPasswordRoute: typeof AuthForgotPasswordRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteRouteChildren: AuthRouteRouteChildren = {
+  AuthForgotPasswordRoute: AuthForgotPasswordRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthSignupRoute: AuthSignupRoute,
+}
+
+const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
+  AuthRouteRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/test': typeof TestRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/test': typeof TestRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/auth': typeof AuthRouteRouteWithChildren
+  '/dashboard': typeof DashboardRoute
   '/test': typeof TestRoute
+  '/auth/forgot-password': typeof AuthForgotPasswordRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/signup': typeof AuthSignupRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/test'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/test'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/test'
-  id: '__root__' | '/' | '/test'
+  to:
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/test'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/dashboard'
+    | '/test'
+    | '/auth/forgot-password'
+    | '/auth/login'
+    | '/auth/signup'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRouteRoute: typeof AuthRouteRouteWithChildren
+  DashboardRoute: typeof DashboardRoute
   TestRoute: typeof TestRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRouteRoute: AuthRouteRouteWithChildren,
+  DashboardRoute: DashboardRoute,
   TestRoute: TestRoute,
 }
 
@@ -97,14 +224,39 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/auth",
+        "/dashboard",
         "/test"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
+    "/auth": {
+      "filePath": "auth/route.tsx",
+      "children": [
+        "/auth/forgot-password",
+        "/auth/login",
+        "/auth/signup"
+      ]
+    },
+    "/dashboard": {
+      "filePath": "dashboard.tsx"
+    },
     "/test": {
       "filePath": "test.tsx"
+    },
+    "/auth/forgot-password": {
+      "filePath": "auth/forgot-password.tsx",
+      "parent": "/auth"
+    },
+    "/auth/login": {
+      "filePath": "auth/login.tsx",
+      "parent": "/auth"
+    },
+    "/auth/signup": {
+      "filePath": "auth/signup.tsx",
+      "parent": "/auth"
     }
   }
 }

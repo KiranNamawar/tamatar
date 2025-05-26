@@ -1,7 +1,8 @@
 import { getSessionById } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { ACCESS_TOKEN_EXPIRY_IN_MINUTES } from "@/lib/types/constants";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { ACCESS_TOKEN_EXPIRY_IN_MINUTES } from "@shared/constant";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 import { createToken } from "@/lib/utils/jwt";
 
 builder.mutationField("refresh", (t) =>

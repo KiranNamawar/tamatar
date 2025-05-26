@@ -1,4 +1,4 @@
-import { EMAIL_DOMAIN } from "../types/constants";
+import { EMAIL_DOMAIN } from "@shared/constant";
 import { sendEmail } from "./resend";
 import OtpVerificationEmail from "./templates/otp-verification";
 

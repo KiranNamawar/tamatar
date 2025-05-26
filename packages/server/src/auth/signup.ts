@@ -1,6 +1,7 @@
 import { createUser, getUserByEmail } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
-import { AppError, ErrorCode } from "@/lib/utils/error";
+import { AppError } from "@/lib/utils/error";
+import { ErrorCode } from "@shared/constant";
 import { generateUsername, hashPassword } from "./utils";
 import { signupForm } from "@shared/schema";
 

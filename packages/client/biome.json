@@ -5,6 +5,7 @@
     "clientKind": "git",
     "useIgnoreFile": false
   },
+  "extends": ["../../biome.json"],
   "files": {
     "ignoreUnknown": false,
     "ignore": ["src/routeTree.gen.ts"],

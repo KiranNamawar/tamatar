@@ -1,7 +1,7 @@
 import { jwtVerify, SignJWT, type JWTPayload } from "jose";
 import { getEnvVariable } from "./env";
 import type { Return } from "../types/return";
-import { ErrorCode } from "./error";
+import { ErrorCode } from "@shared/constant";
 
 export async function createToken(params: {
 	payload: {

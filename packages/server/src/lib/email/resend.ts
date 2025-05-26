@@ -5,7 +5,8 @@ import {
 } from "resend";
 import { getEnvVariable } from "../utils/env";
 import type React from "react";
-import { AppError, ErrorCode } from "../utils/error";
+import { AppError } from "../utils/error";
+import { ErrorCode } from "@shared/constant";
 
 const resend = new Resend(getEnvVariable("RESEND_API_KEY"));
 
