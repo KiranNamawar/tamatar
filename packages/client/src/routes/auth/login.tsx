@@ -17,14 +17,16 @@ import { Button } from "@/components/ui/button";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
+import { Separator } from "@/components/ui/separator";
 import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
 import { ErrorCode, OtpPurpose, type Return } from "@shared/constant";
 import { loginForm as loginSchema } from "@shared/schema";
 import { useState } from "react";
-import { setAuthCookie } from "./-lib/utils/cookies";
-import { OtpDialog, sendOtpQuery } from "./-lib/components/otp";
 import { toast } from "sonner";
+import GoogleButton from "./-lib/components/google";
+import { OtpDialog, sendOtpQuery } from "./-lib/components/otp";
+import { setAuthCookie } from "./-lib/utils/cookies";
 
 // --- Types ---
 
@@ -151,7 +153,7 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				return;
 			}
 			toast.info(
-				"Verification code sent to your email. Please check your inbox."
+				"Verification code sent to your email. Please check your inbox.",
 			);
 			setShowOtpDialog(true);
 		} else if (
@@ -190,6 +192,12 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 					>
 						Log In
 					</Button>
+					<Separator className="" />
+					<GoogleButton
+						setAccessToken={setAccessToken}
+						rdt={rdt}
+						route="login"
+					/>
 					{/* Error Alert */}
 					{formError && (
 						<Alert variant="destructive">

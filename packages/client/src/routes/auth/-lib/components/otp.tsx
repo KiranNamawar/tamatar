@@ -1,6 +1,15 @@
 // OTP Verification Form and Dialog Components
 // Handles OTP input, verification, and resend logic for authentication flows.
 
+import {
+	AlertDialog,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import {
 	InputOTP,
@@ -8,27 +17,18 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { graphql, graphqlRequest } from "@/graphql";
+import { useStore } from "@/hooks/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { OtpPurpose } from "@shared/constant";
 import { otpForm as otpSchema } from "@shared/schema";
+import { type LinkProps, useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import type z from "zod";
 import { setAuthCookie } from "../utils/cookies";
-import { useStore } from "@/hooks/useStore";
-import { useNavigate, type LinkProps } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import { useState, useEffect } from "react";
-import {
-	AlertDialog,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogDescription,
-} from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 
 // Type for OTP form schema
 // Contains: email, code, purpose
@@ -64,7 +64,9 @@ const verifyOtpQuery = graphql(`
  * Server function to verify OTP using the verifyOtpQuery.
  * Sets auth cookie on success.
  */
-const verify = createServerFn()
+const verify = createServerFn({
+	method: "POST",
+})
 	.validator((input) => otpSchema.parse(input))
 	.handler(async ({ data }) => {
 		const { email, code, purpose } = data;
