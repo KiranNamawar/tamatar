@@ -3,7 +3,6 @@
 
 import {
 	AlertDialog,
-	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogHeader,
@@ -186,7 +185,8 @@ function OtpForm({
 		<Form {...form}>
 			<form
 				onSubmit={form.handleSubmit(onSubmit)}
-				className="flex flex-col justify-center items-center gap-4"
+				className="flex flex-col justify-center items-center gap-6 w-full animate-fade-in"
+				autoComplete="off"
 			>
 				{/* OTP Input Field */}
 				<FormFieldWrapper form={form} name="code" label="">
@@ -196,28 +196,38 @@ function OtpForm({
 							{...field}
 							pattern={REGEXP_ONLY_DIGITS}
 							autoFocus
+							aria-label="Enter 6-digit OTP code"
+							className="w-full text-2xl tracking-widest bg-white/80 dark:bg-gray-900/80 border border-gray-300 dark:border-gray-700 rounded-xl shadow focus-within:ring-2 focus-within:ring-blue-400 transition-all"
 						>
 							<InputOTPGroup>
-								<InputOTPSlot index={0} />
-								<InputOTPSlot index={1} />
-								<InputOTPSlot index={2} />
-								<InputOTPSlot index={3} />
-								<InputOTPSlot index={4} />
-								<InputOTPSlot index={5} />
+								{[0, 1, 2, 3, 4, 5].map((i) => (
+									<InputOTPSlot
+										key={i}
+										index={i}
+										className="mx-1 w-12 h-14 rounded-lg bg-white/70 dark:bg-gray-800/80 border-2 border-gray-300 dark:border-gray-700 text-center text-2xl font-bold text-gray-900 dark:text-white shadow focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all duration-150 aria-invalid:border-red-500 aria-invalid:ring-red-400"
+										aria-label={`Digit ${i + 1}`}
+									/>
+								))}
 							</InputOTPGroup>
 						</InputOTP>
 					)}
 				</FormFieldWrapper>
-				<div className="flex justify-between mt-4 w-full">
+				<div className="flex justify-between items-center mt-4 w-full gap-4">
 					<Button
 						type="button"
 						variant="secondary"
 						onClick={resendOtp}
 						disabled={resendDisabled}
+						className="rounded-lg px-4 py-2 font-semibold bg-gradient-to-r from-red-400 to-orange-400 text-white shadow hover:from-orange-500 hover:to-red-500 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-all"
+						aria-live="polite"
 					>
 						{resendDisabled ? `Resend in ${resendTimer}s` : "Resend"}
 					</Button>
-					<Button type="submit" pending={form.formState.isSubmitting}>
+					<Button
+						type="submit"
+						pending={form.formState.isSubmitting}
+						className="rounded-lg px-4 py-2 font-bold bg-gradient-to-r from-green-500 to-blue-500 text-white shadow hover:from-blue-600 hover:to-green-600 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 transition-all"
+					>
 						Verify
 					</Button>
 				</div>
@@ -227,24 +237,20 @@ function OtpForm({
 }
 
 /**
- * OtpDialog Props
- *   - open: boolean (dialog open state)
- *   - onOpenChange: (open: boolean) => void (dialog state handler)
- *   - email: string (user's email)
- *   - purpose: OtpPurpose (reason for OTP)
- *   - rdt: LinkProps["to"] (redirect target after verification)
+ * OtpDialogProps
+ * Props for the OTP dialog component.
  */
-interface OtpDialogProps {
+type OtpDialogProps = {
 	open: boolean;
 	onOpenChange: (open: boolean) => void;
 	email: string;
 	purpose: OtpPurpose;
 	rdt: LinkProps["to"];
-}
+};
 
 /**
- * OTP Dialog Component
- * Renders a modal dialog for OTP verification.
+ * OtpDialog
+ * Shows the OTP form in a glassmorphic, accessible dialog.
  */
 function OtpDialog({
 	open,
@@ -255,19 +261,21 @@ function OtpDialog({
 }: OtpDialogProps) {
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
-			<AlertDialogContent>
-				<AlertDialogCancel className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center">
-					❌
-				</AlertDialogCancel>
-				<AlertDialogHeader>
-					<AlertDialogTitle className="text-center">
-						Verify OTP
+			<AlertDialogContent
+				className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 shadow-2xl rounded-2xl p-0 max-w-md w-full animate-fade-in"
+				style={{ minWidth: 320 }}
+			>
+				<AlertDialogHeader className="px-6 pt-6 pb-2">
+					<AlertDialogTitle className="text-center text-lg font-bold text-gray-900 dark:text-white">
+						Verify Your Email
 					</AlertDialogTitle>
-					<AlertDialogDescription className="text-center">
-						Please enter the OTP sent to your email to verify your account.
+					<AlertDialogDescription className="text-center text-sm text-gray-600 dark:text-gray-400">
+						Please enter the 6-digit OTP sent to your email address.
 					</AlertDialogDescription>
 				</AlertDialogHeader>
-				<OtpForm email={email} purpose={purpose} rdt={rdt} />
+				<div className="px-6 pb-6">
+					<OtpForm email={email} purpose={purpose} rdt={rdt} />
+				</div>
 			</AlertDialogContent>
 		</AlertDialog>
 	);

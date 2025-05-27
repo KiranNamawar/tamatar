@@ -102,8 +102,8 @@ export const Route = createFileRoute("/auth/login")({
 function RouteComponent() {
 	const { rdt } = Route.useSearch();
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center bg-background">
-			<div className="w-full max-w-sm px-4 sm:px-6 md:px-8 py-8 bg-card rounded-lg shadow-md flex flex-col gap-6">
+		<div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200/80 via-white/90 to-purple-200/80 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700">
+			<div className="w-full max-w-sm px-4 sm:px-6 md:px-8 py-10 rounded-3xl shadow-2xl flex flex-col gap-8 backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 animate-fade-in">
 				<LoginForm rdt={rdt as LinkProps["to"]} />
 			</div>
 		</div>
@@ -181,7 +181,7 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className="flex flex-col gap-4 w-full"
+					className="flex flex-col gap-6 w-full animate-fade-in"
 					autoComplete="off"
 				>
 					{/* Email Field */}
@@ -224,12 +224,12 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 					</FormFieldWrapper>
 					<Button
 						type="submit"
-						className="w-full"
+						className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-green-600 hover:from-green-600 hover:to-red-500 text-white font-bold shadow-xl transition-all duration-300 border-2 border-white/80 dark:border-gray-800/80"
 						pending={form.formState.isSubmitting}
 					>
 						Log In
 					</Button>
-					<Separator />
+					<Separator className="my-2 opacity-80" />
 					<GoogleButton
 						setAccessToken={setAccessToken}
 						rdt={rdt}

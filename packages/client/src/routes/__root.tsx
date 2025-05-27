@@ -17,7 +17,6 @@ import type { QueryClient } from "@tanstack/react-query";
 import type { TRPCRouter } from "@/integrations/trpc/router";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
 import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { FloatingDock } from "@/components/ui/floating-dock.tsx";
 import { Home } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner.tsx";
 
@@ -52,15 +51,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 		<RootDocument>
 			<ConvexProvider>
 				<ThemeProvider defaultTheme="dark">
-					<FloatingDock
-						items={[
-							{
-								title: "Home",
-								icon: <Home />,
-								to: "/",
-							}
-						]}
-					/>
 					<Outlet />
 				</ThemeProvider>
 				<TanStackRouterDevtools />

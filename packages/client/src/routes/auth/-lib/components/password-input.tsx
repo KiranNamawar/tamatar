@@ -100,17 +100,37 @@ function PasswordInput({
 						aria-valuemin={0}
 						aria-valuemax={100}
 						role="progressbar"
-						className={`h-2 w-full rounded-full border border-gray-300 dark:border-gray-600 transition-colors ${
-							strength <= 2
-								? "bg-red-200 [&>div]:bg-red-500"
-								: strength === 3
-									? "bg-yellow-200 [&>div]:bg-yellow-500"
-									: "bg-green-200 [&>div]:bg-green-600"
+						className={`h-2 w-full rounded-full border transition-colors ${
+							strength === 0
+								? "bg-red-100 border-red-200 [&>div]:bg-red-400"
+								: strength === 1
+									? "bg-red-200 border-red-300 [&>div]:bg-red-500"
+									: strength === 2
+										? "bg-orange-100 border-orange-200 [&>div]:bg-orange-400"
+										: strength === 3
+											? "bg-yellow-100 border-yellow-200 [&>div]:bg-yellow-400"
+											: strength === 4
+												? "bg-green-100 border-green-200 [&>div]:bg-green-400"
+												: "bg-green-200 border-green-300 [&>div]:bg-green-600"
 						}`}
 					/>
 					<span
 						className="text-xs font-semibold select-none whitespace-nowrap"
 						id="password-strength-text"
+						style={{
+							color:
+								strength === 0
+									? "#dc2626" // red-600
+									: strength === 1
+										? "#b91c1c" // red-700
+										: strength === 2
+											? "#ea580c" // orange-600
+											: strength === 3
+												? "#ca8a04" // yellow-600
+												: strength === 4
+													? "#16a34a" // green-600
+													: "#166534", // green-800
+						}}
 					>
 						{strength === 0 && "Too short"}
 						{strength === 1 && "Very weak"}
