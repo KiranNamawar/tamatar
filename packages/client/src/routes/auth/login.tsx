@@ -123,7 +123,7 @@ function RouteComponent() {
  *   - rdt: LinkProps["to"] (redirect target after login)
  */
 function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
-	const [showOtpDialog, setShowOtpDialog] = useState(true);
+	const [showOtpDialog, setShowOtpDialog] = useState(false);
 	const [formError, setFormError] = useState<string | null>(null);
 	const setAccessToken = useStore((state) => state.auth.setAccessToken);
 	const navigate = useNavigate();
