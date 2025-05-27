@@ -1,3 +1,6 @@
+// Login GraphQL Mutation Resolver
+// Handles user login, password validation, email verification, and session/token issuance.
+
 import { createSession, getUserByEmail } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError } from "@/lib/utils/error";
@@ -11,6 +14,14 @@ import { createToken } from "@/lib/utils/jwt";
 import { loginForm } from "@shared/schema";
 import { AuthPayload } from "./object";
 
+// --- Login Mutation ---
+/**
+ * GraphQL mutation for user login.
+ *
+ * - Validates user credentials.
+ * - Checks for email verification.
+ * - Issues access and refresh tokens.
+ */
 builder.mutationField("login", (t) =>
 	t.field({
 		type: AuthPayload,
@@ -19,10 +30,9 @@ builder.mutationField("login", (t) =>
 			password: t.arg.string({ required: true }),
 		},
 		validate: {
-			schema: loginForm
+			schema: loginForm,
 		},
 		resolve: async (_, { email, password }, context: any) => {
-
 			// Check if the user exists in the database
 			const user = await getUserByEmail(email);
 			if (!user.success) {

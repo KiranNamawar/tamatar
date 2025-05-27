@@ -19,7 +19,7 @@ import {
 import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { OtpPurpose } from "@shared/constant";
+import { OtpPurpose } from "@shared/constant";
 import { otpForm as otpSchema } from "@shared/schema";
 import { type LinkProps, useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
@@ -73,6 +73,7 @@ const verify = createServerFn({
 		const response = await graphqlRequest({
 			query: verifyOtpQuery,
 			variables: { email, code, purpose },
+			isAuthenticated: false,
 		});
 		if (response.success) {
 			setAuthCookie(response.data.verify?.refreshToken ?? "");
@@ -138,7 +139,10 @@ function OtpForm({
 	async function onSubmit(data: OtpSchema) {
 		const response = await verify({ data });
 		if (response.success && response.data) {
-			setAccessToken(response.data);
+			toast.success("OTP verified successfully!");
+			if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
+				setAccessToken(response.data);
+			}
 			return navigate({
 				to: rdt,
 				replace: true,

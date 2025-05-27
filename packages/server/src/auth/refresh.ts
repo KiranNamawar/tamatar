@@ -1,3 +1,6 @@
+// Refresh Token GraphQL Mutation Resolver
+// Issues a new access token using a valid refresh token/session.
+
 import { getSessionById } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { ACCESS_TOKEN_EXPIRY_IN_MINUTES } from "@shared/constant";
@@ -5,6 +8,14 @@ import { AppError } from "@/lib/utils/error";
 import { ErrorCode } from "@shared/constant";
 import { createToken } from "@/lib/utils/jwt";
 
+// --- Refresh Mutation ---
+/**
+ * GraphQL mutation for refreshing access tokens.
+ *
+ * - Requires a valid refresh token in context.
+ * - Issues a new access token if the session is valid.
+ * - Returns the new access token as a string.
+ */
 builder.mutationField("refresh", (t) =>
 	t.field({
 		type: "String",

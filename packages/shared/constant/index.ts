@@ -1,16 +1,23 @@
-// General
+// Shared Application Constants
+// This file contains constants and enums used throughout the application for configuration, error handling, and authentication flows.
+
+// General application domains and endpoints
 export const FRONTEND_DOMAIN = "tamatar.store";
 export const BACKEND_DOMAIN = "api.tamatar.store";
 export const EMAIL_DOMAIN = "tamatar.store";
 export const GRAPHQL_ENDPOINT = "https://tamatar.store/graphql";
 
-// JWT
+// JWT token expiration times (in minutes)
 export const ACCESS_TOKEN_EXPIRY_IN_MINUTES = 120; // 2 hours
 export const REFRESH_TOKEN_EXPIRY_IN_MINUTES = 43200; // 30 days
 
-// OTP
+// OTP (One-Time Password) configuration
 export const OTP_CODE_LENGTH = 6; // 6 digits
 export const OTP_EXPIRATION_TIME_IN_MINUTES = 10; // 10 minutes
+
+/**
+ * Enum for OTP purposes (why an OTP is being sent/used)
+ */
 export enum OtpPurpose {
 	SIGNUP = "SIGNUP",
 	LOGIN = "LOGIN",
@@ -18,7 +25,9 @@ export enum OtpPurpose {
 	VERIFY_EMAIL = "VERIFY_EMAIL",
 }
 
-// Error Codes
+/**
+ * Enum for error codes used throughout the application for consistent error handling.
+ */
 export enum ErrorCode {
 	ENV_VARIABLE_NOT_SET = "ENV_VARIABLE_NOT_SET", // Missing required environment variable
 	INVALID_INPUT = "INVALID_INPUT", // Input does not match expected format

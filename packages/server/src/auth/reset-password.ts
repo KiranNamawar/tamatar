@@ -1,11 +1,23 @@
+// Reset Password GraphQL Mutation Resolver
+// Handles password reset using a valid access token and updates the user's password.
+
 import { updateUser } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError } from "@/lib/utils/error";
 import { ErrorCode } from "@shared/constant";
 import { verifyToken } from "@/lib/utils/jwt";
 import { hashPassword } from "./utils";
-import { resetPasswordForm } from "@shared/schema"
+import { resetPasswordForm } from "@shared/schema";
 
+// --- Reset Password Mutation ---
+/**
+ * GraphQL mutation for resetting user password.
+ *
+ * - Requires a valid access token in context.
+ * - Validates new password and confirmation.
+ * - Updates the user's password in the database.
+ * - Returns true on success.
+ */
 builder.mutationField("resetPassword", (t) =>
 	t.field({
 		type: "Boolean",

@@ -1,3 +1,6 @@
+// Google OAuth GraphQL Mutation Resolver
+// Handles Google login/signup, user creation/update, and session/token issuance.
+
 import {
 	createSession,
 	createUser,
@@ -7,7 +10,7 @@ import {
 } from "@/lib/db";
 import builder from "@/lib/graphql/pothos";
 import { AppError } from "@/lib/utils/error";
-import { ErrorCode } from "@shared/constant"
+import { ErrorCode } from "@shared/constant";
 import { generateUsername } from "./utils";
 import {
 	ACCESS_TOKEN_EXPIRY_IN_MINUTES,
@@ -16,6 +19,14 @@ import {
 import { createToken } from "@/lib/utils/jwt";
 import { AuthPayload } from "./object";
 
+// --- Google OAuth Mutation ---
+/**
+ * GraphQL mutation for Google OAuth login/signup.
+ *
+ * - Fetches user info from Google using the provided token.
+ * - Creates or updates user in the database.
+ * - Issues access and refresh tokens.
+ */
 builder.mutationField("google", (t) =>
 	t.field({
 		type: AuthPayload,
@@ -99,6 +110,10 @@ builder.mutationField("google", (t) =>
 	}),
 );
 
+// --- Types ---
+/**
+ * Google user profile returned from Google userinfo endpoint.
+ */
 interface GoogleUserProfile {
 	/** Google's unique identifier for the user */
 	sub: string;

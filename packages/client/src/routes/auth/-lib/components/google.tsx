@@ -1,3 +1,6 @@
+// Google OAuth Button Component
+// Handles Google login/signup using react-oauth and GraphQL backend.
+
 import { Button } from "@/components/ui/button";
 import { graphql, graphqlRequest } from "@/graphql";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -7,6 +10,11 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { setAuthCookie } from "../utils/cookies";
 
+// --- GraphQL Mutation ---
+/**
+ * Mutation for Google OAuth login/signup.
+ * Accepts Google access token, returns access and refresh tokens.
+ */
 const googleQuery = graphql(`
 	mutation Google ($token : String!) {
 		google(token: $token) {
@@ -16,6 +24,11 @@ const googleQuery = graphql(`
 	}
 `);
 
+// --- Server Function ---
+/**
+ * Server function to handle Google OAuth login/signup.
+ * Sets auth cookie on success.
+ */
 const google = createServerFn({
 	method: "POST",
 })
@@ -26,6 +39,7 @@ const google = createServerFn({
 		const response = await graphqlRequest({
 			query: googleQuery,
 			variables: { token: data.token },
+			isAuthenticated: false,
 		});
 		if (response.success) {
 			setAuthCookie(response.data.google?.refreshToken ?? "");
@@ -37,6 +51,12 @@ const google = createServerFn({
 		return response;
 	});
 
+/**
+ * GoogleButton Props
+ *   - setAccessToken: (token: string | null) => void
+ *   - rdt: LinkProps["to"] (redirect target after login/signup)
+ *   - route: "login" | "signup" (button label context)
+ */
 function GoogleButton({
 	setAccessToken,
 	rdt,

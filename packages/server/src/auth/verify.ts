@@ -1,3 +1,6 @@
+// OTP Verification and Sending GraphQL Mutation Resolvers
+// Handles OTP verification for authentication flows and sending OTP codes via email.
+
 import { OtpPurpose } from "@/generated/prisma";
 import {
 	createOtp,
@@ -22,23 +25,24 @@ import { sendOtp } from "@/lib/email/otp";
 import { AuthPayload } from "./object";
 import { otpForm } from "@shared/schema";
 
+// --- OTP Verification Mutation ---
+/**
+ * GraphQL mutation for verifying OTP codes for authentication flows.
+ *
+ * - Validates OTP code and purpose.
+ * - Marks user email as verified.
+ * - Issues tokens for SIGNUP/LOGIN, or a short-lived token for FORGOT_PASSWORD.
+ */
 builder.mutationField("verify", (t) =>
 	t.field({
 		type: AuthPayload,
 		args: {
-			email: t.arg.string({
-				required: true,
-			}),
-			code: t.arg.string({
-				required: true,
-			}),
-			purpose: t.arg({
-				required: true,
-				type: OtpPurpose
-			}),
+			email: t.arg.string({ required: true }),
+			code: t.arg.string({ required: true }),
+			purpose: t.arg({ required: true, type: OtpPurpose }),
 		},
 		validate: {
-			schema: otpForm
+			schema: otpForm,
 		},
 		resolve: async (_, { email, code, purpose }, context: any) => {
 			const user = await getUserByEmail(email);
@@ -124,6 +128,14 @@ builder.mutationField("verify", (t) =>
 	}),
 );
 
+// --- Send OTP Mutation ---
+/**
+ * GraphQL mutation for sending OTP codes to user's email.
+ *
+ * - Generates a new OTP code and sends it via email.
+ * - Stores the OTP in the database.
+ * - Returns true on success.
+ */
 builder.mutationField("sendOtp", (t) =>
 	t.field({
 		type: "Boolean",

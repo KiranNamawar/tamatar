@@ -3,6 +3,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+	Link,
 	type LinkProps,
 	createFileRoute,
 	useNavigate,
@@ -16,7 +17,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { PasswordInput } from "@/components/ui/password-input";
+import { PasswordInput } from "@auth/components/password-input";
 import { Separator } from "@/components/ui/separator";
 import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
@@ -24,9 +25,10 @@ import { ErrorCode, OtpPurpose, type Return } from "@shared/constant";
 import { loginForm as loginSchema } from "@shared/schema";
 import { useState } from "react";
 import { toast } from "sonner";
-import GoogleButton from "./-lib/components/google";
-import { OtpDialog, sendOtpQuery } from "./-lib/components/otp";
-import { setAuthCookie } from "./-lib/utils/cookies";
+import GoogleButton from "@auth/components/google";
+import { OtpDialog, sendOtpQuery } from "@auth/components/otp";
+import { setAuthCookie } from "@auth/utils/cookies";
+import { AtSign, KeyRound } from "lucide-react";
 
 // --- Types ---
 
@@ -65,6 +67,7 @@ const login = createServerFn({
 		const response = await graphqlRequest({
 			query: LoginQuery,
 			variables: { email, password },
+			isAuthenticated: false,
 		});
 		if (response.success) {
 			setAuthCookie(response.data.login?.refreshToken ?? "");
@@ -99,8 +102,10 @@ export const Route = createFileRoute("/auth/login")({
 function RouteComponent() {
 	const { rdt } = Route.useSearch();
 	return (
-		<div className="flex flex-col items-center justify-center min-h-screen p-4">
-			<LoginForm rdt={rdt as LinkProps["to"]} />
+		<div className="min-h-screen flex flex-col items-center justify-center bg-background">
+			<div className="w-full max-w-sm px-4 sm:px-6 md:px-8 py-8 bg-card rounded-lg shadow-md flex flex-col gap-6">
+				<LoginForm rdt={rdt as LinkProps["to"]} />
+			</div>
 		</div>
 	);
 }
@@ -133,36 +138,41 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 	 * Shows OTP dialog if email is unverified.
 	 */
 	async function onSubmit(data: LoginSchema) {
-		const response = await login({ data });
-		if (response.success) {
-			setAccessToken(response.data);
-			return navigate({
-				to: rdt,
-			});
-		}
-		const errorCode = response.error.code;
-		if (errorCode === ErrorCode.UNVERIFIED_EMAIL) {
-			const res = await graphqlRequest({
-				query: sendOtpQuery,
-				variables: { email: data.email, purpose: OtpPurpose.LOGIN },
-			});
-			if (!res.success) {
-				setFormError(
-					"Failed to send verification code. Please try again later.",
-				);
-				return;
+		try {
+			const response = await login({ data });
+			if (response.success) {
+				setAccessToken(response.data);
+				return navigate({
+					to: rdt,
+				});
 			}
-			toast.info(
-				"Verification code sent to your email. Please check your inbox.",
-			);
-			setShowOtpDialog(true);
-		} else if (
-			errorCode === ErrorCode.NOT_FOUND ||
-			errorCode === ErrorCode.UNAUTHORIZED
-		) {
-			setFormError("Invalid email or password. Please try again.");
-		} else {
-			setFormError("An unexpected error occurred. Please try again later.");
+			const errorCode = response.error.code;
+			if (errorCode === ErrorCode.UNVERIFIED_EMAIL) {
+				const res = await graphqlRequest({
+					query: sendOtpQuery,
+					variables: { email: data.email, purpose: OtpPurpose.LOGIN },
+					isAuthenticated: false,
+				});
+				if (!res.success) {
+					setFormError(
+						"Failed to send verification code. Please try again later.",
+					);
+					return;
+				}
+				toast.info(
+					"Verification code sent to your email. Please check your inbox.",
+				);
+				setShowOtpDialog(true);
+			} else if (
+				errorCode === ErrorCode.NOT_FOUND ||
+				errorCode === ErrorCode.UNAUTHORIZED
+			) {
+				setFormError("Invalid email or password. Please try again.");
+			} else {
+				setFormError("An unexpected error occurred. Please try again later.");
+			}
+		} catch (error: any) {
+			setFormError(error.issues[0]?.message || "An unexpected error occurred.");
 		}
 	}
 
@@ -171,18 +181,45 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
-					className="flex flex-col gap-4 max-w-sm w-full mt-4"
+					className="flex flex-col gap-4 w-full"
+					autoComplete="off"
 				>
 					{/* Email Field */}
 					<FormFieldWrapper form={form} name="email" label="Email">
 						{(field) => (
-							<Input {...field} type="email" placeholder="Enter your email" />
+							<Input
+								{...field}
+								type="email"
+								icon={<AtSign className="w-5 h-5" />}
+								placeholder="Enter your email"
+								className="w-full"
+							/>
 						)}
 					</FormFieldWrapper>
 					{/* Password Field */}
-					<FormFieldWrapper form={form} name="password" label="Password">
+					<FormFieldWrapper
+						form={form}
+						name="password"
+						label="Password"
+						rightLabel={
+							<Link
+								to="/auth/forgot-password"
+								className="text-sm text-blue-500 hover:underline"
+								search={{
+									rdt: rdt,
+								}}
+							>
+								Forgot Password?
+							</Link>
+						}
+					>
 						{(field) => (
-							<PasswordInput {...field} placeholder="Enter your password" />
+							<PasswordInput
+								{...field}
+								icon={<KeyRound className="w-5 h-5" />}
+								placeholder="Enter your password"
+								className="w-full"
+							/>
 						)}
 					</FormFieldWrapper>
 					<Button
@@ -192,7 +229,7 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 					>
 						Log In
 					</Button>
-					<Separator className="" />
+					<Separator />
 					<GoogleButton
 						setAccessToken={setAccessToken}
 						rdt={rdt}
@@ -204,6 +241,19 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 							<AlertDescription>{formError}</AlertDescription>
 						</Alert>
 					)}
+					{/* Signup Link */}
+					<p className="text-sm text-center text-muted-foreground">
+						Don't have an account?{" "}
+						<Link
+							to="/auth/signup"
+							className="text-blue-500 hover:underline"
+							search={{
+								rdt: rdt,
+							}}
+						>
+							Sign Up
+						</Link>
+					</p>
 				</form>
 			</Form>
 			{/* OTP Dialog for unverified email */}
