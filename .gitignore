@@ -1,3 +1,4 @@
 /node_modules
 /packages/*/node_modules
 .env
+/packages/server/src/generated/
