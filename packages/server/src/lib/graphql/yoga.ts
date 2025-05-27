@@ -20,11 +20,8 @@ import { useResponseCache } from "@envelop/response-cache";
 const yoga = createYoga({
 	schema,
 	context: async ({ request }) => {
-		const [type, token] =
-			request.headers.get("authorization")?.split(" ") ?? [];
 		return {
-			accessToken: type === "Access" ? token : null,
-			refreshToken: type === "Refresh" ? token : null,
+			accessToken: request.headers.get("authorization")?.split(" ")[1] ?? null,
 		};
 	},
 	plugins: [

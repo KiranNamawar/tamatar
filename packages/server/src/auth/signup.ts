@@ -28,7 +28,7 @@ builder.mutationField("signup", (t) =>
 		validate: {
 			schema: signupForm,
 		},
-		resolve: async (_, { name, email, password }, context: any) => {
+		resolve: async (_, { name, email, password }) => {
 			// Check if the user already exists
 			const existingUser = await getUserByEmail(email);
 			if (existingUser.success) {

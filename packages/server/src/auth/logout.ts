@@ -10,22 +10,18 @@ import { ErrorCode } from "@shared/constant";
 /**
  * GraphQL mutation for user logout.
  *
- * - Requires a valid refresh token in context.
+ * - Requires a valid refresh token.
  * - Invalidates the session associated with the refresh token.
  * - Returns true on success.
  */
 builder.mutationField("logout", (t) =>
 	t.field({
 		type: "Boolean",
-		resolve: async (_, args, context: any) => {
-			// Check if the user is authenticated
-			if (!context.refreshToken) {
-				throw new AppError("User not authenticated", {
-					code: ErrorCode.UNAUTHORIZED,
-				});
-			}
-
-			await updateSession(context.refreshToken, {
+		args: {
+			refreshToken: t.arg.string({ required: true }),
+		},
+		resolve: async (_, { refreshToken }) => {
+			await updateSession(refreshToken, {
 				isValid: false,
 			});
 

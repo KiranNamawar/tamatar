@@ -12,22 +12,17 @@ import { createToken } from "@/lib/utils/jwt";
 /**
  * GraphQL mutation for refreshing access tokens.
  *
- * - Requires a valid refresh token in context.
+ * - Requires a valid refresh token.
  * - Issues a new access token if the session is valid.
  * - Returns the new access token as a string.
  */
 builder.mutationField("refresh", (t) =>
 	t.field({
 		type: "String",
-		resolve: async (_, args, context: any) => {
-			const { refreshToken } = context;
-
-			// Check if the user is authenticated
-			if (!refreshToken) {
-				throw new AppError("User not authenticated", {
-					code: ErrorCode.UNAUTHORIZED,
-				});
-			}
+		args: {
+			refreshToken: t.arg.string({ required: true }),
+		},
+		resolve: async (_, { refreshToken }) => {
 
 			// Check if the refresh token is valid
 			const session = await getSessionById(refreshToken);
