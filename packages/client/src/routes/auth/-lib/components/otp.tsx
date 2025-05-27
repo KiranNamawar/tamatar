@@ -20,7 +20,6 @@ import { useStore } from "@/hooks/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OtpPurpose } from "@shared/constant";
 import { otpForm as otpSchema } from "@shared/schema";
-import { type LinkProps, useNavigate } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import { useEffect, useState } from "react";
@@ -72,10 +71,14 @@ const verify = createServerFn({
 		const response = await graphqlRequest({
 			query: verifyOtpQuery,
 			variables: { email, code, purpose },
-			isAuthenticated: false,
+			clientOptions: {
+				isAuthenticated: false,
+			},
 		});
 		if (response.success) {
-			setAuthCookie(response.data.verify?.refreshToken ?? "");
+			if (purpose === OtpPurpose.LOGIN || purpose === OtpPurpose.SIGNUP) {
+				setAuthCookie(response.data.verify?.refreshToken ?? "");
+			}
 			return {
 				success: true,
 				data: response.data.verify?.accessToken ?? null,
@@ -96,9 +99,12 @@ const verify = createServerFn({
 function OtpForm({
 	email,
 	purpose,
-	rdt,
-}: { email: string; purpose: OtpPurpose; rdt: LinkProps["to"] }) {
-	const navigate = useNavigate();
+	onSuccess,
+}: {
+	email: string;
+	purpose: OtpPurpose;
+	onSuccess: (data: string | null) => void;
+}) {
 	const setAccessToken = useStore((state) => state.auth.setAccessToken);
 	const form = useForm<OtpSchema>({
 		defaultValues: {
@@ -141,11 +147,11 @@ function OtpForm({
 			toast.success("OTP verified successfully!");
 			if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
 				setAccessToken(response.data);
+				return onSuccess(null);
 			}
-			return navigate({
-				to: rdt,
-				replace: true,
-			});
+			if (purpose === OtpPurpose.FORGOT_PASSWORD) {
+				return onSuccess(response.data);
+			}
 		}
 	}
 
@@ -245,7 +251,7 @@ type OtpDialogProps = {
 	onOpenChange: (open: boolean) => void;
 	email: string;
 	purpose: OtpPurpose;
-	rdt: LinkProps["to"];
+	onSuccess: (data: string | null) => void;
 };
 
 /**
@@ -257,12 +263,12 @@ function OtpDialog({
 	onOpenChange,
 	email,
 	purpose,
-	rdt,
+	onSuccess,
 }: OtpDialogProps) {
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent
-				className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 shadow-2xl rounded-2xl p-0 max-w-md w-full animate-fade-in"
+				className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 shadow-2xl rounded-2xl p-0 max-w-md sm:max-w-screen w-full animate-fade-in"
 				style={{ minWidth: 320 }}
 			>
 				<AlertDialogHeader className="px-6 pt-6 pb-2">
@@ -274,7 +280,7 @@ function OtpDialog({
 					</AlertDialogDescription>
 				</AlertDialogHeader>
 				<div className="px-6 pb-6">
-					<OtpForm email={email} purpose={purpose} rdt={rdt} />
+					<OtpForm email={email} purpose={purpose} onSuccess={onSuccess} />
 				</div>
 			</AlertDialogContent>
 		</AlertDialog>

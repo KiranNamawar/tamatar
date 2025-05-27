@@ -3,13 +3,23 @@ import { GRAPHQL_ENDPOINT, type Return } from "@shared/constant";
 import type { TadaDocumentNode } from "gql.tada";
 import { GraphQLClient } from "graphql-request";
 
-export function getClient(authenticated: boolean): GraphQLClient {
-	let token = null;
-	if (authenticated) token = useStore.getState().auth.accessToken;
+interface GetClientParams {
+	isAuthenticated?: boolean;
+	token?: string | null;
+	tokenType?: "Access" | "Refresh";
+}
 
+export function getClient({
+	isAuthenticated = true,
+	token = null,
+	tokenType = "Access",
+}: GetClientParams): GraphQLClient {
+	if (!token && isAuthenticated) {
+		token = useStore.getState().auth.accessToken;
+	}
 	return new GraphQLClient(GRAPHQL_ENDPOINT, {
 		headers: {
-			authorization: `Access ${token}`,
+			authorization: `${tokenType} ${token}`,
 		},
 	});
 }
@@ -17,7 +27,7 @@ export function getClient(authenticated: boolean): GraphQLClient {
 type graphqlRequestParams<TData = any, TVariables = Record<string, any>> = {
 	query: TadaDocumentNode<TData, TVariables, any>;
 	variables?: TVariables;
-	isAuthenticated?: boolean;
+	clientOptions?: GetClientParams;
 };
 
 export async function graphqlRequest<
@@ -26,9 +36,9 @@ export async function graphqlRequest<
 >({
 	query,
 	variables,
-	isAuthenticated = true,
+	clientOptions,
 }: graphqlRequestParams<TData, TVariables>): Promise<Return<TData>> {
-	const client = getClient(isAuthenticated);
+	const client = getClient(clientOptions ?? {});
 	try {
 		const res = await client.request(query, variables ?? {});
 		return {
@@ -36,7 +46,7 @@ export async function graphqlRequest<
 			data: res,
 		};
 	} catch (error: any) {
-		console.log(error)
+		console.log(error);
 		return {
 			success: false,
 			error: {

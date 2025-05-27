@@ -67,7 +67,9 @@ const login = createServerFn({
 		const response = await graphqlRequest({
 			query: LoginQuery,
 			variables: { email, password },
-			isAuthenticated: false,
+			clientOptions: {
+				isAuthenticated: false,
+			},
 		});
 		if (response.success) {
 			setAuthCookie(response.data.login?.refreshToken ?? "");
@@ -87,6 +89,7 @@ const searchSchema = z.object({
 
 /**
  * Route definition for the login page.
+ * Validates search params and renders the login page component.
  */
 export const Route = createFileRoute("/auth/login")({
 	validateSearch: zodValidator(searchSchema),
@@ -97,7 +100,7 @@ export const Route = createFileRoute("/auth/login")({
 
 /**
  * Login page wrapper component.
- * Renders the login form centered on the page.
+ * Renders the login form centered on the page with glassmorphic/gradient background.
  */
 function RouteComponent() {
 	const { rdt } = Route.useSearch();
@@ -120,7 +123,7 @@ function RouteComponent() {
  *   - rdt: LinkProps["to"] (redirect target after login)
  */
 function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
-	const [showOtpDialog, setShowOtpDialog] = useState(false);
+	const [showOtpDialog, setShowOtpDialog] = useState(true);
 	const [formError, setFormError] = useState<string | null>(null);
 	const setAccessToken = useStore((state) => state.auth.setAccessToken);
 	const navigate = useNavigate();
@@ -151,7 +154,9 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				const res = await graphqlRequest({
 					query: sendOtpQuery,
 					variables: { email: data.email, purpose: OtpPurpose.LOGIN },
-					isAuthenticated: false,
+					clientOptions: {
+						isAuthenticated: false,
+					},
 				});
 				if (!res.success) {
 					setFormError(
@@ -172,7 +177,9 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				setFormError("An unexpected error occurred. Please try again later.");
 			}
 		} catch (error: any) {
-			setFormError(error.issues[0]?.message || "An unexpected error occurred.");
+			setFormError(
+				error.issues?.[0]?.message || "An unexpected error occurred.",
+			);
 		}
 	}
 
@@ -262,7 +269,12 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				onOpenChange={setShowOtpDialog}
 				email={form.getValues("email")}
 				purpose={OtpPurpose.LOGIN}
-				rdt={rdt}
+				onSuccess={() =>
+					navigate({
+						to: rdt,
+						replace: true,
+					})
+				}
 			/>
 		</>
 	);

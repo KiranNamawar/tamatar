@@ -6,7 +6,12 @@ import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupForm as signupSchema } from "@shared/schema";
-import { Link, type LinkProps, createFileRoute } from "@tanstack/react-router";
+import {
+	Link,
+	type LinkProps,
+	createFileRoute,
+	useNavigate,
+} from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { zodValidator } from "@tanstack/zod-adapter";
 import { useForm } from "react-hook-form";
@@ -53,7 +58,9 @@ const signup = createServerFn({
 		const response = await graphqlRequest({
 			query: signupQuery,
 			variables: data,
-			isAuthenticated: false,
+			clientOptions: {
+				isAuthenticated: false,
+			},
 		});
 		if (!response.success) {
 			return response;
@@ -64,7 +71,9 @@ const signup = createServerFn({
 				email: data.email,
 				purpose: OtpPurpose.SIGNUP,
 			},
-			isAuthenticated: false,
+			clientOptions: {
+				isAuthenticated: false,
+			},
 		});
 		if (!res.success) {
 			return res;
@@ -77,6 +86,7 @@ const signup = createServerFn({
 
 // --- Route Definition ---
 const searchSchema = z.object({
+	// Redirect target after signup
 	rdt: z.string().default("/dashboard"),
 });
 
@@ -85,10 +95,10 @@ export const Route = createFileRoute("/auth/signup")({
 	component: RouteComponent,
 });
 
-// --- Page Component ---
 /**
- * Signup page wrapper component.
- * Renders the signup form centered on the page.
+ * RouteComponent
+ *
+ * Renders the signup form centered in a glassmorphic card.
  */
 function RouteComponent() {
 	const { rdt } = Route.useSearch();
@@ -101,15 +111,16 @@ function RouteComponent() {
 	);
 }
 
-// --- Signup Form Component ---
 /**
- * Signup form component.
- * Handles signup, error display, and OTP dialog for email verification.
+ * SignupForm
+ *
+ * Handles the registration form, error display, and OTP dialog for email verification.
  *
  * Props:
  *   - rdt: LinkProps["to"] (redirect target after signup)
  */
 function SignupForm({ rdt }: { rdt: LinkProps["to"] }) {
+	const navigate = useNavigate();
 	const [showOtpDialog, setShowOtpDialog] = useState(false);
 	const setAccessToken = useStore((state) => state.auth.setAccessToken);
 	const [formError, setFormError] = useState<string | null>(null);
@@ -208,6 +219,7 @@ function SignupForm({ rdt }: { rdt: LinkProps["to"] }) {
 							/>
 						)}
 					</FormFieldWrapper>
+					{/* Submit button */}
 					<Button
 						type="submit"
 						className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-green-600 hover:from-green-600 hover:to-red-500 text-white font-bold shadow-xl transition-all duration-300 border-2 border-white/80 dark:border-gray-800/80"
@@ -216,6 +228,7 @@ function SignupForm({ rdt }: { rdt: LinkProps["to"] }) {
 						Sign Up
 					</Button>
 					<Separator className="my-2 opacity-80" />
+					{/* Google signup button */}
 					<GoogleButton
 						setAccessToken={setAccessToken}
 						rdt={rdt}
@@ -233,9 +246,7 @@ function SignupForm({ rdt }: { rdt: LinkProps["to"] }) {
 						<Link
 							to="/auth/login"
 							className="text-blue-500 hover:underline"
-							search={{
-								rdt: rdt,
-							}}
+							search={{ rdt: rdt }}
 						>
 							Login
 						</Link>
@@ -248,7 +259,12 @@ function SignupForm({ rdt }: { rdt: LinkProps["to"] }) {
 				onOpenChange={setShowOtpDialog}
 				email={form.getValues("email")}
 				purpose={OtpPurpose.SIGNUP}
-				rdt={rdt}
+				onSuccess={() =>
+					navigate({
+						to: rdt,
+						replace: true,
+					})
+				}
 			/>
 		</>
 	);
