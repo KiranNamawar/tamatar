@@ -125,6 +125,7 @@ function ForgotPasswordForm({
 					</FormFieldWrapper>
 					<Button
 						type="submit"
+						pending={form.formState.isSubmitting}
 						className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-green-600 hover:from-green-600 hover:to-red-500 text-white font-bold shadow-xl transition-all duration-300 border-2 border-white/80 dark:border-gray-800/80 rounded-lg"
 					>
 						Send OTP
@@ -221,6 +222,7 @@ function ResetPasswordForm({
 				</FormFieldWrapper>
 				<Button
 					type="submit"
+					pending={form.formState.isSubmitting}
 					className="w-full bg-gradient-to-r from-green-500 to-blue-500 hover:from-blue-600 hover:to-green-600 text-white font-bold shadow-xl transition-all duration-300 border-2 border-white/80 dark:border-gray-800/80 rounded-lg"
 				>
 					Confirm

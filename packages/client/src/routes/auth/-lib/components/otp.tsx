@@ -268,7 +268,7 @@ function OtpDialog({
 	return (
 		<AlertDialog open={open} onOpenChange={onOpenChange}>
 			<AlertDialogContent
-				className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 shadow-2xl rounded-2xl p-0 max-w-md sm:max-w-screen w-full animate-fade-in"
+				className="backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 shadow-2xl rounded-2xl p-0 max-w-md w-full animate-fade-in"
 				style={{ minWidth: 320 }}
 			>
 				<AlertDialogHeader className="px-6 pt-6 pb-2">
