@@ -1,25 +1,41 @@
 import { useStore } from "@/hooks/useStore";
-import { GRAPHQL_ENDPOINT, type Return } from "@shared/constant";
+import { ErrorCode, GRAPHQL_ENDPOINT, type Return } from "@shared/constant";
+import { createServerFn } from "@tanstack/react-start";
+import { getHeader } from "@tanstack/react-start/server";
 import type { TadaDocumentNode } from "gql.tada";
 import { GraphQLClient } from "graphql-request";
+import { graphql } from "./graphql";
+
+const refreshQuery = graphql(`
+	mutation RefreshToken($token: String!) {
+		refresh(refreshToken: $token)
+	}`);
+
+const refresh = createServerFn({
+	method: "POST",
+}).handler(async () => {});
 
 interface GetClientParams {
 	isAuthenticated?: boolean;
 	token?: string | null;
-	tokenType?: "Access" | "Refresh";
+	env?: "server" | "client";
 }
 
 export function getClient({
 	isAuthenticated = true,
 	token = null,
-	tokenType = "Access",
+	env = "client",
 }: GetClientParams): GraphQLClient {
 	if (!token && isAuthenticated) {
-		token = useStore.getState().auth.accessToken;
+		if (env === "client") {
+			token = useStore.getState().auth.accessToken;
+		} else if (env === "server") {
+			token = getHeader("Authorization")?.replace("Bearer ", "") ?? null;
+		}
 	}
 	return new GraphQLClient(GRAPHQL_ENDPOINT, {
 		headers: {
-			authorization: `${tokenType} ${token}`,
+			authorization: `Bearer ${token}`,
 		},
 	});
 }
@@ -46,7 +62,8 @@ export async function graphqlRequest<
 			data: res,
 		};
 	} catch (error: any) {
-		console.log(error);
+		if (error.response.errors[0].extensions.code === ErrorCode.INVALID_JWT) {
+		}
 		return {
 			success: false,
 			error: {
