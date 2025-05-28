@@ -1,59 +1,11 @@
 import { useStore } from "@/hooks/useStore";
+import { refresh } from "@auth/refresh";
 import { ErrorCode, GRAPHQL_ENDPOINT, type Return } from "@shared/constant";
-import { createServerFn } from "@tanstack/react-start";
-import { getCookie, getHeader } from "@tanstack/react-start/server";
+// import { getHeader } from "@tanstack/react-start/server";
 import type { TadaDocumentNode } from "gql.tada";
 import { GraphQLClient } from "graphql-request";
-import { graphql } from "./graphql";
 
-// --- GraphQL Mutation for Refreshing Token ---
-/**
- * GraphQL mutation for refreshing the access token using a refresh token.
- * Used internally when the JWT is expired or invalid.
- */
-const refreshQuery = graphql(`
-	mutation RefreshToken($token: String!) {
-		refresh(refreshToken: $token)
-	}`);
 
-// --- Server Function: Refresh Token ---
-/**
- * Server function to refresh JWT using the refresh token from cookies.
- * Returns new access token or error.
- *
- * @returns {Promise<{success: boolean, data?: string, error?: {message: string, code: string}}>} - The result of the refresh operation.
- */
-const refresh = createServerFn({
-	method: "POST",
-}).handler(async () => {
-	const refreshToken = getCookie("refreshToken");
-	if (!refreshToken) {
-		return {
-			success: false,
-			error: {
-				message: "No refresh token provided",
-				code: ErrorCode.UNAUTHORIZED,
-			},
-		};
-	}
-	const response = await graphqlRequest({
-		query: refreshQuery,
-		variables: { token: refreshToken },
-	});
-	if (response.success) {
-		return {
-			success: true,
-			data: response.data.refresh,
-		};
-	}
-	return {
-		success: false,
-		error: {
-			message: response.error?.message || "Failed to refresh token",
-			code: response.error?.code || ErrorCode.INTERNAL_SERVER_ERROR,
-		},
-	};
-});
 
 interface GetClientParams {
 	isAuthenticated?: boolean;
@@ -78,9 +30,10 @@ export function getClient({
 	if (!token && isAuthenticated) {
 		if (env === "client") {
 			token = useStore.getState().auth.accessToken;
-		} else if (env === "server") {
-			token = getHeader("Authorization")?.replace("Bearer ", "") ?? null;
 		}
+		// } else if (env === "server") {
+		// 	token = getHeader("Authorization")?.replace("Bearer ", "") ?? null;
+		// }
 	}
 	return new GraphQLClient(GRAPHQL_ENDPOINT, {
 		headers: {
