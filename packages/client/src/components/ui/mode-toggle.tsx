@@ -2,7 +2,7 @@ import { Moon, Sun, Monitor } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useTheme } from "@/components/theme-provider"
 
-export function ModeToggle() {
+export function ModeToggle({ className }: { className?: string }) {
     const { theme, setTheme } = useTheme()
 
     // Show the icon for the theme that will be activated next
@@ -24,7 +24,7 @@ export function ModeToggle() {
     }
 
     return (
-        <Button size="icon" onClick={() => setTheme(getNextTheme())}>
+        <Button size="icon" className={className} onClick={() => setTheme(getNextTheme())}>
             {getNextIcon()}
             <span className="sr-only">Toggle theme</span>
         </Button>

@@ -1,3 +1,4 @@
+import { ModeToggle } from "@/components/ui/mode-toggle";
 import { Button } from "@/components/ui/moving-border";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
@@ -9,6 +10,7 @@ function App() {
 	return (
 		<div className="flex flex-col h-screen items-center justify-center">
 			Home Page
+			<ModeToggle className="absolute top-4 right-4" />
 			<div className="flex gap-4 mt-4">
 				<Link to="/auth/login">
 					<Button className="cursor-pointer">Login</Button>

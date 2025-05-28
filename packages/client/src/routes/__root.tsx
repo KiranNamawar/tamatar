@@ -14,11 +14,10 @@ import appCss from "../styles.css?url";
 
 import type { QueryClient } from "@tanstack/react-query";
 
+import { ThemeProvider } from "@/components/theme-provider.tsx";
+import { Toaster } from "@/components/ui/sonner.tsx";
 import type { TRPCRouter } from "@/integrations/trpc/router";
 import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
-import { ThemeProvider } from "@/components/theme-provider.tsx";
-import { Home } from "lucide-react";
-import { Toaster } from "@/components/ui/sonner.tsx";
 
 interface MyRouterContext {
 	queryClient: QueryClient;
@@ -50,7 +49,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 	component: () => (
 		<RootDocument>
 			<ConvexProvider>
-				<ThemeProvider defaultTheme="dark">
+				<ThemeProvider defaultTheme="system">
 					<Outlet />
 				</ThemeProvider>
 				<TanStackRouterDevtools />
