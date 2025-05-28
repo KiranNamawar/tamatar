@@ -11,8 +11,8 @@ scalar DateTime
 type Mutation {
   google(token: String!): AuthPayload
   login(email: String!, password: String!): AuthPayload
-  logout: Boolean
-  refresh: String
+  logout(refreshToken: String!): Boolean
+  refresh(refreshToken: String!): String
   resetPassword(confirmPassword: String!, password: String!): Boolean
   sendOtp(email: String!, purpose: OtpPurpose!): Boolean
   signup(confirmPassword: String!, email: String!, name: String!, password: String!): Boolean

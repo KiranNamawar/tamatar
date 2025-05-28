@@ -39,7 +39,7 @@ builder.mutationField("resetPassword", (t) =>
 			const res = await verifyToken(accessToken);
 			if (!res.success) {
 				throw new AppError("Invalid token", {
-					code: ErrorCode.UNAUTHORIZED,
+					code: res.error?.code
 				});
 			}
 
