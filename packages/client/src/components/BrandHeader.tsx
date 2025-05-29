@@ -5,13 +5,10 @@ import type React from "react";
  * Displays the Tamatar brand name (animated gradient) and step indicator (optional).
  *
  * Props:
- *   - step?: number (current step, 1 or 2)
- *   - totalSteps?: number (default 2)
  *   - className?: string (optional extra classes)
  *   - style?: React.CSSProperties (optional extra styles)
  *
  * Usage:
- *   <BrandHeader step={step} />
  *   <BrandHeader />
  */
 export function BrandHeader({

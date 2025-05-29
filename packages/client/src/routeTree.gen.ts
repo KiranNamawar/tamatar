@@ -15,10 +15,8 @@ import { Route as TestImport } from './routes/test'
 import { Route as ResourcesImport } from './routes/resources'
 import { Route as DashboardImport } from './routes/dashboard'
 import { Route as BookmarksImport } from './routes/bookmarks'
-import { Route as SettingsRouteImport } from './routes/settings/route'
 import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
-import { Route as SettingsIndexImport } from './routes/settings/index'
 import { Route as AuthSignupImport } from './routes/auth/signup'
 import { Route as AuthLoginImport } from './routes/auth/login'
 import { Route as AuthForgotPasswordImport } from './routes/auth/forgot-password'
@@ -49,12 +47,6 @@ const BookmarksRoute = BookmarksImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const SettingsRouteRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const AuthRouteRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -65,12 +57,6 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
-
-const SettingsIndexRoute = SettingsIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => SettingsRouteRoute,
 } as any)
 
 const AuthSignupRoute = AuthSignupImport.update({
@@ -107,13 +93,6 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRoute
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRoute
     }
     '/bookmarks': {
@@ -165,13 +144,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupImport
       parentRoute: typeof AuthRouteImport
     }
-    '/settings/': {
-      id: '/settings/'
-      path: '/'
-      fullPath: '/settings/'
-      preLoaderRoute: typeof SettingsIndexImport
-      parentRoute: typeof SettingsRouteImport
-    }
   }
 }
 
@@ -193,22 +165,9 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
   AuthRouteRouteChildren,
 )
 
-interface SettingsRouteRouteChildren {
-  SettingsIndexRoute: typeof SettingsIndexRoute
-}
-
-const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
-  SettingsIndexRoute: SettingsIndexRoute,
-}
-
-const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
-  SettingsRouteRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/settings': typeof SettingsRouteRouteWithChildren
   '/bookmarks': typeof BookmarksRoute
   '/dashboard': typeof DashboardRoute
   '/resources': typeof ResourcesRoute
@@ -216,7 +175,6 @@ export interface FileRoutesByFullPath {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/settings/': typeof SettingsIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -229,14 +187,12 @@ export interface FileRoutesByTo {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/settings': typeof SettingsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/settings': typeof SettingsRouteRouteWithChildren
   '/bookmarks': typeof BookmarksRoute
   '/dashboard': typeof DashboardRoute
   '/resources': typeof ResourcesRoute
@@ -244,7 +200,6 @@ export interface FileRoutesById {
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/signup': typeof AuthSignupRoute
-  '/settings/': typeof SettingsIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -252,7 +207,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/settings'
     | '/bookmarks'
     | '/dashboard'
     | '/resources'
@@ -260,7 +214,6 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
-    | '/settings/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -272,12 +225,10 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
-    | '/settings'
   id:
     | '__root__'
     | '/'
     | '/auth'
-    | '/settings'
     | '/bookmarks'
     | '/dashboard'
     | '/resources'
@@ -285,14 +236,12 @@ export interface FileRouteTypes {
     | '/auth/forgot-password'
     | '/auth/login'
     | '/auth/signup'
-    | '/settings/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   BookmarksRoute: typeof BookmarksRoute
   DashboardRoute: typeof DashboardRoute
   ResourcesRoute: typeof ResourcesRoute
@@ -302,7 +251,6 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  SettingsRouteRoute: SettingsRouteRouteWithChildren,
   BookmarksRoute: BookmarksRoute,
   DashboardRoute: DashboardRoute,
   ResourcesRoute: ResourcesRoute,
@@ -321,7 +269,6 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth",
-        "/settings",
         "/bookmarks",
         "/dashboard",
         "/resources",
@@ -337,12 +284,6 @@ export const routeTree = rootRoute
         "/auth/forgot-password",
         "/auth/login",
         "/auth/signup"
-      ]
-    },
-    "/settings": {
-      "filePath": "settings/route.tsx",
-      "children": [
-        "/settings/"
       ]
     },
     "/bookmarks": {
@@ -368,10 +309,6 @@ export const routeTree = rootRoute
     "/auth/signup": {
       "filePath": "auth/signup.tsx",
       "parent": "/auth"
-    },
-    "/settings/": {
-      "filePath": "settings/index.tsx",
-      "parent": "/settings"
     }
   }
 }
