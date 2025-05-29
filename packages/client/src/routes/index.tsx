@@ -5,6 +5,7 @@ import InspirationSection from "@/components/index/inspiration";
 import StatsSection from "@/components/index/stats";
 import TestimonialsSection from "@/components/index/testimonials";
 
+import { Navigation } from "@/components/Navigation";
 import DemoGallerySection from "@/components/index/demo-gallery";
 import FeatureHighlightsSection from "@/components/index/feature-highlights";
 import WhyTamatarSection from "@/components/index/why-tamatar";
@@ -51,7 +52,14 @@ export default function TamatarHomeUltimate() {
 		<div className="relative min-h-screen flex flex-col items-center justify-center transition-colors duration-700 overflow-x-hidden bg-gradient-to-br from-orange-200 via-yellow-100 to-pink-100 dark:bg-gradient-to-br dark:from-[#23243a] dark:via-[#181c24] dark:to-[#1a2a33]">
 			{/* Floating Theme Toggle */}
 			<div className="fixed top-4 right-4 z-50">
-				<ModeToggle className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-lg hover:shadow-xl transition-all duration-200" />
+				<ModeToggle />
+			</div>
+
+			{/* Floating Dock Navigation */}
+			<div className="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
+				<div className="pointer-events-auto flex justify-center">
+					<Navigation />
+				</div>
 			</div>
 
 			{/* Hero Section */}

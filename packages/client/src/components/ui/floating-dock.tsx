@@ -18,12 +18,27 @@ import {
 } from "motion/react";
 import { useRef, useState } from "react";
 
+// Dock item type supports either icon/to or a render function
+export type FloatingDockItem =
+	| {
+			title: string;
+			icon: React.ReactNode;
+			to: LinkProps["to"];
+			render?: undefined;
+	  }
+	| {
+			title: string;
+			render: () => React.ReactNode;
+			icon?: undefined;
+			to?: undefined;
+	  };
+
 export const FloatingDock = ({
 	items,
 	desktopClassName,
 	mobileClassName,
 }: {
-	items: { title: string; icon: React.ReactNode; to: LinkProps["to"] }[];
+	items: FloatingDockItem[];
 	desktopClassName?: string;
 	mobileClassName?: string;
 }) => {
@@ -45,7 +60,7 @@ const FloatingDockMobile = ({
 	items,
 	className,
 }: {
-	items: { title: string; icon: React.ReactNode; to: LinkProps["to"] }[];
+	items: FloatingDockItem[];
 	className?: string;
 }) => {
 	const [open, setOpen] = useState(false);
@@ -61,29 +76,27 @@ const FloatingDockMobile = ({
 							<motion.div
 								key={item.title}
 								initial={{ opacity: 0, y: 10 }}
-								animate={{
-									opacity: 1,
-									y: 0,
-								}}
+								animate={{ opacity: 1, y: 0 }}
 								exit={{
 									opacity: 0,
 									y: 10,
-									transition: {
-										delay: idx * 0.05,
-									},
+									transition: { delay: idx * 0.05 },
 								}}
 								transition={{ delay: (items.length - 1 - idx) * 0.05 }}
 							>
 								{" "}
-								<Link
-									to={item.to}
-									key={item.title}
-									className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg border border-white/60 dark:border-gray-800/80"
-								>
-									<div className="flex items-center justify-center h-4 w-4">
-										{item.icon}
-									</div>
-								</Link>
+								{item.render ? (
+									item.render()
+								) : (
+									<Link
+										to={item.to}
+										className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200/80 dark:border-gray-800/80"
+									>
+										<div className="flex items-center justify-center h-4 w-4">
+											{item.icon}
+										</div>
+									</Link>
+								)}
 							</motion.div>
 						))}
 					</motion.div>
@@ -92,7 +105,7 @@ const FloatingDockMobile = ({
 			<button
 				type="button"
 				onClick={() => setOpen(!open)}
-				className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg border border-white/60 dark:border-gray-800/80"
+				className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg border border-gray-200/80 dark:border-gray-800/80"
 			>
 				{open ? (
 					<PanelBottomClose className="h-5 w-5 text-muted-foreground" />
@@ -108,7 +121,7 @@ const FloatingDockDesktop = ({
 	items,
 	className,
 }: {
-	items: { title: string; icon: React.ReactNode; to: LinkProps["to"] }[];
+	items: FloatingDockItem[];
 	className?: string;
 }) => {
 	const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
@@ -121,9 +134,13 @@ const FloatingDockDesktop = ({
 				className,
 			)}
 		>
-			{items.map((item) => (
-				<IconContainer mouseX={mouseX} key={item.title} {...item} />
-			))}
+			{items.map((item) =>
+				item.render ? (
+					<div key={item.title}>{item.render()}</div>
+				) : (
+					<IconContainer mouseX={mouseX} key={item.title} {...item} />
+				),
+			)}
 		</motion.div>
 	);
 };
@@ -137,7 +154,7 @@ function IconContainer({
 	mouseX: MotionValue;
 	title: string;
 	icon: React.ReactNode;
-	to: LinkProps["to"];
+	to?: LinkProps["to"];
 }) {
 	const ref = useRef<HTMLDivElement>(null);
 
@@ -185,14 +202,45 @@ function IconContainer({
 
 	const [hovered, setHovered] = useState(false);
 
-	return (
-		<Link to={to}>
+	if (to) {
+		return (
+			<Link to={to}>
+				<motion.div
+					ref={ref}
+					style={{ width, height }}
+					onMouseEnter={() => setHovered(true)}
+					onMouseLeave={() => setHovered(false)}
+					className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm"
+				>
+					<AnimatePresence>
+						{hovered && (
+							<motion.div
+								initial={{ opacity: 0, y: 10, x: "-50%" }}
+								animate={{ opacity: 1, y: 0, x: "-50%" }}
+								exit={{ opacity: 0, y: 2, x: "-50%" }}
+								className="absolute -top-10 left-1/2 w-fit rounded-md border border-border bg-popover px-2 py-1 text-xs whitespace-pre text-popover-foreground leading-normal"
+							>
+								{title}
+							</motion.div>
+						)}
+					</AnimatePresence>
+					<motion.div
+						style={{ width: widthIcon, height: heightIcon }}
+						className="flex items-center justify-center"
+					>
+						{icon}
+					</motion.div>
+				</motion.div>
+			</Link>
+		);
+	} else {
+		return (
 			<motion.div
 				ref={ref}
 				style={{ width, height }}
 				onMouseEnter={() => setHovered(true)}
 				onMouseLeave={() => setHovered(false)}
-				className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm"
+				className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm cursor-pointer"
 			>
 				<AnimatePresence>
 					{hovered && (
@@ -213,6 +261,6 @@ function IconContainer({
 					{icon}
 				</motion.div>
 			</motion.div>
-		</Link>
-	);
+		);
+	}
 }

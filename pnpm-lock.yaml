@@ -13,6 +13,9 @@ importers:
       '@convex-dev/react-query':
         specifier: 0.0.0-alpha.8
         version: 0.0.0-alpha.8(@tanstack/react-query@5.76.1(react@19.1.0))(convex@1.24.1(react@19.1.0))
+      '@fontsource/nunito-sans':
+        specifier: ^5.2.5
+        version: 5.2.5
       '@hookform/resolvers':
         specifier: ^5.0.1
         version: 5.0.1(react-hook-form@7.56.4(react@19.1.0))
@@ -1183,6 +1186,9 @@ packages:
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
+
+  '@fontsource/nunito-sans@5.2.5':
+    resolution: {integrity: sha512-QE2I4PmR9CHoAXxfpz4L+o35X4jg64i+5/J8Aa0G24mY9xs2VPr0a4igDcZkjIMhGfFfPAvcaR+hf/NpXVhZuw==}
 
   '@gql.tada/cli-utils@1.6.3':
     resolution: {integrity: sha512-jFFSY8OxYeBxdKi58UzeMXG1tdm4FVjXa8WHIi66Gzu9JWtCE6mqom3a8xkmSw+mVaybFW5EN2WXf1WztJVNyQ==}
@@ -6859,6 +6865,8 @@ snapshots:
       react-dom: 19.1.0(react@19.1.0)
 
   '@floating-ui/utils@0.2.9': {}
+
+  '@fontsource/nunito-sans@5.2.5': {}
 
   '@gql.tada/cli-utils@1.6.3(@0no-co/graphqlsp@1.12.16(graphql@16.11.0)(typescript@5.8.3))(graphql@16.11.0)(typescript@5.8.3)':
     dependencies:
