@@ -143,6 +143,47 @@ code {
   }
 }
 
+/* === Custom Animations & Utilities for Homepage and BrandHeader === */
+.bg-gradient-conic {
+  background-image: conic-gradient(var(--tw-gradient-stops));
+}
+
+@keyframes spin-slow {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin-slow {
+  animation: spin-slow 16s linear infinite;
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+.animate-gradient-x {
+  background-size: 200% 200%;
+  animation: gradient-x 3s ease-in-out infinite;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-fade-in {
+  animation: fadeIn 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -150,4 +191,18 @@ code {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Floating animation for background icons */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(10deg);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }

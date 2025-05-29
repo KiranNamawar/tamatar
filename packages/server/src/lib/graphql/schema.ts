@@ -3,6 +3,7 @@
 
 import builder from "./pothos";
 import "@/auth";
+import "@/settings";
 
 /**
  * The root GraphQL schema includes:

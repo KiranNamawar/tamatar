@@ -1,6 +1,9 @@
 // Auth Utility Functions
 // Provides password hashing/verification, username generation, and OTP code generation utilities.
 
+import { AppError } from "@/lib/utils/error";
+import { verifyToken } from "@/lib/utils/jwt";
+import { ErrorCode } from "@shared/constant";
 import { customAlphabet } from "nanoid";
 
 /**
@@ -33,3 +36,21 @@ export function generateUsername(email: string) {
  * Generates a 6-digit numeric OTP code.
  */
 export const generateOtpCode = customAlphabet("0123456789", 6);
+
+export const getUserId = async (ctx: any) => {
+	const accessToken = ctx.accessToken;
+	if (!accessToken) {
+		throw new AppError("Access Token is required", {
+			code: ErrorCode.UNAUTHORIZED,
+		});
+	}
+
+	const res = await verifyToken(accessToken);
+	if (!res.success) {
+		throw new AppError(res.error.message, {
+			code: res.error.code,
+		});
+	}
+
+	return res.data.sub;
+};

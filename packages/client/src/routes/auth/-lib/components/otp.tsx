@@ -1,6 +1,7 @@
 // OTP Verification Form and Dialog Components
 // Handles OTP input, verification, and resend logic for authentication flows.
 
+import { BrandHeader } from "@/components/BrandHeader";
 import {
 	AlertDialog,
 	AlertDialogContent,
@@ -142,16 +143,20 @@ function OtpForm({
 	 * Handles OTP form submission and verification.
 	 */
 	async function onSubmit(data: OtpSchema) {
-		const response = await verify({ data });
-		if (response.success && response.data) {
-			toast.success("OTP verified successfully!");
-			if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
-				setAccessToken(response.data);
-				return onSuccess(null);
+		try {
+			const response = await verify({ data });
+			if (response.success && response.data) {
+				toast.success("OTP verified successfully!");
+				if (purpose === OtpPurpose.SIGNUP || purpose === OtpPurpose.LOGIN) {
+					setAccessToken(response.data);
+					return onSuccess(null);
+				}
+				if (purpose === OtpPurpose.FORGOT_PASSWORD) {
+					return onSuccess(response.data);
+				}
 			}
-			if (purpose === OtpPurpose.FORGOT_PASSWORD) {
-				return onSuccess(response.data);
-			}
+		} catch (error: any) {
+			toast.error(error.issues?.[0]?.message || "Verification failed.");
 		}
 	}
 
@@ -165,7 +170,7 @@ function OtpForm({
 		});
 		if (response.success) {
 			toast.success(
-				"Verification code sent to your email. Please check your inbox.",
+				"Verification code sent to your email. Also check your spam folder.",
 			);
 			// Restart timer
 			setResendDisabled(true);
@@ -228,11 +233,10 @@ function OtpForm({
 						aria-live="polite"
 					>
 						{resendDisabled ? `Resend in ${resendTimer}s` : "Resend"}
-					</Button>
-					<Button
+					</Button>					<Button
 						type="submit"
 						pending={form.formState.isSubmitting}
-						className="rounded-lg px-4 py-2 font-bold bg-gradient-to-r from-green-500 to-blue-500 text-white shadow hover:from-blue-600 hover:to-green-600 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-400 transition-all"
+						className="rounded-lg px-4 py-2 font-bold bg-gradient-to-r from-red-500 via-orange-500 to-orange-600 text-white shadow hover:from-orange-600 hover:to-red-500 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-all"
 					>
 						Verify
 					</Button>
@@ -272,7 +276,8 @@ function OtpDialog({
 				style={{ minWidth: 320 }}
 			>
 				<AlertDialogHeader className="px-6 pt-6 pb-2">
-					<AlertDialogTitle className="text-center text-lg font-bold text-gray-900 dark:text-white">
+					<BrandHeader />
+					<AlertDialogTitle className="text-center text-md font-semibold text-gray-900 dark:text-white">
 						Verify Your Email
 					</AlertDialogTitle>
 					<AlertDialogDescription className="text-center text-sm text-gray-600 dark:text-gray-400">

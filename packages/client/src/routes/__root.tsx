@@ -35,7 +35,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "Tamatar Store",
+				title: "Tamatar - Developer Progress Tracking",
 			},
 		],
 		links: [

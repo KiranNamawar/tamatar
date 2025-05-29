@@ -39,7 +39,9 @@ const google = createServerFn({
 		const response = await graphqlRequest({
 			query: googleQuery,
 			variables: { token: data.token },
-			isAuthenticated: false,
+			clientOptions: {
+				isAuthenticated: false,
+			},
 		});
 		if (response.success) {
 			setAuthCookie(response.data.google?.refreshToken ?? "");
@@ -90,11 +92,10 @@ function GoogleButton({
 			setLoading(false);
 		},
 	});
-	return (
-		<Button
+	return (		<Button
 			variant="outline"
 			type="button"
-			className="w-full"
+			className="w-full bg-gradient-to-r from-red-50 to-orange-50 hover:from-red-100 hover:to-orange-100 border-2 border-red-200 hover:border-orange-300 text-gray-700 dark:text-gray-200 dark:from-gray-800 dark:to-gray-900 dark:border-red-600 dark:hover:border-orange-500 shadow-lg hover:shadow-xl transition-all duration-300"
 			onClick={() => login()}
 			pending={loading}
 		>

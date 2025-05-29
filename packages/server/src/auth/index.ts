@@ -1,15 +1,17 @@
-export * from './object';
+export * from "./object";
 
-export * from './login';
+export * from "./login";
 
-export * from './signup';
+export * from "./signup";
 
-export * from './refresh';
+export * from "./refresh";
 
-export * from './verify';
+export * from "./verify";
 
-export * from './reset-password';
+export * from "./reset-password";
 
-export * from './google';
+export * from "./google";
 
-export * from './logout';
+export * from "./logout";
+
+export * from "./user";
