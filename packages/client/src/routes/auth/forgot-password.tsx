@@ -13,7 +13,7 @@ import {
 	useNavigate,
 } from "@tanstack/react-router";
 import { zodValidator } from "@tanstack/zod-adapter";
-import { AtSign, KeyRound, Lock, Shield, Key, RefreshCw } from "lucide-react";
+import { AtSign, Key, KeyRound, Lock, RefreshCw, Shield } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -56,12 +56,30 @@ function RouteComponent() {
 		<div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200/80 via-white/90 to-purple-200/80 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700 overflow-hidden">
 			{/* Floating Background Icons */}
 			<div className="absolute inset-0 z-0 overflow-hidden">
-				<Lock className="absolute top-20 left-10 w-12 h-12 text-red-400/20 dark:text-red-300/10 animate-float" style={{ animationDelay: '0s' }} />
-				<Shield className="absolute top-32 right-20 w-8 h-8 text-orange-400/20 dark:text-orange-300/10 animate-float" style={{ animationDelay: '2s' }} />
-				<Key className="absolute bottom-40 left-16 w-10 h-10 text-blue-400/20 dark:text-blue-300/10 animate-float" style={{ animationDelay: '4s' }} />
-				<RefreshCw className="absolute bottom-20 right-12 w-14 h-14 text-purple-400/20 dark:text-purple-300/10 animate-float" style={{ animationDelay: '1s' }} />
-				<AtSign className="absolute top-1/2 left-8 w-6 h-6 text-green-400/20 dark:text-green-300/10 animate-float" style={{ animationDelay: '3s' }} />
-				<KeyRound className="absolute top-1/3 right-8 w-9 h-9 text-pink-400/20 dark:text-pink-300/10 animate-float" style={{ animationDelay: '5s' }} />
+				<Lock
+					className="absolute top-20 left-10 w-12 h-12 text-red-400/20 dark:text-red-300/10 animate-float"
+					style={{ animationDelay: "0s" }}
+				/>
+				<Shield
+					className="absolute top-32 right-20 w-8 h-8 text-orange-400/20 dark:text-orange-300/10 animate-float"
+					style={{ animationDelay: "2s" }}
+				/>
+				<Key
+					className="absolute bottom-40 left-16 w-10 h-10 text-blue-400/20 dark:text-blue-300/10 animate-float"
+					style={{ animationDelay: "4s" }}
+				/>
+				<RefreshCw
+					className="absolute bottom-20 right-12 w-14 h-14 text-purple-400/20 dark:text-purple-300/10 animate-float"
+					style={{ animationDelay: "1s" }}
+				/>
+				<AtSign
+					className="absolute top-1/2 left-8 w-6 h-6 text-green-400/20 dark:text-green-300/10 animate-float"
+					style={{ animationDelay: "3s" }}
+				/>
+				<KeyRound
+					className="absolute top-1/3 right-8 w-9 h-9 text-pink-400/20 dark:text-pink-300/10 animate-float"
+					style={{ animationDelay: "5s" }}
+				/>
 			</div>
 			<div className="relative z-10 w-full max-w-sm px-4 sm:px-6 md:px-8 py-10 rounded-3xl shadow-2xl flex flex-col gap-8 backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 animate-fade-in">
 				<BrandHeader />
@@ -208,7 +226,6 @@ function ResetPasswordForm({
 				className="flex flex-col gap-6 w-full animate-fade-in"
 				autoComplete="off"
 			>
-				<BrandHeader />
 				<FormFieldWrapper form={form} name="password" label="Password">
 					{(field) => (
 						<PasswordInput

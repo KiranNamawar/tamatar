@@ -1,0 +1,8 @@
+Contact: mailto:security@tamatar.dev
+Contact: https://tamatar.dev/security
+Expires: 2026-05-29T23:59:59.000Z
+Encryption: https://tamatar.dev/pgp-key.txt
+Acknowledgments: https://tamatar.dev/security-acknowledgments
+Preferred-Languages: en
+Canonical: https://tamatar.dev/.well-known/security.txt
+Policy: https://tamatar.dev/security-policy

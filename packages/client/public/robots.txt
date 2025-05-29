@@ -1,3 +1,15 @@
+# Tamatar - Developer Progress Tracking Platform
 # https://www.robotstxt.org/robotstxt.html
+
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /settings/
+Disallow: /dashboard/
+
+# Sitemap location
+Sitemap: https://tamatar.dev/sitemap.xml
+
+# Crawl delay
+Crawl-delay: 1

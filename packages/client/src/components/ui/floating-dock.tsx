@@ -6,7 +6,8 @@
 
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
-import { PanelBottomOpen, PanelBottomClose } from "lucide-react";
+import type { LinkProps } from "@tanstack/react-router";
+import { PanelBottomClose, PanelBottomOpen } from "lucide-react";
 import {
 	AnimatePresence,
 	type MotionValue,
@@ -15,7 +16,6 @@ import {
 	useSpring,
 	useTransform,
 } from "motion/react";
-import type { LinkProps } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 
 export const FloatingDock = ({
@@ -31,11 +31,11 @@ export const FloatingDock = ({
 		<>
 			<FloatingDockDesktop
 				items={items}
-				className={`fixed bottom-2 left-1/2 transform -translate-x-1/2 ${desktopClassName}`}
+				className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 ${desktopClassName}`}
 			/>
 			<FloatingDockMobile
 				items={items}
-				className={`fixed bottom-2 right-2 ${mobileClassName}`}
+				className={`fixed bottom-4 right-4 z-50 ${mobileClassName}`}
 			/>
 		</>
 	);
@@ -74,10 +74,11 @@ const FloatingDockMobile = ({
 								}}
 								transition={{ delay: (items.length - 1 - idx) * 0.05 }}
 							>
+								{" "}
 								<Link
 									to={item.to}
 									key={item.title}
-									className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-900"
+									className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg border border-white/60 dark:border-gray-800/80"
 								>
 									<div className="flex items-center justify-center h-4 w-4">
 										{item.icon}
@@ -87,16 +88,16 @@ const FloatingDockMobile = ({
 						))}
 					</motion.div>
 				)}
-			</AnimatePresence>
+			</AnimatePresence>{" "}
 			<button
 				type="button"
 				onClick={() => setOpen(!open)}
-				className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
+				className="flex h-10 w-10 items-center justify-center rounded-full bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg border border-white/60 dark:border-gray-800/80"
 			>
 				{open ? (
-					<PanelBottomClose className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+					<PanelBottomClose className="h-5 w-5 text-muted-foreground" />
 				) : (
-					<PanelBottomOpen className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+					<PanelBottomOpen className="h-5 w-5 text-muted-foreground" />
 				)}
 			</button>
 		</div>
@@ -110,13 +111,13 @@ const FloatingDockDesktop = ({
 	items: { title: string; icon: React.ReactNode; to: LinkProps["to"] }[];
 	className?: string;
 }) => {
-	let mouseX = useMotionValue(Infinity);
+	const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
 	return (
 		<motion.div
 			onMouseMove={(e) => mouseX.set(e.pageX)}
-			onMouseLeave={() => mouseX.set(Infinity)}
+			onMouseLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
 			className={cn(
-				"mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-gray-50 px-4 pb-3 md:flex dark:bg-neutral-900",
+				"mx-auto hidden h-16 items-end gap-4 rounded-2xl bg-white/80 dark:bg-gray-900/90 backdrop-blur-lg border border-white/60 dark:border-gray-800/80 px-4 pb-3 md:flex",
 				className,
 			)}
 		>
@@ -138,41 +139,45 @@ function IconContainer({
 	icon: React.ReactNode;
 	to: LinkProps["to"];
 }) {
-	let ref = useRef<HTMLDivElement>(null);
+	const ref = useRef<HTMLDivElement>(null);
 
-	let distance = useTransform(mouseX, (val) => {
-		let bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
+	const distance = useTransform(mouseX, (val) => {
+		const bounds = ref.current?.getBoundingClientRect() ?? { x: 0, width: 0 };
 
 		return val - bounds.x - bounds.width / 2;
 	});
 
-	let widthTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
-	let heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
+	const widthTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
+	const heightTransform = useTransform(distance, [-150, 0, 150], [40, 80, 40]);
 
-	let widthTransformIcon = useTransform(distance, [-150, 0, 150], [20, 40, 20]);
-	let heightTransformIcon = useTransform(
+	const widthTransformIcon = useTransform(
+		distance,
+		[-150, 0, 150],
+		[20, 40, 20],
+	);
+	const heightTransformIcon = useTransform(
 		distance,
 		[-150, 0, 150],
 		[20, 40, 20],
 	);
 
-	let width = useSpring(widthTransform, {
+	const width = useSpring(widthTransform, {
 		mass: 0.1,
 		stiffness: 150,
 		damping: 12,
 	});
-	let height = useSpring(heightTransform, {
+	const height = useSpring(heightTransform, {
 		mass: 0.1,
 		stiffness: 150,
 		damping: 12,
 	});
 
-	let widthIcon = useSpring(widthTransformIcon, {
+	const widthIcon = useSpring(widthTransformIcon, {
 		mass: 0.1,
 		stiffness: 150,
 		damping: 12,
 	});
-	let heightIcon = useSpring(heightTransformIcon, {
+	const heightIcon = useSpring(heightTransformIcon, {
 		mass: 0.1,
 		stiffness: 150,
 		damping: 12,
@@ -187,7 +192,7 @@ function IconContainer({
 				style={{ width, height }}
 				onMouseEnter={() => setHovered(true)}
 				onMouseLeave={() => setHovered(false)}
-				className="relative flex aspect-square items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-800"
+				className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm"
 			>
 				<AnimatePresence>
 					{hovered && (
@@ -195,7 +200,7 @@ function IconContainer({
 							initial={{ opacity: 0, y: 10, x: "-50%" }}
 							animate={{ opacity: 1, y: 0, x: "-50%" }}
 							exit={{ opacity: 0, y: 2, x: "-50%" }}
-							className="absolute -top-8 left-1/2 w-fit rounded-md border border-gray-200 bg-gray-100 px-2 py-0.5 text-xs whitespace-pre text-neutral-700 dark:border-neutral-900 dark:bg-neutral-800 dark:text-white"
+							className="absolute -top-10 left-1/2 w-fit rounded-md border border-border bg-popover px-2 py-1 text-xs whitespace-pre text-popover-foreground leading-normal"
 						>
 							{title}
 						</motion.div>

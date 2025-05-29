@@ -1,0 +1,92 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://tamatar.dev/#website",
+      "url": "https://tamatar.dev/",
+      "name": "Tamatar",
+      "description": "Developer Progress Tracking Platform",
+      "publisher": {
+        "@id": "https://tamatar.dev/#organization"
+      },
+      "potentialAction": [
+        {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://tamatar.dev/search?q={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      ],
+      "inLanguage": "en-US"
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://tamatar.dev/#organization",
+      "name": "Tamatar",
+      "url": "https://tamatar.dev/",
+      "logo": {
+        "@type": "ImageObject",
+        "inLanguage": "en-US",
+        "@id": "https://tamatar.dev/#/schema/logo",
+        "url": "https://tamatar.dev/logo.png",
+        "contentUrl": "https://tamatar.dev/logo.png",
+        "width": 512,
+        "height": 512,
+        "caption": "Tamatar"
+      },
+      "image": {
+        "@id": "https://tamatar.dev/#/schema/logo"
+      },
+      "sameAs": [
+        "https://twitter.com/tamatar_dev",
+        "https://github.com/tamatar-dev"
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://tamatar.dev/#webpage",
+      "url": "https://tamatar.dev/",
+      "name": "Tamatar - Developer Progress Tracking Platform",
+      "isPartOf": {
+        "@id": "https://tamatar.dev/#website"
+      },
+      "about": {
+        "@id": "https://tamatar.dev/#organization"
+      },
+      "description": "Track your coding journey, showcase your projects, and connect with fellow developers. Build your developer portfolio with Tamatar's intuitive progress tracking tools.",
+      "breadcrumb": {
+        "@id": "https://tamatar.dev/#breadcrumb"
+      },
+      "inLanguage": "en-US",
+      "potentialAction": [
+        {
+          "@type": "ReadAction",
+          "target": [
+            "https://tamatar.dev/"
+          ]
+        }
+      ]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Tamatar",
+      "description": "Developer Progress Tracking Platform for showcasing coding projects and tracking development journey",
+      "url": "https://tamatar.dev",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      }
+    }
+  ]
+}

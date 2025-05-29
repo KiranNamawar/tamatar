@@ -1,0 +1,25 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Developer: Tamatar Team
+    Contact: hello [at] tamatar.dev
+    From: Global
+
+# THANKS
+
+    All the amazing developers in the community
+    Open source contributors
+    Beta testers and early adopters
+
+# TECHNOLOGY COLOPHON
+
+    Standards: HTML5, CSS3, ES2022
+    Components: React, TypeScript
+    Framework: TanStack Router
+    Styling: Tailwind CSS
+    Animation: Framer Motion
+    Backend: Convex
+    Build: Vite
+    Hosting: Vercel
