@@ -5,30 +5,11 @@ import { Monitor, Moon, Sun } from "lucide-react";
 
 export function ModeToggle({ className }: { className?: string }) {
 	const { theme, setTheme } = useTheme();
-
 	// Show the icon for the theme that will be activated next
 	const getNextTheme = () => {
 		if (theme === "light") return "dark";
 		if (theme === "dark") return "system";
 		return "light";
-	};
-
-	const getNextIcon = () => {
-		const next = getNextTheme();
-		if (next === "light") {
-			return <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />;
-		}
-		if (next === "dark") {
-			return <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />;
-		}
-		return <Monitor className="h-[1.2rem] w-[1.2rem] transition-all" />;
-	};
-
-	const getNextLabel = () => {
-		const next = getNextTheme();
-		if (next === "light") return "Light";
-		if (next === "dark") return "Dark";
-		return "Auto";
 	};
 
 	// Remove all background, border, and shadow for icon-only mode

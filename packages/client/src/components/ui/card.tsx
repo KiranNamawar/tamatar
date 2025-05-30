@@ -7,8 +7,8 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
 		<div
 			data-slot="card"
 			className={cn(
-				// Glassmorphism: visible background for both modes
-				"bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border border-gray-200 dark:border-gray-700 shadow-lg flex flex-col gap-6 rounded-xl py-6 px-4 sm:px-6 md:px-8 sm:rounded-2xl sm:gap-8", // responsive padding, gap, and border radius
+				// Enhanced Glassmorphism: better transparency and rounded corners
+				"bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border border-gray-200/30 dark:border-gray-700/30 shadow-xl flex flex-col gap-6 rounded-2xl py-6 px-4 sm:px-6 md:px-8 sm:gap-8", // responsive padding, gap, and border radius
 				className,
 			)}
 			{...props}

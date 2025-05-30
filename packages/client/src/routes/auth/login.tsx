@@ -1,6 +1,3 @@
-// Login Page Route and Form Components
-// Handles user login, error handling, and OTP dialog for unverified emails.
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	Link,
@@ -13,7 +10,6 @@ import { zodValidator } from "@tanstack/zod-adapter";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { BrandHeader } from "@/components/BrandHeader";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form, FormFieldWrapper } from "@/components/ui/form";
@@ -21,13 +17,15 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
+import { createTamatarButtonClass } from "@/lib/ui-patterns";
+import { BrandHeader } from "@auth/components/brand-header";
 import GoogleButton from "@auth/components/google";
 import { OtpDialog, sendOtpQuery } from "@auth/components/otp";
 import { PasswordInput } from "@auth/components/password-input";
 import { setAuthCookie } from "@auth/utils/cookies";
 import { ErrorCode, OtpPurpose, type Return } from "@shared/constant";
 import { loginForm as loginSchema } from "@shared/schema";
-import { AtSign, Code, KeyRound, Lock, Shield, User } from "lucide-react";
+import { AtSign, KeyRound } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -130,56 +128,22 @@ export const Route = createFileRoute("/auth/login")({
 
 /**
  * Login page wrapper component.
- * Renders the login form centered on the page with glassmorphic/gradient background.
+ * Simply renders the LoginForm since AuthLayout is now handled at the route level.
  */
 function RouteComponent() {
 	const { rdt } = Route.useSearch();
-	return (
-		<div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-200/80 via-white/90 to-purple-200/80 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 transition-colors duration-700 overflow-hidden">
-			{/* Floating Background Icons */}
-			<div className="absolute inset-0 z-0 overflow-hidden">
-				<Code
-					className="absolute top-20 left-10 w-12 h-12 text-red-400/20 dark:text-red-300/10 animate-float"
-					style={{ animationDelay: "0s" }}
-				/>
-				<Lock
-					className="absolute top-32 right-20 w-8 h-8 text-orange-400/20 dark:text-orange-300/10 animate-float"
-					style={{ animationDelay: "2s" }}
-				/>
-				<Shield
-					className="absolute bottom-40 left-16 w-10 h-10 text-blue-400/20 dark:text-blue-300/10 animate-float"
-					style={{ animationDelay: "4s" }}
-				/>
-				<User
-					className="absolute bottom-20 right-12 w-14 h-14 text-purple-400/20 dark:text-purple-300/10 animate-float"
-					style={{ animationDelay: "1s" }}
-				/>
-				<AtSign
-					className="absolute top-1/2 left-8 w-6 h-6 text-green-400/20 dark:text-green-300/10 animate-float"
-					style={{ animationDelay: "3s" }}
-				/>
-				<KeyRound
-					className="absolute top-1/3 right-8 w-9 h-9 text-pink-400/20 dark:text-pink-300/10 animate-float"
-					style={{ animationDelay: "5s" }}
-				/>
-			</div>
-			<div className="relative z-10 w-full max-w-sm px-4 sm:px-6 md:px-8 py-10 rounded-3xl shadow-2xl flex flex-col gap-8 backdrop-blur-lg bg-white/80 dark:bg-gray-900/90 border border-white/60 dark:border-gray-800/80 animate-fade-in">
-				<LoginForm rdt={rdt as LinkProps["to"]} />
-			</div>
-		</div>
-	);
+	return <LoginForm rdt={rdt as LinkProps["to"]} />;
 }
 
 // --- Login Form Component ---
 
+// --- Custom Hook for Login Form Logic ---
+
 /**
- * Login form component.
- * Handles login, error display, and OTP dialog for unverified emails.
- *
- * Props:
- *   - rdt: LinkProps["to"] (redirect target after login)
+ * Custom hook for login form logic
+ * Handles form state, submission, error handling, and OTP dialog
  */
-function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
+function useLoginForm(rdt: LinkProps["to"]) {
 	const [showOtpDialog, setShowOtpDialog] = useState(false);
 	const [formError, setFormError] = useState<string | null>(null);
 	const setAccessToken = useStore((state) => state.auth.setAccessToken);
@@ -197,7 +161,7 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 	 * Handles login form submission and error logic.
 	 * Shows OTP dialog if email is unverified.
 	 */
-	async function onSubmit(data: LoginSchema) {
+	const onSubmit = async (data: LoginSchema) => {
 		try {
 			const response = await login({ data });
 			if (response.success) {
@@ -238,7 +202,42 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				error.issues?.[0]?.message || "An unexpected error occurred.",
 			);
 		}
-	}
+	};
+
+	const handleOtpSuccess = () => {
+		navigate({
+			to: rdt,
+			replace: true,
+		});
+	};
+
+	return {
+		form,
+		formError,
+		showOtpDialog,
+		setShowOtpDialog,
+		setAccessToken,
+		onSubmit,
+		handleOtpSuccess,
+	};
+}
+
+// --- Login Form UI Component ---
+
+/**
+ * LoginForm UI Component
+ * Pure UI component that receives all props from the custom hook
+ */
+function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
+	const {
+		form,
+		formError,
+		showOtpDialog,
+		setShowOtpDialog,
+		setAccessToken,
+		onSubmit,
+		handleOtpSuccess,
+	} = useLoginForm(rdt);
 
 	return (
 		<>
@@ -286,10 +285,13 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 								className="w-full"
 							/>
 						)}
-					</FormFieldWrapper>
+					</FormFieldWrapper>{" "}
 					<Button
 						type="submit"
-						className="w-full bg-gradient-to-r from-red-500 via-orange-500 to-green-600 hover:from-green-600 hover:to-red-500 text-white font-bold shadow-xl transition-all duration-300 border-2 border-white/80 dark:border-gray-800/80"
+						className={createTamatarButtonClass(
+							"auth",
+							"w-full shadow-xl border-2 border-white/80 dark:border-gray-800/80",
+						)}
 						pending={form.formState.isSubmitting}
 					>
 						Log In
@@ -327,12 +329,7 @@ function LoginForm({ rdt }: { rdt: LinkProps["to"] }) {
 				onOpenChange={setShowOtpDialog}
 				email={form.getValues("email")}
 				purpose={OtpPurpose.LOGIN}
-				onSuccess={() =>
-					navigate({
-						to: rdt,
-						replace: true,
-					})
-				}
+				onSuccess={handleOtpSuccess}
 			/>
 		</>
 	);

@@ -1,204 +1,230 @@
+import FloatingBackground from "@/components/ui/FloatingBackground";
 import { Badge } from "@/components/ui/badge";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import {
+	useScrollAnimation,
+	useStaggeredAnimation,
+} from "@/hooks/useAnimations";
+import type { FloatingItem } from "@/lib/ui-patterns";
+import {
+	BookOpen,
+	Calendar,
+	Code,
 	Cpu,
 	Database,
+	ExternalLink,
+	Eye,
 	GitCommit,
 	Globe,
 	Heart,
+	MessageCircle,
+	Share2,
 	Smartphone,
+	Star,
+	TrendingUp,
+	Users,
 } from "lucide-react";
 import { motion } from "motion/react";
 
-const floatingItems = [
+const floatingItems: FloatingItem[] = [
 	{
 		className: "top-12 left-8 rotate-12",
-		icon: <Smartphone className="w-6 h-6 text-blue-500" />,
+		icon: <Code className="w-6 h-6 text-blue-500" />,
 		delay: "0s",
-		key: "float-mobile-demo",
+		key: "float-code-demo",
 	},
 	{
 		className: "top-20 right-12 -rotate-12",
-		icon: <Globe className="w-6 h-6 text-green-500" />,
+		icon: <Calendar className="w-6 h-6 text-green-500" />,
 		delay: "1s",
-		key: "float-globe-demo",
+		key: "float-calendar-demo",
 	},
 	{
 		className: "bottom-12 left-12 rotate-6",
-		icon: <Database className="w-6 h-6 text-purple-500" />,
+		icon: <TrendingUp className="w-6 h-6 text-purple-500" />,
 		delay: "2s",
-		key: "float-database-demo",
+		key: "float-trending-demo",
 	},
 	{
 		className: "bottom-20 right-8 -rotate-6",
-		icon: <Cpu className="w-6 h-6 text-orange-500" />,
+		icon: <BookOpen className="w-6 h-6 text-orange-500" />,
 		delay: "1.5s",
-		key: "float-cpu-demo",
+		key: "float-journal-demo",
 	},
 ];
 
 const demos = [
 	{
 		user: "@sarah_codes",
-		log: "Built a full-stack e-commerce app with Next.js and Stripe integration! 🛒",
+		log: "Day 15: Finally cracked the authentication system! Spent hours debugging JWT tokens but learned so much about security best practices. Attached my notes and the Stack Overflow post that saved me 📚",
 		badge: "🔥 15 Day Streak",
-		project: "ShopFlow",
+		project: "Personal Journal",
 		avatar: "https://randomuser.me/api/portraits/women/68.jpg",
-		tags: ["Next.js", "TypeScript", "Stripe"],
-		commits: 12,
+		tags: ["JWT", "Authentication", "Security"],
+		commits: 3,
 		likes: 45,
+		journalEntries: 15,
+		resources: 8,
 	},
 	{
 		user: "@alex_dev",
-		log: "Finally mastered Docker containers and deployed my first microservice architecture! 🐳",
-		badge: "🏆 Architecture Master",
-		project: "MicroServ Hub",
+		log: "Docker breakthrough! After 3 days of container hell, I finally understand volumes and networking. Documenting everything step-by-step so future me doesn't suffer 🐳",
+		badge: "🏆 Learning Streak",
+		project: "DevOps Journey",
 		avatar: "https://randomuser.me/api/portraits/men/75.jpg",
-		tags: ["Docker", "Kubernetes", "Go"],
+		tags: ["Docker", "DevOps", "Learning"],
 		commits: 8,
 		likes: 32,
+		journalEntries: 22,
+		resources: 12,
 	},
 	{
 		user: "@maya_ml",
-		log: "Published my machine learning model for image classification with 94% accuracy! 🤖",
+		log: "ML model hit 94% accuracy! 🤖 Sharing my hyperparameter tuning process and the research papers that guided me. This took weeks but the learning was incredible!",
 		badge: "🧠 AI Explorer",
-		project: "ImageClassify AI",
+		project: "ML Learning Path",
 		avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-		tags: ["Python", "TensorFlow", "OpenCV"],
+		tags: ["Machine Learning", "Research", "Python"],
 		commits: 18,
 		likes: 67,
+		journalEntries: 31,
+		resources: 25,
 	},
 	{
 		user: "@ryan_mobile",
-		log: "Launched my React Native app on both iOS and Android stores! 📱",
-		badge: "🚀 Mobile Pro",
-		project: "FitTracker Pro",
+		log: "App store approval! 📱 From idea to deployment in 60 days. Documenting the entire journey with screenshots, code snippets, and lessons learned. What a ride!",
+		badge: "🚀 Shipped It",
+		project: "App Development Story",
 		avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-		tags: ["React Native", "Firebase", "Redux"],
+		tags: ["React Native", "App Store", "Milestone"],
 		commits: 25,
 		likes: 89,
+		journalEntries: 45,
+		resources: 18,
 	},
 	{
 		user: "@zoe_web3",
-		log: "Deployed my first smart contract on Ethereum mainnet! Gas fees were worth it 💎",
+		log: "First smart contract deployed! 💎 Gas fees hurt but the learning was priceless. Sharing my Solidity journey, mistakes made, and resources that helped me understand blockchain",
 		badge: "⛓️ Blockchain Pioneer",
-		project: "CryptoVault",
+		project: "Web3 Adventure",
 		avatar: "https://randomuser.me/api/portraits/women/42.jpg",
-		tags: ["Solidity", "Web3.js", "Hardhat"],
+		tags: ["Solidity", "Blockchain", "Web3"],
 		commits: 15,
 		likes: 78,
+		journalEntries: 28,
+		resources: 22,
 	},
 	{
 		user: "@jamie_backend",
-		log: "Built a high-performance API that handles 10k+ requests per second! ⚡",
+		log: "Performance optimization success! ⚡ API now handles 10k+ req/sec. Sharing my profiling process, bottleneck discoveries, and the tools that made the difference",
 		badge: "⚡ Performance Guru",
-		project: "SpeedAPI",
+		project: "Backend Mastery",
 		avatar: "https://randomuser.me/api/portraits/men/77.jpg",
-		tags: ["Rust", "PostgreSQL", "Redis"],
+		tags: ["Performance", "API", "Optimization"],
 		commits: 22,
 		likes: 56,
+		journalEntries: 19,
+		resources: 15,
 	},
 ];
 
 export default function DemoGallerySection() {
-	return (
-		<section className="relative w-full py-20 px-4 overflow-hidden">
-			{/* Floating Elements */}
-			<div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-				{floatingItems.map((item, i) => (
-					<motion.div
-						key={item.key}
-						className={`absolute ${item.className} animate-float`}
-						style={{ animationDelay: item.delay }}
-						initial={{ opacity: 0, y: 40 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ delay: 0.2 * i, duration: 0.8, type: "spring" }}
-					>
-						<Card className="glass-effect hidden md:block dark:glass-effect-dark p-3 hover:scale-110 transition-transform duration-300 opacity-30">
-							{item.icon}
-						</Card>
-					</motion.div>
-				))}
-			</div>
+	const titleAnimation = useScrollAnimation("fadeInUp");
+	const demosAnimation = useStaggeredAnimation("fadeInUp", "medium", 0.1);
 
+	return (
+		<div className="relative">
+			<FloatingBackground items={floatingItems} />{" "}
 			<div className="relative z-10 max-w-5xl mx-auto text-center mb-12">
+				{" "}
 				<motion.h2
-					initial={{ opacity: 0, y: 40 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.8 }}
-					className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-purple-600 via-blue-600 to-indigo-600 bg-clip-text text-transparent animate-gradient-x"
+					{...titleAnimation.animationProps}
+					className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 bg-clip-text text-transparent animate-gradient-x"
 				>
-					See Tamatar in Action
+					Developer Journeys in Action
 				</motion.h2>
 				<motion.p
-					initial={{ opacity: 0, y: 30 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.8, delay: 0.1 }}
+					{...titleAnimation.animationProps}
 					className="text-lg text-gray-700 dark:text-gray-200 max-w-2xl mx-auto"
 				>
-					Real developers sharing their journey, building amazing projects, and
-					growing together.
+					Real developers documenting their learning journey, sharing
+					breakthroughs, and building in public. Every struggle, every victory,
+					every lesson learned.
 				</motion.p>
 			</div>
-			<div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-				{demos.map((d) => (
+			<motion.div
+				{...demosAnimation.containerProps}
+				className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+			>
+				{demos.map((demo) => (
 					<motion.div
-						key={d.user + d.project}
-						initial={{ opacity: 0, y: 40 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						viewport={{ once: true }}
-						transition={{ duration: 0.8 }}
-						className="bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-700 shadow-xl rounded-2xl backdrop-blur-md p-6 hover:scale-105 transition-all duration-300"
+						key={demo.user + demo.project}
+						{...demosAnimation.itemProps}
 					>
-						<div className="flex items-center gap-3 mb-4">
-							<img
-								src={d.avatar}
-								alt={d.user}
-								className="w-12 h-12 rounded-full border-2 border-blue-200 dark:border-blue-800 object-cover"
-							/>
-							<div className="flex-1">
-								<div className="font-bold text-base text-gray-800 dark:text-gray-100">
-									{d.user}
-								</div>
-								<div className="text-xs text-purple-600 dark:text-purple-400">
-									{d.project}
+						{" "}
+						<GlassCard
+							variant="subtle"
+							className="p-6 hover:scale-[1.02] transition-transform h-full bg-white/90 dark:bg-gray-900/90 border border-gray-200/50 dark:border-gray-700/50"
+						>
+							{" "}
+							<div className="flex items-center gap-3 mb-4">
+								<img
+									src={demo.avatar}
+									alt={demo.user}
+									className="w-12 h-12 rounded-full border-2 border-blue-200 dark:border-blue-800 object-cover"
+								/>
+								<div className="flex-1">
+									<div className="font-bold text-base text-gray-800 dark:text-gray-100">
+										{demo.user}
+									</div>
+									<div className="text-xs text-purple-600 dark:text-purple-400 flex items-center gap-1">
+										<BookOpen className="w-3 h-3" />
+										{demo.project}
+									</div>
 								</div>
 							</div>
-							<Badge className="text-xs bg-gradient-to-r from-orange-500 to-pink-500 text-white hidden sm:inline-block">
-								{d.badge}
-							</Badge>
-						</div>
-
-						<p className="text-gray-700 dark:text-gray-300 mb-4 text-sm leading-relaxed">
-							{d.log}
-						</p>
-
-						<div className="flex flex-wrap gap-1 mb-4">
-							{d.tags.map((tag) => (
-								<Badge key={tag} variant="secondary" className="text-xs">
-									{tag}
-								</Badge>
-							))}
-						</div>
-
-						<div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-							<div className="flex items-center gap-4">
-								<span className="flex items-center gap-1">
-									<Heart className="w-4 h-4 text-red-500" />
-									{d.likes}
-								</span>
-								<span className="flex items-center gap-1">
-									<GitCommit className="w-4 h-4 text-green-500" />
-									{d.commits}
-								</span>
+							<p className="text-gray-700 dark:text-gray-300 mb-4 text-sm leading-relaxed">
+								{demo.log}
+							</p>
+							<div className="flex flex-wrap gap-1 mb-4">
+								{demo.tags.map((tag) => (
+									<Badge
+										key={tag}
+										variant="secondary"
+										className="text-xs bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300"
+									>
+										{tag}
+									</Badge>
+								))}
 							</div>
-							<span className="text-xs">2 hours ago</span>
-						</div>
+							<div className="flex items-center justify-between text-sm">
+								<div className="flex items-center gap-4">
+									<span className="flex items-center gap-1 text-red-500">
+										<Heart className="w-4 h-4" />
+										{demo.likes}
+									</span>
+									<span className="flex items-center gap-1 text-green-500">
+										<GitCommit className="w-4 h-4" />
+										{demo.commits}
+									</span>
+									<span className="flex items-center gap-1 text-blue-500">
+										<BookOpen className="w-4 h-4" />
+										{demo.journalEntries}
+									</span>
+								</div>
+								<div className="flex items-center gap-2">
+									<Badge
+										variant="outline"
+										className="text-xs text-gray-500 dark:text-gray-400"
+									>
+										{demo.resources} resources
+									</Badge>
+								</div>
+							</div>
+						</GlassCard>
 					</motion.div>
 				))}
-			</div>
-		</section>
+			</motion.div>
+		</div>
 	);
 }

@@ -8,14 +8,10 @@ import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import type { LinkProps } from "@tanstack/react-router";
 import { PanelBottomClose, PanelBottomOpen } from "lucide-react";
-import {
-	AnimatePresence,
-	type MotionValue,
-	motion,
-	useMotionValue,
-	useSpring,
-	useTransform,
-} from "motion/react";
+import { AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
+import type { MotionValue } from "motion/react";
+import { useMotionValue, useSpring, useTransform } from "motion/react";
 import { useRef, useState } from "react";
 
 // Dock item type supports either icon/to or a render function
@@ -84,7 +80,6 @@ const FloatingDockMobile = ({
 								}}
 								transition={{ delay: (items.length - 1 - idx) * 0.05 }}
 							>
-								{" "}
 								{item.render ? (
 									item.render()
 								) : (
@@ -98,10 +93,10 @@ const FloatingDockMobile = ({
 									</Link>
 								)}
 							</motion.div>
-						))}
+						))}{" "}
 					</motion.div>
 				)}
-			</AnimatePresence>{" "}
+			</AnimatePresence>
 			<button
 				type="button"
 				onClick={() => setOpen(!open)}
@@ -233,34 +228,33 @@ function IconContainer({
 				</motion.div>
 			</Link>
 		);
-	} else {
-		return (
-			<motion.div
-				ref={ref}
-				style={{ width, height }}
-				onMouseEnter={() => setHovered(true)}
-				onMouseLeave={() => setHovered(false)}
-				className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm cursor-pointer"
-			>
-				<AnimatePresence>
-					{hovered && (
-						<motion.div
-							initial={{ opacity: 0, y: 10, x: "-50%" }}
-							animate={{ opacity: 1, y: 0, x: "-50%" }}
-							exit={{ opacity: 0, y: 2, x: "-50%" }}
-							className="absolute -top-10 left-1/2 w-fit rounded-md border border-border bg-popover px-2 py-1 text-xs whitespace-pre text-popover-foreground leading-normal"
-						>
-							{title}
-						</motion.div>
-					)}
-				</AnimatePresence>
-				<motion.div
-					style={{ width: widthIcon, height: heightIcon }}
-					className="flex items-center justify-center"
-				>
-					{icon}
-				</motion.div>
-			</motion.div>
-		);
 	}
+	return (
+		<motion.div
+			ref={ref}
+			style={{ width, height }}
+			onMouseEnter={() => setHovered(true)}
+			onMouseLeave={() => setHovered(false)}
+			className="relative flex aspect-square items-center justify-center rounded-full bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm cursor-pointer"
+		>
+			<AnimatePresence>
+				{hovered && (
+					<motion.div
+						initial={{ opacity: 0, y: 10, x: "-50%" }}
+						animate={{ opacity: 1, y: 0, x: "-50%" }}
+						exit={{ opacity: 0, y: 2, x: "-50%" }}
+						className="absolute -top-10 left-1/2 w-fit rounded-md border border-border bg-popover px-2 py-1 text-xs whitespace-pre text-popover-foreground leading-normal"
+					>
+						{title}
+					</motion.div>
+				)}
+			</AnimatePresence>
+			<motion.div
+				style={{ width: widthIcon, height: heightIcon }}
+				className="flex items-center justify-center"
+			>
+				{icon}
+			</motion.div>
+		</motion.div>
+	);
 }

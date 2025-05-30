@@ -12,9 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TestImport } from './routes/test'
-import { Route as ResourcesImport } from './routes/resources'
 import { Route as DashboardImport } from './routes/dashboard'
-import { Route as BookmarksImport } from './routes/bookmarks'
 import { Route as AuthRouteImport } from './routes/auth/route'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthSignupImport } from './routes/auth/signup'
@@ -29,21 +27,9 @@ const TestRoute = TestImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ResourcesRoute = ResourcesImport.update({
-  id: '/resources',
-  path: '/resources',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const DashboardRoute = DashboardImport.update({
   id: '/dashboard',
   path: '/dashboard',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const BookmarksRoute = BookmarksImport.update({
-  id: '/bookmarks',
-  path: '/bookmarks',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -95,25 +81,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRoute
     }
-    '/bookmarks': {
-      id: '/bookmarks'
-      path: '/bookmarks'
-      fullPath: '/bookmarks'
-      preLoaderRoute: typeof BookmarksImport
-      parentRoute: typeof rootRoute
-    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardImport
-      parentRoute: typeof rootRoute
-    }
-    '/resources': {
-      id: '/resources'
-      path: '/resources'
-      fullPath: '/resources'
-      preLoaderRoute: typeof ResourcesImport
       parentRoute: typeof rootRoute
     }
     '/test': {
@@ -168,9 +140,7 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/bookmarks': typeof BookmarksRoute
   '/dashboard': typeof DashboardRoute
-  '/resources': typeof ResourcesRoute
   '/test': typeof TestRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -180,9 +150,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/bookmarks': typeof BookmarksRoute
   '/dashboard': typeof DashboardRoute
-  '/resources': typeof ResourcesRoute
   '/test': typeof TestRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -193,9 +161,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/auth': typeof AuthRouteRouteWithChildren
-  '/bookmarks': typeof BookmarksRoute
   '/dashboard': typeof DashboardRoute
-  '/resources': typeof ResourcesRoute
   '/test': typeof TestRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
   '/auth/login': typeof AuthLoginRoute
@@ -207,9 +173,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/bookmarks'
     | '/dashboard'
-    | '/resources'
     | '/test'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -218,9 +182,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
-    | '/bookmarks'
     | '/dashboard'
-    | '/resources'
     | '/test'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -229,9 +191,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/auth'
-    | '/bookmarks'
     | '/dashboard'
-    | '/resources'
     | '/test'
     | '/auth/forgot-password'
     | '/auth/login'
@@ -242,18 +202,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
-  BookmarksRoute: typeof BookmarksRoute
   DashboardRoute: typeof DashboardRoute
-  ResourcesRoute: typeof ResourcesRoute
   TestRoute: typeof TestRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
-  BookmarksRoute: BookmarksRoute,
   DashboardRoute: DashboardRoute,
-  ResourcesRoute: ResourcesRoute,
   TestRoute: TestRoute,
 }
 
@@ -269,9 +225,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/auth",
-        "/bookmarks",
         "/dashboard",
-        "/resources",
         "/test"
       ]
     },
@@ -286,14 +240,8 @@ export const routeTree = rootRoute
         "/auth/signup"
       ]
     },
-    "/bookmarks": {
-      "filePath": "bookmarks.tsx"
-    },
     "/dashboard": {
       "filePath": "dashboard.tsx"
-    },
-    "/resources": {
-      "filePath": "resources.tsx"
     },
     "/test": {
       "filePath": "test.tsx"

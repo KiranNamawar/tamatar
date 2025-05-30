@@ -1,6 +1,6 @@
-/* Import Nunito Sans font from local package */
-@import "@fontsource/nunito-sans/400.css";
-@import "@fontsource/nunito-sans/700.css";
+/* Import Nunito Sans font from local package - Latin only for better performance */
+@import "@fontsource/nunito-sans/latin-400.css";
+@import "@fontsource/nunito-sans/latin-700.css";
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";

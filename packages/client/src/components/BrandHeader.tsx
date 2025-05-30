@@ -1,3 +1,4 @@
+import { getTamatarGradient } from "@/lib/ui-patterns";
 import type React from "react";
 
 /**
@@ -23,8 +24,9 @@ export function BrandHeader({
 			className={`flex items-center justify-center mb-3 w-full ${className}`}
 			style={style}
 		>
+			{" "}
 			<span
-				className="font-extrabold text-4xl tracking-tight select-none drop-shadow-lg animate-gradient-x bg-gradient-to-r from-red-400 via-orange-400 to-orange-600 bg-clip-text text-transparent"
+				className={`font-extrabold text-4xl tracking-tight select-none drop-shadow-lg animate-gradient-x ${getTamatarGradient("primary", "text")}`}
 				style={{
 					fontFamily: "Quicksand, Inter, Segoe UI, Arial, sans-serif",
 					letterSpacing: "-0.01em",

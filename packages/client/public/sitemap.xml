@@ -11,21 +11,12 @@
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Resources Page -->
+    <!-- Resources Page -->
   <url>
     <loc>https://tamatar.dev/resources</loc>
-    <lastmod>2025-05-29</lastmod>
+    <lastmod>2025-05-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  
-  <!-- Bookmarks Page -->
-  <url>
-    <loc>https://tamatar.dev/bookmarks</loc>
-    <lastmod>2025-05-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   
   <!-- Auth Pages -->

@@ -18,6 +18,10 @@ import {
 } from "@/components/ui/input-otp";
 import { graphql, graphqlRequest } from "@/graphql";
 import { useStore } from "@/hooks/useStore";
+import {
+	createTamatarButtonClass,
+	getTamatarGradient,
+} from "@/lib/ui-patterns";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OtpPurpose } from "@shared/constant";
 import { otpForm as otpSchema } from "@shared/schema";
@@ -229,14 +233,18 @@ function OtpForm({
 						variant="secondary"
 						onClick={resendOtp}
 						disabled={resendDisabled}
-						className="rounded-lg px-4 py-2 font-semibold bg-gradient-to-r from-red-400 to-orange-400 text-white shadow hover:from-orange-500 hover:to-red-500 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-all"
+						className={`rounded-lg px-4 py-2 font-semibold ${getTamatarGradient("primary")} text-white shadow hover:from-orange-500 hover:to-red-500 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-all`}
 						aria-live="polite"
 					>
 						{resendDisabled ? `Resend in ${resendTimer}s` : "Resend"}
-					</Button>					<Button
+					</Button>{" "}
+					<Button
 						type="submit"
 						pending={form.formState.isSubmitting}
-						className="rounded-lg px-4 py-2 font-bold bg-gradient-to-r from-red-500 via-orange-500 to-orange-600 text-white shadow hover:from-orange-600 hover:to-red-500 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-all"
+						className={createTamatarButtonClass(
+							"primary",
+							"rounded-lg px-4 py-2 border-2 border-white/70 dark:border-gray-800/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400",
+						)}
 					>
 						Verify
 					</Button>

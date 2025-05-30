@@ -2,7 +2,7 @@ import { FloatingDock } from "@/components/ui/floating-dock";
 import type { FloatingDockItem } from "@/components/ui/floating-dock";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { useLocation } from "@tanstack/react-router";
-import { BookOpen, Bookmark, Home, User } from "lucide-react";
+import { Home, User } from "lucide-react";
 
 // Map route paths to their nav items
 const dockNavConfig: { [key: string]: FloatingDockItem[] } = {
@@ -12,18 +12,7 @@ const dockNavConfig: { [key: string]: FloatingDockItem[] } = {
 			icon: <Home className="w-6 h-6 text-orange-500 dark:text-orange-300" />,
 			to: "/",
 		},
-		{
-			title: "Resources",
-			icon: <BookOpen className="w-6 h-6 text-pink-500 dark:text-pink-300" />,
-			to: "/resources",
-		},
-		{
-			title: "Bookmarks",
-			icon: (
-				<Bookmark className="w-6 h-6 text-purple-500 dark:text-purple-300" />
-			),
-			to: "/bookmarks",
-		},
+		
 		{
 			title: "Dashboard",
 			icon: <User className="w-6 h-6 text-blue-500 dark:text-blue-300" />,
@@ -35,18 +24,6 @@ const dockNavConfig: { [key: string]: FloatingDockItem[] } = {
 			title: "Home",
 			icon: <Home className="w-6 h-6 text-orange-500 dark:text-orange-300" />,
 			to: "/",
-		},
-		{
-			title: "Resources",
-			icon: <BookOpen className="w-6 h-6 text-pink-500 dark:text-pink-300" />,
-			to: "/resources",
-		},
-		{
-			title: "Bookmarks",
-			icon: (
-				<Bookmark className="w-6 h-6 text-purple-500 dark:text-purple-300" />
-			),
-			to: "/bookmarks",
 		},
 	],
 	// ...add more routes as needed

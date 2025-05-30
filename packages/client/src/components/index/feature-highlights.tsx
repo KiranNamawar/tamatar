@@ -1,22 +1,24 @@
-import { 
-	Trophy, 
-	GitBranch, 
-	Sparkles, 
-	Link2, 
-	TrendingUp,
-	Users,
+import SectionWrapper from "@/components/layout/SectionWrapper";
+import FloatingBackground from "@/components/ui/FloatingBackground";
+import { GlassCard } from "@/components/ui/glass-card";
+import type { FloatingItem } from "@/lib/ui-patterns";
+import {
 	Calendar,
-	FileText,
-	Share2,
 	Code,
-	Zap,
+	FileText,
+	GitBranch,
 	Heart,
-	Star
+	Link2,
+	Share2,
+	Sparkles,
+	Star,
+	TrendingUp,
+	Trophy,
+	Users,
+	Zap,
 } from "lucide-react";
-import { motion } from "motion/react";
-import { Card } from "@/components/ui/card";
 
-const floatingItems = [
+const floatingItems: FloatingItem[] = [
 	{
 		className: "top-20 left-10 rotate-12",
 		icon: <Code className="w-6 h-6 text-blue-500" />,
@@ -44,110 +46,85 @@ const floatingItems = [
 ];
 
 const features = [
-  {
-    icon: <Calendar className="w-7 h-7 text-blue-500" />,
-    title: "Daily Developer Logs",
-    desc: "Document your coding journey with rich text, images, and code snippets."
-  },
-  {
-    icon: <GitBranch className="w-7 h-7 text-green-500" />,
-    title: "GitHub Integration",
-    desc: "Automatically sync your commits and showcase your coding activity."
-  },
-  {
-    icon: <Trophy className="w-7 h-7 text-yellow-500" />,
-    title: "Streaks & Achievements",
-    desc: "Stay motivated with coding streaks, badges, and milestone celebrations."
-  },
-  {
-    icon: <Users className="w-7 h-7 text-purple-500" />,
-    title: "Developer Community",
-    desc: "Connect with fellow developers, give feedback, and collaborate on projects."
-  },
-  {
-    icon: <TrendingUp className="w-7 h-7 text-indigo-500" />,
-    title: "Progress Analytics",
-    desc: "Visualize your growth with detailed charts and learning insights."
-  },
-  {
-    icon: <FileText className="w-7 h-7 text-teal-500" />,
-    title: "Project Portfolios",
-    desc: "Build stunning portfolios that showcase your projects and skills."
-  },
-  {
-    icon: <Link2 className="w-7 h-7 text-orange-500" />,
-    title: "Resource Library",
-    desc: "Save and share tutorials, articles, and learning resources with the community."
-  },
-  {
-    icon: <Sparkles className="w-7 h-7 text-pink-500" />,
-    title: "AI-Powered Insights",
-    desc: "Get personalized recommendations and smart summaries of your progress."
-  },
-  {
-    icon: <Share2 className="w-7 h-7 text-cyan-500" />,
-    title: "Social Features",
-    desc: "Follow developers, like posts, comment, and build your developer network."
-  }
+	{
+		icon: <Calendar className="w-7 h-7 text-blue-500" />,
+		title: "Daily Developer Logs",
+		desc: "Document your coding journey with rich text, images, and code snippets.",
+	},
+	{
+		icon: <GitBranch className="w-7 h-7 text-green-500" />,
+		title: "GitHub Integration",
+		desc: "Automatically sync your commits and showcase your coding activity.",
+	},
+	{
+		icon: <Trophy className="w-7 h-7 text-yellow-500" />,
+		title: "Streaks & Achievements",
+		desc: "Stay motivated with coding streaks, badges, and milestone celebrations.",
+	},
+	{
+		icon: <Users className="w-7 h-7 text-purple-500" />,
+		title: "Developer Community",
+		desc: "Connect with fellow developers, give feedback, and collaborate on projects.",
+	},
+	{
+		icon: <TrendingUp className="w-7 h-7 text-indigo-500" />,
+		title: "Progress Analytics",
+		desc: "Visualize your growth with detailed charts and learning insights.",
+	},
+	{
+		icon: <FileText className="w-7 h-7 text-teal-500" />,
+		title: "Project Portfolios",
+		desc: "Build stunning portfolios that showcase your projects and skills.",
+	},
+	{
+		icon: <Link2 className="w-7 h-7 text-orange-500" />,
+		title: "Resource Library",
+		desc: "Access curated documentation, tutorials, and tools. Search, filter, and discover resources to accelerate your development.",
+	},
+	{
+		icon: <Sparkles className="w-7 h-7 text-pink-500" />,
+		title: "AI-Powered Insights",
+		desc: "Get personalized recommendations and smart summaries of your progress.",
+	},
+	{
+		icon: <Share2 className="w-7 h-7 text-cyan-500" />,
+		title: "Social Features",
+		desc: "Follow developers, like posts, comment, and build your developer network.",
+	},
 ];
 
 export default function FeatureHighlightsSection() {
-  return (
-    <section className="relative w-full py-20 px-4 overflow-hidden">
-      {/* Floating Elements */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-        {floatingItems.map((item, i) => (
-          <motion.div
-            key={item.key}
-            className={`absolute ${item.className} animate-float`}
-            style={{ animationDelay: item.delay }}
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 * i, duration: 0.8, type: "spring" }}
-          >
-            <Card className="glass-effect hidden md:block dark:glass-effect-dark p-3 hover:scale-110 transition-transform duration-300 opacity-40">
-              {item.icon}
-            </Card>
-          </motion.div>
-        ))}
-      </div>
-
-      <div className="relative z-10 max-w-6xl mx-auto text-center mb-12">
-        <motion.h2
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-gradient-x"
-        >
-          Everything You Need to Grow
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="text-lg text-gray-700 dark:text-gray-200 max-w-3xl mx-auto"
-        >
-          A complete platform designed for developers to track progress, share knowledge, and build amazing portfolios.
-        </motion.p>
-      </div>
-      <div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-        {features.map((f, i) => (
-          <motion.div
-            key={f.title}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.12 * i }}
-            className="bg-white/80 dark:bg-gray-900/80 border border-gray-200 dark:border-gray-700 shadow-xl rounded-2xl backdrop-blur-md p-8 flex flex-col items-center"
-          >
-            <div className="mb-3">{f.icon}</div>
-            <div className="font-bold text-lg mb-1 text-gray-800 dark:text-gray-100">{f.title}</div>
-            <div className="text-gray-600 dark:text-gray-300 text-base text-center">{f.desc}</div>
-          </motion.div>
-        ))}
-      </div>
-    </section>
-  );
+	return (
+		<SectionWrapper animated={false} className="py-20 px-4 overflow-hidden">
+			<FloatingBackground items={floatingItems} />
+			<div className="relative z-10 max-w-6xl mx-auto text-center mb-12">
+				<h2 className="text-4xl md:text-5xl font-extrabold mb-4 bg-gradient-to-r from-emerald-500 via-cyan-500 to-blue-500 bg-clip-text text-transparent animate-gradient-x">
+					Everything You Need to Grow
+				</h2>
+				<p className="text-lg text-gray-700 dark:text-gray-200 max-w-3xl mx-auto">
+					A complete platform designed for developers to track progress, share
+					knowledge, and build amazing portfolios.
+				</p>
+			</div>
+			<div className="relative z-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+				{features.map((f) => (
+					<div key={f.title}>
+						{" "}
+						<GlassCard
+							variant="subtle"
+							className="p-8 flex flex-col items-center h-full"
+						>
+							<div className="mb-3">{f.icon}</div>
+							<div className="font-bold text-lg mb-1 text-gray-800 dark:text-gray-100">
+								{f.title}
+							</div>
+							<div className="text-gray-600 dark:text-gray-300 text-base text-center">
+								{f.desc}
+							</div>
+						</GlassCard>
+					</div>
+				))}
+			</div>
+		</SectionWrapper>
+	);
 }

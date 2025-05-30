@@ -1,6 +1,6 @@
 import { useStore } from "@/hooks/useStore";
 import type { Theme as ZustandTheme } from "@/hooks/useStore";
-import { createContext, useContext, useEffect, useRef } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 
 export type Theme = ZustandTheme;
 
@@ -13,7 +13,6 @@ type ThemeProviderState = {
 	theme: Theme;
 	setTheme: (theme: Theme) => void;
 };
-
 
 const ThemeProviderContext = createContext<ThemeProviderState | undefined>(
 	undefined,
@@ -59,10 +58,13 @@ export function ThemeProvider({
 		document.cookie = `theme=${theme}; path=/; max-age=31536000`;
 	}, [theme]);
 
-	const value = {
-		theme,
-		setTheme,
-	};
+	const value = useMemo(
+		() => ({
+			theme,
+			setTheme,
+		}),
+		[theme, setTheme],
+	);
 
 	return (
 		<ThemeProviderContext.Provider {...props} value={value}>
