@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.output
+.vinxi
+
+# Copilot configuration
+.github/copilot-instructions.md
+ARCHITECTURE.md
