@@ -1,67 +1,58 @@
-import {
-  Outlet,
-  HeadContent,
-  Scripts,
-  createRootRouteWithContext,
-} from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
+import TanStackQueryLayout from "../../src/integrations/tanstack-query/layout.tsx";
 
-import TanStackQueryLayout from '../../src/integrations/tanstack-query/layout.tsx'
+import appCss from "../styles.css?url";
 
-import appCss from '../styles.css?url'
-
-import type { QueryClient } from '@tanstack/react-query'
+import type { QueryClient } from "@tanstack/react-query";
 
 interface MyRouterContext {
-  queryClient: QueryClient
+	queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: 'Tamatar',
-      },
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
-  }),
+	head: () => ({
+		meta: [
+			{
+				charSet: "utf-8",
+			},
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1",
+			},
+			{
+				title: "Tamatar",
+			},
+		],
+		links: [
+			{
+				rel: "stylesheet",
+				href: appCss,
+			},
+		],
+	}),
 
-  component: () => (
-    <RootDocument>
+	component: () => (
+		<RootDocument>
+			<Outlet />
+			<TanStackRouterDevtools />
 
-      <Outlet />
-      <TanStackRouterDevtools />
-
-      <TanStackQueryLayout />
-    </RootDocument>
-  ),
-})
+			<TanStackQueryLayout />
+		</RootDocument>
+	),
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en" className="dark">
-      <head>
-        <HeadContent />
-      </head>
-      <body className="aurora-subtle antialiased">
-        <div className="min-h-screen bg-background text-foreground">
-          {children}
-        </div>
-        <Scripts />
-      </body>
-    </html>
-  )
+	return (
+		<html lang="en" className="dark">
+			<head>
+				<HeadContent />
+			</head>
+			<body className="aurora-subtle antialiased">
+				<div className="min-h-screen text-foreground">{children}</div>
+				<Scripts />
+			</body>
+		</html>
+	);
 }
