@@ -1,15 +1,19 @@
 # Tamatar Error Codes Reference
 
-This document provides a comprehensive reference for error codes used in the Tamatar platform. These error codes are designed to help frontend developers implement proper error handling and provide meaningful feedback to users.
+This document provides a comprehensive reference for error codes used in the
+Tamatar platform. These error codes are designed to help frontend developers
+implement proper error handling and provide meaningful feedback to users.
 
 ## Implementation
 
 All error codes are implemented in the TypeScript enum at:
-```
+
+```typescript
 src/types/error-codes.ts
 ```
 
-This file contains the complete `ErrorCode` enum and utility types for handling API responses, and can be imported directly in your frontend code:
+This file contains the complete `ErrorCode` enum and utility types for handling
+API responses, and can be imported directly in your frontend code:
 
 ```typescript
 import { ErrorCode, isErrorResponse } from '@/types/error-codes';
@@ -38,7 +42,9 @@ interface ErrorResponse {
 Error codes are organized in a hierarchical numbering system by domain:
 
 ### 1000-1999: General System Errors
-These are infrastructure-level errors that typically require system admin attention.
+
+These are infrastructure-level errors that typically require system admin
+attention.
 
 | Code | Description | Typical User Action |
 |------|-------------|-------------------|
@@ -49,6 +55,7 @@ These are infrastructure-level errors that typically require system admin attent
 | `TIMEOUT_ERROR` | Operation took too long | Retry with shorter timeout |
 
 ### 2000-2999: Validation Errors
+
 Input validation failures - user can fix these by correcting their input.
 
 | Code | Description | Frontend Handling |
@@ -58,7 +65,7 @@ Input validation failures - user can fix these by correcting their input.
 | `MISSING_REQUIRED_FIELD` | Required field missing | Mark required fields |
 | `INVALID_FORMAT` | Format validation failed | Show format requirements |
 | `INVALID_EMAIL_FORMAT` | Email format invalid | Show email format example |
-| `INVALID_PASSWORD_FORMAT` | Password doesn't meet requirements | Show password requirements |
+| `INVALID_PASSWORD_FORMAT` | Password requirements not met | Show password requirements |
 | `INVALID_USERNAME_FORMAT` | Username format invalid | Show username rules |
 | `INVALID_URL_FORMAT` | URL format invalid | Show URL format example |
 | `INVALID_DATE_FORMAT` | Date format invalid | Show expected date format |
@@ -68,6 +75,7 @@ Input validation failures - user can fix these by correcting their input.
 | `INVALID_ENUM_VALUE` | Invalid option selected | Show valid options |
 
 ### 3000-3999: Authentication Errors
+
 Authentication-related errors requiring user login or token refresh.
 
 | Code | Description | Frontend Handling |
@@ -92,6 +100,7 @@ Authentication-related errors requiring user login or token refresh.
 | `CONCURRENT_LOGIN_LIMIT` | Too many active sessions | Show session management |
 
 ### 4000-4999: Authorization Errors
+
 Permission-related errors - user lacks necessary permissions.
 
 | Code | Description | Frontend Handling |
@@ -105,6 +114,7 @@ Permission-related errors - user lacks necessary permissions.
 | `TEAM_MEMBER_REQUIRED` | Team membership required | Show team join prompt |
 
 ### 5000-5999: Resource Not Found Errors
+
 Requested resources don't exist.
 
 | Code | Description | Frontend Handling |
@@ -121,6 +131,7 @@ Requested resources don't exist.
 | `COMMENT_NOT_FOUND` | Comment doesn't exist | Remove from comments |
 
 ### 6000-6999: Conflict/Duplicate Errors
+
 Resource conflicts or uniqueness constraint violations.
 
 | Code | Description | Frontend Handling |
@@ -136,6 +147,7 @@ Resource conflicts or uniqueness constraint violations.
 | `CATEGORY_ALREADY_EXISTS` | Category exists | Use existing category |
 
 ### 7000-7999: Rate Limiting Errors
+
 Request frequency limits exceeded.
 
 | Code | Description | Frontend Handling |
@@ -148,6 +160,7 @@ Request frequency limits exceeded.
 | `SEARCH_RATE_LIMIT_EXCEEDED` | Search request limit | Debounce search input |
 
 ### 8000-8999: User Management Errors
+
 User account and profile management errors.
 
 | Code | Description | Frontend Handling |
@@ -163,6 +176,7 @@ User account and profile management errors.
 | `AVATAR_UPLOAD_FAILED` | Avatar upload error | Show upload error |
 
 ### 9000-9999: Project Management Errors
+
 Project-related operation errors.
 
 | Code | Description | Frontend Handling |
@@ -176,6 +190,7 @@ Project-related operation errors.
 | `PROJECT_ARCHIVE_FAILED` | Archive operation failed | Show archive error |
 
 ### 10000-10999: Daily Log Errors
+
 Daily logging operation errors.
 
 | Code | Description | Frontend Handling |
@@ -189,6 +204,7 @@ Daily logging operation errors.
 | `INVALID_LOG_DATE` | Invalid date for log | Show date validation |
 
 ### 11000-11999: Resource Management Errors
+
 Learning resource management errors.
 
 | Code | Description | Frontend Handling |
@@ -205,6 +221,7 @@ Learning resource management errors.
 | `RESOURCE_RATING_FAILED` | Rating submission failed | Show rating error |
 
 ### 12000-12999: Social Features Errors
+
 Social interaction and community errors.
 
 | Code | Description | Frontend Handling |
@@ -219,6 +236,7 @@ Social interaction and community errors.
 | `INVALID_COMMENT_CONTENT` | Invalid comment content | Show content validation |
 
 ### 13000-13999: Learning Path Errors
+
 Learning path and curriculum errors.
 
 | Code | Description | Frontend Handling |
@@ -232,6 +250,7 @@ Learning path and curriculum errors.
 | `INVALID_LEARNING_PATH_STEP` | Invalid step in path | Show step validation |
 
 ### 14000-14999: Goal Management Errors
+
 Goal setting and tracking errors.
 
 | Code | Description | Frontend Handling |
@@ -246,6 +265,7 @@ Goal setting and tracking errors.
 | `GOAL_LIMIT_EXCEEDED` | Too many active goals | Show limit message |
 
 ### 15000-15999: File Upload Errors
+
 File upload and media management errors.
 
 | Code | Description | Frontend Handling |
@@ -258,6 +278,7 @@ File upload and media management errors.
 | `FILE_VIRUS_DETECTED` | File contains malware | Show security warning |
 
 ### 16000-16999: GitHub Integration Errors
+
 GitHub API and integration errors.
 
 | Code | Description | Frontend Handling |
@@ -272,6 +293,7 @@ GitHub API and integration errors.
 | `GITHUB_API_ERROR` | GitHub API error | Show GitHub status |
 
 ### 17000-17999: Email Service Errors
+
 Email delivery and template errors.
 
 | Code | Description | Frontend Handling |
@@ -283,6 +305,7 @@ Email delivery and template errors.
 | `EMAIL_SPAM_DETECTED` | Email marked as spam | Contact support |
 
 ### 18000-18999: Analytics Errors
+
 Analytics and reporting errors.
 
 | Code | Description | Frontend Handling |
@@ -293,6 +316,7 @@ Analytics and reporting errors.
 | `ANALYTICS_PERMISSION_DENIED` | Cannot access analytics | Show permission error |
 
 ### 19000-19999: Notification Errors
+
 Notification delivery and management errors.
 
 | Code | Description | Frontend Handling |
@@ -304,6 +328,7 @@ Notification delivery and management errors.
 | `NOTIFICATION_RATE_LIMIT_EXCEEDED` | Too many notifications | Show rate limit message |
 
 ### 20000-20999: Focus Session Errors
+
 Focus session and productivity tracking errors.
 
 | Code | Description | Frontend Handling |
@@ -403,6 +428,7 @@ function ErrorDisplay({ error }: { error: ErrorResponse }) {
 ## Best Practices
 
 ### 1. Always Check Error Codes
+
 ```typescript
 // ✅ Good - Check specific error codes
 if (error.code === 'USERNAME_ALREADY_EXISTS') {
@@ -416,6 +442,7 @@ if (error.error.includes('username')) {
 ```
 
 ### 2. Provide User-Friendly Messages
+
 ```typescript
 // ✅ Good - User-friendly error messages
 const getUserFriendlyMessage = (code: string) => {
@@ -434,6 +461,7 @@ showToast(error.error); // "Unique constraint violation on users.username"
 ```
 
 ### 3. Handle Network Errors Gracefully
+
 ```typescript
 // ✅ Good - Distinguish between different error types
 try {
@@ -450,6 +478,7 @@ try {
 ```
 
 ### 4. Log Errors for Debugging
+
 ```typescript
 // ✅ Good - Log errors with context
 const logError = (error: ErrorResponse, context: string) => {
@@ -464,4 +493,6 @@ const logError = (error: ErrorResponse, context: string) => {
 };
 ```
 
-This error code system is designed to provide consistent, actionable error handling across the entire Tamatar platform. Always use the specific error codes rather than generic error messages to provide the best user experience.
+This error code system is designed to provide consistent, actionable error
+handling across the entire Tamatar platform. Always use the specific error
+codes rather than generic error messages to provide the best user experience.

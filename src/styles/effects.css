@@ -1,0 +1,419 @@
+/**
+ * Glassomorphism and Aurora Effects for Tamatar
+ *
+ * This file contains sophisticated visual effects that enhance the developer experience:
+ * - Glassomorphism effects for cards and components
+ * - Aurora gradient backgrounds with animations
+ * - Performance-optimized with hardware acceleration
+ * - Accessible with reduced motion support
+ */
+
+/* ============================================================================
+   GLASSOMORPHISM EFFECTS
+   ============================================================================ */
+
+/* Base glass effect for cards and panels */
+.glass {
+	backdrop-filter: blur(16px) saturate(180%);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	background: rgba(255, 255, 255, 0.08);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	box-shadow: 
+		0 8px 32px rgba(0, 0, 0, 0.1),
+		inset 0 1px 0 rgba(255, 255, 255, 0.2);
+	position: relative;
+	overflow: hidden;
+}
+
+/* Glass variants for different use cases */
+.glass-subtle {
+	backdrop-filter: blur(8px) saturate(150%);
+	-webkit-backdrop-filter: blur(8px) saturate(150%);
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 
+		0 4px 16px rgba(0, 0, 0, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+	backdrop-filter: blur(24px) saturate(200%);
+	-webkit-backdrop-filter: blur(24px) saturate(200%);
+	background: rgba(255, 255, 255, 0.12);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 
+		0 12px 48px rgba(0, 0, 0, 0.15),
+		inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Glass navigation/sidebar */
+.glass-nav {
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	background: rgba(255, 255, 255, 0.06);
+	border-right: 1px solid rgba(255, 255, 255, 0.12);
+	box-shadow: 
+		4px 0 24px rgba(0, 0, 0, 0.08),
+		inset 1px 0 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Dark mode adjustments for glass effects */
+.dark .glass {
+	background: rgba(0, 0, 0, 0.25);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 
+		0 8px 32px rgba(0, 0, 0, 0.3),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.dark .glass-subtle {
+	background: rgba(0, 0, 0, 0.15);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	box-shadow: 
+		0 4px 16px rgba(0, 0, 0, 0.2),
+		inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .glass-strong {
+	background: rgba(0, 0, 0, 0.35);
+	border: 1px solid rgba(255, 255, 255, 0.15);
+	box-shadow: 
+		0 12px 48px rgba(0, 0, 0, 0.4),
+		inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.dark .glass-nav {
+	background: rgba(0, 0, 0, 0.2);
+	border-right: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 
+		4px 0 24px rgba(0, 0, 0, 0.2),
+		inset 1px 0 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Glass hover effects */
+.glass-hover {
+	transition: all var(--duration-normal) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+	backdrop-filter: blur(20px) saturate(200%);
+	-webkit-backdrop-filter: blur(20px) saturate(200%);
+	background: rgba(255, 255, 255, 0.12);
+	border-color: rgba(255, 255, 255, 0.2);
+	transform: translateY(-2px);
+	box-shadow: 
+		0 12px 40px rgba(0, 0, 0, 0.15),
+		inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.dark .glass-hover:hover {
+	background: rgba(0, 0, 0, 0.3);
+	border-color: rgba(255, 255, 255, 0.15);
+	box-shadow: 
+		0 12px 40px rgba(0, 0, 0, 0.35),
+		inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================================================
+   AURORA GRADIENT BACKGROUNDS
+   ============================================================================ */
+
+/* Base aurora background - animated gradient overlay */
+.aurora-bg {
+	position: relative;
+	overflow: hidden;
+}
+
+.aurora-bg::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(ellipse 80% 50% at 20% 40%, rgba(120, 255, 150, 0.12) 0%, transparent 60%),
+		radial-gradient(ellipse 60% 80% at 80% 20%, rgba(100, 150, 255, 0.15) 0%, transparent 60%),
+		radial-gradient(ellipse 100% 70% at 60% 80%, rgba(200, 100, 255, 0.08) 0%, transparent 60%);
+	animation: aurora-drift 20s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Aurora animation keyframes */
+@keyframes aurora-drift {
+	0%, 100% {
+		transform: rotate(0deg) scale(1) translate(0, 0);
+		opacity: 0.6;
+	}
+	25% {
+		transform: rotate(1deg) scale(1.05) translate(2%, -1%);
+		opacity: 0.8;
+	}
+	50% {
+		transform: rotate(-0.5deg) scale(0.98) translate(-1%, 2%);
+		opacity: 0.7;
+	}
+	75% {
+		transform: rotate(0.8deg) scale(1.02) translate(1%, -0.5%);
+		opacity: 0.9;
+	}
+}
+
+/* Subtle aurora for backgrounds */
+.aurora-subtle {
+	position: relative;
+	overflow: hidden;
+}
+
+.aurora-subtle::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(ellipse 120% 80% at 30% 60%, rgba(120, 255, 150, 0.06) 0%, transparent 70%),
+		radial-gradient(ellipse 80% 120% at 70% 30%, rgba(100, 150, 255, 0.08) 0%, transparent 70%);
+	animation: aurora-gentle 25s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+@keyframes aurora-gentle {
+	0%, 100% {
+		transform: translate(0, 0) scale(1);
+		opacity: 0.4;
+	}
+	50% {
+		transform: translate(1%, -0.5%) scale(1.02);
+		opacity: 0.6;
+	}
+}
+
+/* Strong aurora for hero sections */
+.aurora-hero {
+	position: relative;
+	overflow: hidden;
+}
+
+.aurora-hero::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	left: -50%;
+	right: -50%;
+	bottom: -50%;
+	background: 
+		radial-gradient(ellipse 60% 40% at 30% 70%, rgba(120, 255, 150, 0.2) 0%, transparent 50%),
+		radial-gradient(ellipse 80% 60% at 70% 30%, rgba(100, 150, 255, 0.25) 0%, transparent 50%),
+		radial-gradient(ellipse 100% 80% at 50% 90%, rgba(200, 100, 255, 0.15) 0%, transparent 50%),
+		radial-gradient(ellipse 120% 60% at 10% 20%, rgba(255, 180, 100, 0.12) 0%, transparent 50%);
+	animation: aurora-hero-flow 30s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+@keyframes aurora-hero-flow {
+	0%, 100% {
+		transform: rotate(0deg) scale(1) translate(0, 0);
+		opacity: 0.7;
+	}
+	20% {
+		transform: rotate(1deg) scale(1.1) translate(3%, -2%);
+		opacity: 0.9;
+	}
+	40% {
+		transform: rotate(-0.8deg) scale(0.95) translate(-2%, 3%);
+		opacity: 0.6;
+	}
+	60% {
+		transform: rotate(1.2deg) scale(1.05) translate(2%, -1%);
+		opacity: 0.8;
+	}
+	80% {
+		transform: rotate(-0.5deg) scale(0.98) translate(-1%, 2%);
+		opacity: 0.7;
+	}
+}
+
+/* Dark mode aurora adjustments */
+.dark .aurora-bg::before {
+	background: 
+		radial-gradient(ellipse 80% 50% at 20% 40%, rgba(120, 255, 150, 0.08) 0%, transparent 60%),
+		radial-gradient(ellipse 60% 80% at 80% 20%, rgba(100, 150, 255, 0.12) 0%, transparent 60%),
+		radial-gradient(ellipse 100% 70% at 60% 80%, rgba(200, 100, 255, 0.06) 0%, transparent 60%);
+}
+
+.dark .aurora-subtle::before {
+	background: 
+		radial-gradient(ellipse 120% 80% at 30% 60%, rgba(120, 255, 150, 0.04) 0%, transparent 70%),
+		radial-gradient(ellipse 80% 120% at 70% 30%, rgba(100, 150, 255, 0.06) 0%, transparent 70%);
+}
+
+.dark .aurora-hero::before {
+	background: 
+		radial-gradient(ellipse 60% 40% at 30% 70%, rgba(120, 255, 150, 0.15) 0%, transparent 50%),
+		radial-gradient(ellipse 80% 60% at 70% 30%, rgba(100, 150, 255, 0.2) 0%, transparent 50%),
+		radial-gradient(ellipse 100% 80% at 50% 90%, rgba(200, 100, 255, 0.12) 0%, transparent 50%),
+		radial-gradient(ellipse 120% 60% at 10% 20%, rgba(255, 180, 100, 0.08) 0%, transparent 50%);
+}
+
+/* ============================================================================
+   DEVELOPER-FOCUSED GRADIENT COMBINATIONS
+   ============================================================================ */
+
+/* Code-inspired aurora (terminal greens and blues) */
+.aurora-code {
+	position: relative;
+	overflow: hidden;
+}
+
+.aurora-code::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(ellipse 90% 60% at 25% 50%, rgba(0, 255, 100, 0.1) 0%, transparent 60%),
+		radial-gradient(ellipse 70% 90% at 75% 30%, rgba(0, 200, 255, 0.12) 0%, transparent 60%),
+		radial-gradient(ellipse 110% 50% at 50% 80%, rgba(100, 255, 200, 0.08) 0%, transparent 60%);
+	animation: aurora-code-pulse 15s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+@keyframes aurora-code-pulse {
+	0%, 100% {
+		transform: scale(1) translate(0, 0);
+		opacity: 0.5;
+	}
+	33% {
+		transform: scale(1.05) translate(1%, -1%);
+		opacity: 0.7;
+	}
+	66% {
+		transform: scale(0.98) translate(-0.5%, 1%);
+		opacity: 0.6;
+	}
+}
+
+/* Success/achievement aurora (greens and golds) */
+.aurora-success {
+	position: relative;
+	overflow: hidden;
+}
+
+.aurora-success::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(ellipse 80% 60% at 40% 40%, rgba(120, 255, 150, 0.15) 0%, transparent 50%),
+		radial-gradient(ellipse 100% 80% at 60% 70%, rgba(255, 220, 100, 0.12) 0%, transparent 50%);
+	animation: aurora-success-glow 12s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+@keyframes aurora-success-glow {
+	0%, 100% {
+		transform: scale(1);
+		opacity: 0.6;
+	}
+	50% {
+		transform: scale(1.03);
+		opacity: 0.8;
+	}
+}
+
+/* ============================================================================
+   GLASS + AURORA COMBINATIONS
+   ============================================================================ */
+
+/* Glass card with aurora background */
+.glass-aurora {
+	backdrop-filter: blur(16px) saturate(180%);
+	-webkit-backdrop-filter: blur(16px) saturate(180%);
+	background: rgba(255, 255, 255, 0.06);
+	border: 1px solid rgba(255, 255, 255, 0.12);
+	box-shadow: 
+		0 8px 32px rgba(0, 0, 0, 0.1),
+		inset 0 1px 0 rgba(255, 255, 255, 0.15);
+	position: relative;
+	overflow: hidden;
+}
+
+.glass-aurora::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: 
+		radial-gradient(ellipse 100% 80% at 30% 60%, rgba(120, 255, 150, 0.08) 0%, transparent 70%),
+		radial-gradient(ellipse 80% 100% at 70% 40%, rgba(100, 150, 255, 0.06) 0%, transparent 70%);
+	animation: aurora-gentle 20s ease-in-out infinite;
+	pointer-events: none;
+	z-index: -1;
+}
+
+.dark .glass-aurora {
+	background: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .glass-aurora::before {
+	background: 
+		radial-gradient(ellipse 100% 80% at 30% 60%, rgba(120, 255, 150, 0.06) 0%, transparent 70%),
+		radial-gradient(ellipse 80% 100% at 70% 40%, rgba(100, 150, 255, 0.04) 0%, transparent 70%);
+}
+
+/* ============================================================================
+   PERFORMANCE OPTIMIZATIONS & ACCESSIBILITY
+   ============================================================================ */
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+	.aurora-bg::before,
+	.aurora-subtle::before,
+	.aurora-hero::before,
+	.aurora-code::before,
+	.aurora-success::before,
+	.glass-aurora::before {
+		animation: none;
+	}
+	
+	.glass-hover {
+		transition: none;
+	}
+	
+	.glass-hover:hover {
+		transform: none;
+	}
+}
+
+/* Force hardware acceleration for smooth animations */
+.aurora-bg::before,
+.aurora-subtle::before,
+.aurora-hero::before,
+.aurora-code::before,
+.aurora-success::before,
+.glass-aurora::before {
+	will-change: transform, opacity;
+	transform: translateZ(0);
+	backface-visibility: hidden;
+}
+
+/* Performance: Use transform instead of changing layout properties */
+.glass-hover {
+	will-change: transform, backdrop-filter;
+	transform: translateZ(0);
+}

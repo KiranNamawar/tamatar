@@ -1,6 +1,7 @@
 # Tamatar Styling Quick Reference
 
 ## Font Family
+
 - **Primary Font**: Nunito Sans (Google Fonts)
 - **Fallback**: System font stack for optimal performance
 - **Usage**: Automatically applied via CSS variables
@@ -8,18 +9,21 @@
 ## Color Scheme Overview
 
 ### Light Mode Theme
+
 - **Primary**: Green (#22c55e) - Represents growth and progress
 - **Accent**: Blue (#3b82f6) - Tech-focused, professional
 - **Background**: Clean whites and light grays
 - **Text**: Professional dark grays for readability
 
-### Dark Mode Theme  
+### Dark Mode Theme
+
 - **Primary**: Brighter green (#4ade80) - Better visibility in dark mode
 - **Accent**: Lighter blue (#60a5fa) - Maintains contrast
 - **Background**: Modern dark grays and blacks
 - **Text**: Light colors optimized for dark backgrounds
 
 ### Semantic Colors
+
 - **Success**: Green tones (completion, achievements)
 - **Warning**: Amber tones (caution, pending actions)
 - **Error/Destructive**: Red tones (errors, deletion)
@@ -38,6 +42,7 @@ Use these custom CSS classes for consistent animations:
 ## Quick Usage Examples
 
 ### Using Color Variables
+
 ```tsx
 // Good - semantic colors
 <div className="bg-card text-card-foreground">
@@ -50,78 +55,79 @@ Use these custom CSS classes for consistent animations:
 ```
 
 ### Using Animation Classes
+
 ```tsx
-// For custom CSS classes - use directly in className
-<Card className="transition-all anim-normal hover:shadow-md">
-  Content
-</Card>
-
-// For @apply in CSS files - use standard Tailwind utilities
-.my-component {
-  @apply transition-all duration-300;
-}
-
-// Fast micro-interaction
-<Button className="transition-colors anim-fast">
+// Interactive button with consistent timing
+<Button className="anim-fast hover:scale-105">
   Click me
 </Button>
+
+// Modal with standard transition
+<Dialog className="anim-normal">
+  Modal content
+</Dialog>
+
+// Major page transition
+<PageWrapper className="anim-slow">
+  Page content
+</PageWrapper>
 ```
 
+## Theme Implementation
+
 ### Dark Mode First Approach
+
 1. Design components for dark mode first
-2. Use semantic color variables that adapt automatically
-3. Test in both themes
-4. Ensure proper contrast ratios
+2. Ensure proper contrast ratios
+3. Test with light mode as secondary
+4. Use semantic color variables throughout
 
-## Available Components
+### Theme Components
 
-All components are built with the new color scheme:
 - `<ThemeToggle />` - Switch between light/dark modes
-- `<StatusBadge />` - Consistent status indicators
-- All shadcn/ui components with updated colors
+- Built-in theme persistence via localStorage
+- Smooth transitions between theme changes
 
-## Testing the Theme
+### Testing Your Theme
 
-The development server is running at http://localhost:3000
-- View the current theme in your browser
-- Use the theme toggle to switch between light/dark modes
-- All colors automatically adapt to the selected theme
+- Visit <http://localhost:3000> and toggle themes
+- View the current theme in your browser's dev tools
+- Check component states in both themes
 
-## Next Steps
+## Implementation Status
 
-1. **Customize Components**: Build your features using the new color scheme
-2. **Test Accessibility**: Ensure proper contrast ratios in both themes
-3. **Extend Colors**: Add project-specific semantic colors if needed
-4. **Animation**: Use the custom animation classes for consistent motion
+### Current Features
 
-## ✅ Implementation Status
+- ✅ OKLCH color space implementation
+- ✅ Complete dark/light mode support
+- ✅ Custom animation duration variables
+- ✅ Semantic color system
+- ✅ Google Fonts integration
+- ✅ Theme toggle functionality
+- ✅ Responsive design system
 
-**Status**: ✅ **COMPLETED AND WORKING**
+### View the Showcase
 
-- Development server running successfully at http://localhost:3000
-- Nunito Sans font loaded and applied
-- Developer-focused color scheme active in both light and dark modes
-- Custom animation classes working without conflicts
-- All Tailwind CSS utility class issues resolved
+Visit <http://localhost:3000> to see the complete styling system in action.
 
-## Current Setup Summary
+## Technical Details
 
 ### Font Implementation
-- **Google Fonts**: Nunito Sans successfully imported and applied
-- **Font Stack**: Nunito Sans with system font fallbacks
-- **Performance**: Display=swap for optimal loading
 
-### Color System Status  
-- **Light Mode**: Professional green/blue theme active
-- **Dark Mode**: Enhanced contrast dark theme active
-- **Semantic Colors**: Success, warning, error, info properly configured
-- **OKLCH Colors**: Better color accuracy across displays
+- **Google Fonts**: Nunito Sans loaded via app.html
+- **Optimization**: Font-display: swap for performance
+- **Fallbacks**: Comprehensive system font stack
+
+### Color System Status
+
+- **Light Mode**: Professional, clean aesthetic
+- **Dark Mode**: Modern, eye-friendly design
+- **Semantic Variables**: Consistent meaning across themes
+- **OKLCH Color Space**: Perceptually uniform colors
 
 ### Animation System
-- **Custom Classes**: `.anim-fast`, `.anim-normal`, `.anim-slow` working
-- **No Conflicts**: Renamed from `animate-*` to avoid Tailwind conflicts
-- **CSS Variables**: Duration variables properly configured
 
----
-
-*This quick reference covers the updated Nunito Sans font and developer-focused color scheme implemented on June 1, 2025.*
+- **Custom Classes**: `.anim-fast`, `.anim-normal`, `.anim-slow`
+- **Hardware Acceleration**: GPU-optimized transitions
+- **Reduced Motion**: Respects user accessibility preferences
+- **Performance**: Optimized for 60fps animations

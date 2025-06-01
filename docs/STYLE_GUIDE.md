@@ -1,6 +1,7 @@
 # Tamatar Style Guide
 
-This document defines the standardized styling approach for the Tamatar application. Following these guidelines ensures visual consistency, better maintainability, and a more cohesive user experience.
+This document defines the standardized styling approach for the Tamatar application. Following these guidelines
+ensures visual consistency, better maintainability, and a more cohesive user experience.
 
 ## Table of Contents
 
@@ -17,7 +18,8 @@ This document defines the standardized styling approach for the Tamatar applicat
 
 ## Color System
 
-All colors in Tamatar are defined as CSS variables in `src/styles.css`. We use the OKLCH color space for better perceptual uniformity and color accuracy across displays.
+All colors in Tamatar are defined as CSS variables in `src/styles.css`. We use the OKLCH color space for better
+perceptual uniformity and color accuracy across displays.
 
 ### Primary Color Palette
 
@@ -51,7 +53,7 @@ For data visualizations, use our predefined chart color palette:
 --chart-5: oklch(0.769 0.188 70.08);
 ```
 
-### Usage Guidelines
+### Color Usage Guidelines
 
 - Never use hardcoded color values in components
 - Always reference color variables using the `var()` function or Tailwind utility classes
@@ -115,7 +117,8 @@ Use Tailwind's spacing scale for all margins, padding, and gaps:
 | `space-10` | 2.5rem (40px) | Page section spacing |
 | `space-12` | 3rem (48px) | Major page section divisions |
 
-**Important**: Be consistent with spacing. Use the same spacing values for similar components and sections to create visual rhythm.
+**Important**: Be consistent with spacing. Use the same spacing values for similar components and sections to create
+visual rhythm.
 
 ## Component Usage
 
@@ -161,7 +164,7 @@ Tamatar is designed with a "dark mode first" approach:
 - Use CSS variables for theme colors, which automatically adjust for dark/light mode
 - Test both themes for sufficient contrast and readability
 
-### Toggle Example
+### Theme Toggle Example
 
 ```tsx
 function ThemeToggle() {
@@ -199,7 +202,7 @@ Follow a mobile-first approach for all components:
 | `xl` | 1280px | Extra large devices (desktops) |
 | `2xl` | 1536px | Ultra-wide monitors |
 
-### Example
+### Responsive Example
 
 ```tsx
 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -225,7 +228,7 @@ Use Motion (formerly Framer Motion) for animations with consistent behavior:
 | `normal` | 200-300ms | Standard transitions (modals, drawers) |
 | `slow` | 400-500ms | Major transitions (page changes) |
 
-### Example
+### Animation Example
 
 ```tsx
 <motion.div
@@ -256,7 +259,7 @@ All components must meet WCAG 2.1 AA standards:
 - Keep component-specific styles close to components
 - Follow the "Single Responsibility Principle" for styles
 
-### Using the `cn()` Utility
+### Using the cn() Utility
 
 ```tsx
 import { cn } from '@/lib/utils';
@@ -285,7 +288,7 @@ Tamatar uses Lucide React for icons. Follow these guidelines:
 - Add proper accessibility attributes (`aria-label`, `aria-hidden`)
 - Use semantic icons that clearly communicate their purpose
 
-### Example
+### Icon Usage Example
 
 ```tsx
 import { Settings, User, LogOut } from 'lucide-react';
@@ -315,7 +318,7 @@ When implementing new features:
 6. Validate responsive behavior across breakpoints
 7. Have design reviews as part of the PR process
 
-## Updates to This Guide
+## Style Guide Updates
 
 This style guide is a living document. When proposing changes:
 

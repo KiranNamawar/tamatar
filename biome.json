@@ -8,11 +8,12 @@
   "files": {
     "ignoreUnknown": false,
     "ignore": ["src/routeTree.gen.ts"],
-    "include": ["src/*", ".vscode/*", "index.html", "vite.config.js"]
+    "include": ["src/*", ".vscode/*", "index.html", "vite.config.js", "docs/*", "*.md"]
   },
   "formatter": {
     "enabled": true,
-    "indentStyle": "tab"
+    "indentStyle": "tab",
+    "lineWidth": 120
   },
   "organizeImports": {
     "enabled": true
@@ -29,6 +30,11 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "double"
+    }
+  },
+  "json": {
+    "formatter": {
+      "lineWidth": 120
     }
   }
 }

@@ -52,12 +52,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
+      <body className="aurora-subtle antialiased">
+        <div className="min-h-screen bg-background text-foreground">
+          {children}
+        </div>
         <Scripts />
       </body>
     </html>

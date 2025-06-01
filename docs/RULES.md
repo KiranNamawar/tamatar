@@ -3,60 +3,70 @@
 ## Core Development Rules
 
 ### Rule 1: TypeScript First
+
 - All files must use TypeScript with strict mode enabled
 - No `any` types allowed without explicit justification
 - Prefer explicit type definitions over type inference for public APIs
 - Use proper generic constraints and utility types
 
 ### Rule 2: Component Architecture
+
 - Components must follow single responsibility principle
 - Maximum 300 lines per component file
 - Prefer composition over inheritance
 - Use proper prop interfaces with documentation
 
 ### Rule 3: State Management
+
 - **Server State**: TanStack Query only for server data
 - **Client State**: Zustand for cross-route persistent state
 - **Local State**: React useState for component-specific UI state
 - No mixed state management patterns in single features
 
 ### Rule 4: Styling & Design
+
 - **Dark Mode First**: Design for dark mode, then adapt to light mode
 - **Responsive First**: Mobile-first responsive design approach
 - shadcn/ui components as the foundation for all UI
 - Tailwind CSS for all styling (no CSS modules or styled-components)
 
 ### Rule 5: Performance Standards
+
 - Lazy load all routes and heavy components
 - Implement proper memoization (React.memo, useMemo, useCallback)
 - Virtual scrolling for lists with >100 items
 - Bundle size budget: <500KB initial load
 
 ### Rule 6: Testing Requirements
+
 - Unit tests for all utility functions and hooks
 - Component tests for all UI components
 - Integration tests for user workflows
 - Minimum 80% test coverage on business logic
 
 ### Rule 7: Accessibility Compliance
+
 - WCAG 2.1 AA compliance minimum
 - Proper semantic HTML structure
 - Keyboard navigation support
 - Screen reader compatibility
 
 ### Rule 8: Error Handling
+
 - Error boundaries for all route components
 - Graceful degradation for failed API calls
 - User-friendly error messages
 - Comprehensive error logging
 
 ### Rule 9: Security First
+
 - Input validation with Zod schemas
 - XSS protection for all user inputs
 - Secure authentication flow
 - No sensitive data in client-side code
 
 ### Rule 10: Code Quality
+
 - ESLint and Prettier configuration compliance
 - No console.log statements in production code
 - Proper JSDoc documentation for public APIs
@@ -65,7 +75,8 @@
 ## File Organization Rules
 
 ### Directory Structure
-```
+
+```text
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # shadcn/ui components only
@@ -84,6 +95,7 @@ src/
 ```
 
 ### Naming Conventions
+
 - **Components**: PascalCase (e.g., `ProgressLog.tsx`)
 - **Files**: kebab-case (e.g., `progress-log.utils.ts`)
 - **Directories**: kebab-case (e.g., `user-settings/`)
@@ -91,6 +103,7 @@ src/
 - **Variables/Functions**: camelCase (e.g., `getUserProgress`)
 
 ### Import Rules
+
 - External libraries first, then internal modules
 - Absolute imports for src/ directory (`@/components/ui/button`)
 - Relative imports only within same feature directory
@@ -100,6 +113,7 @@ src/
 ## Component Development Rules
 
 ### Component Structure
+
 ```typescript
 // Props interface
 interface ComponentProps {
@@ -128,12 +142,14 @@ export const Component = ({ title, optional = false }: ComponentProps) => {
 ```
 
 ### Hook Development Rules
+
 - Custom hooks must start with `use` prefix
 - Return object for multiple values, tuple for two values
 - Include proper TypeScript generics where applicable
 - Provide proper dependency arrays for useEffect
 
 ### Form Development Rules
+
 - React Hook Form with Zod validation mandatory
 - Form schemas must be defined separately in `schemas/` directory
 - Proper error handling and display
@@ -143,12 +159,14 @@ export const Component = ({ title, optional = false }: ComponentProps) => {
 ## API Integration Rules
 
 ### GraphQL Requirements
+
 - Use gql.tada for type-safe queries
 - All queries must include error handling
 - Implement proper loading states
 - Use TanStack Query for caching and state management
 
 ### Error Handling Standards
+
 ```typescript
 // API error handling pattern
 const { data, error, isLoading } = useQuery({
@@ -172,12 +190,14 @@ if (isLoading) {
 ## Styling Rules
 
 ### Tailwind CSS Guidelines
+
 - Use design system tokens for spacing, colors, typography
 - Custom CSS only for complex animations or vendor-specific styles
 - Responsive classes for all layout components
 - Dark mode variants for all styled components
 
 ### Component Styling Pattern
+
 ```typescript
 // Good: Conditional classes with clsx
 const buttonClasses = clsx(
@@ -193,18 +213,21 @@ const buttonClasses = clsx(
 ## Git & Deployment Rules
 
 ### Commit Standards
+
 - Conventional commits format mandatory
 - Commit messages in present tense
 - Include scope for feature-specific changes
 - Maximum 72 characters for commit titles
 
 ### Branch Protection
+
 - No direct commits to main branch
 - Pull request reviews required
 - All checks must pass before merge
 - Squash merge for feature branches
 
 ### Deployment Requirements
+
 - All environment variables properly configured
 - Build process includes optimization and minification
 - Source maps available for production debugging
@@ -213,12 +236,14 @@ const buttonClasses = clsx(
 ## Documentation Requirements
 
 ### Code Documentation
+
 - JSDoc comments for all exported functions and components
 - README files for complex features or modules
 - Inline comments for complex business logic
 - Architecture decision records for major decisions
 
 ### API Documentation
+
 - GraphQL schema documentation
 - Error codes and messages documented
 - Authentication requirements clearly stated
@@ -227,18 +252,21 @@ const buttonClasses = clsx(
 ## Quality Gates
 
 ### Pre-commit Checks
+
 - ESLint with zero warnings
 - Prettier formatting applied
 - TypeScript compilation successful
 - Unit tests passing
 
 ### Pre-deployment Checks
+
 - All tests passing (unit, integration, e2e)
 - Bundle size within budget
 - Performance metrics meet thresholds
 - Security scan completed
 
 ### Code Review Requirements
+
 - At least one reviewer approval required
 - Security review for authentication/authorization changes
 - Performance review for data-heavy features
@@ -247,12 +275,14 @@ const buttonClasses = clsx(
 ## Exceptions & Overrides
 
 ### When Rules Can Be Broken
+
 - Emergency hotfixes (with immediate follow-up cleanup)
 - Proof of concept or prototype code (clearly marked)
 - Third-party library integration requirements
 - Performance optimizations with documented justification
 
 ### Exception Process
+
 1. Document the exception and reasoning
 2. Get approval from team lead
 3. Create technical debt ticket for future cleanup
