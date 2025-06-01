@@ -27,7 +27,25 @@ bunx --bun run test
 
 ## Styling
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+This project uses [Tailwind CSS](https://tailwindcss.com/) for styling with a comprehensive design system. We follow a "dark mode first" approach and use the OKLCH color space for better perceptual color uniformity.
+
+### Style Guidelines
+
+- **Style Documentation**: 
+  - [Style Guide](./docs/STYLE_GUIDE.md) - Complete design system reference
+  - [Styling Best Practices](./docs/STYLING_BEST_PRACTICES.md) - Implementation guidance
+
+- **Key Features**:
+  - Semantic color variables in `src/styles.css`
+  - Component-specific styles in `src/styles/components.css`
+  - Animation definitions in `src/styles/animations.css`
+  - Utility functions in `src/lib/style-utils.ts`
+  - Consistent dark/light mode theming
+
+- **Components**:
+  - Standardized components following shadcn/ui patterns
+  - Custom components like `StatusBadge` and `ThemeToggle`
+  - Accessible, responsive, and theme-aware
 
 
 ## Linting & Formatting

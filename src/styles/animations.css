@@ -1,0 +1,227 @@
+/**
+ * Tamatar Animation Styles
+ *
+ * This file contains standardized animations for the Tamatar application.
+ * These animations use the Motion library (formerly Framer Motion) and
+ * provide consistent motion patterns across the application.
+ */
+
+/* Base animation durations - use these custom classes for consistent timing */
+.anim-fast {
+	transition-duration: var(--duration-fast);
+}
+
+.anim-normal {
+	transition-duration: var(--duration-normal);
+}
+
+.anim-slow {
+	transition-duration: var(--duration-slow);
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+	to {
+		opacity: 0;
+	}
+}
+
+.fade-in {
+	animation: fadeIn var(--duration-normal) ease forwards;
+}
+
+.fade-out {
+	animation: fadeOut var(--duration-normal) ease forwards;
+}
+
+/* Slide animations */
+@keyframes slideInRight {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOutRight {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+@keyframes slideInLeft {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+@keyframes slideOutLeft {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
+
+.slide-in-right {
+	animation: slideInRight var(--duration-normal) ease forwards;
+}
+
+.slide-out-right {
+	animation: slideOutRight var(--duration-normal) ease forwards;
+}
+
+.slide-in-left {
+	animation: slideInLeft var(--duration-normal) ease forwards;
+}
+
+.slide-out-left {
+	animation: slideOutLeft var(--duration-normal) ease forwards;
+}
+
+/* Scale animations */
+@keyframes scaleIn {
+	from {
+		transform: scale(0.9);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+@keyframes scaleOut {
+	from {
+		transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(0.9);
+		opacity: 0;
+	}
+}
+
+.scale-in {
+	animation: scaleIn var(--duration-normal) cubic-bezier(0.16, 1, 0.3, 1)
+		forwards;
+}
+
+.scale-out {
+	animation: scaleOut var(--duration-normal) cubic-bezier(0.16, 1, 0.3, 1)
+		forwards;
+}
+
+/* Attention animations */
+@keyframes pulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.05);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+@keyframes shake {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		transform: translateX(-5px);
+	}
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: translateX(5px);
+	}
+}
+
+.pulse {
+	animation: pulse var(--duration-normal) cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.shake {
+	animation: shake var(--duration-normal) ease;
+}
+
+/* Progress animations */
+@keyframes progressBar {
+	from {
+		width: 0;
+	}
+	to {
+		width: 100%;
+	}
+}
+
+.progress-bar {
+	animation: progressBar var(--duration-slow) linear forwards;
+}
+
+/* Prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	.fade-in,
+	.fade-out,
+	.slide-in-right,
+	.slide-out-right,
+	.slide-in-left,
+	.slide-out-left,
+	.scale-in,
+	.scale-out,
+	.pulse,
+	.shake,
+	.progress-bar {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
+/* Motion-specific component animations */
+.page-transition-enter {
+	opacity: 0;
+	transform: translateY(8px);
+}
+
+.page-transition-enter-active {
+	opacity: 1;
+	transform: translateY(0);
+	transition: opacity var(--duration-normal), transform var(--duration-normal);
+}
+
+.page-transition-exit {
+	opacity: 1;
+}
+
+.page-transition-exit-active {
+	opacity: 0;
+	transition: opacity var(--duration-normal);
+}

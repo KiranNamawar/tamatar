@@ -5,5 +5,6 @@ export const Route = createFileRoute('/auth/forgot-password')({
 })
 
 function RouteComponent() {
+  // TODO: Implement the forgot password route
   return <div>Hello "/auth/forgot-password"!</div>
 }

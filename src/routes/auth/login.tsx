@@ -5,5 +5,6 @@ export const Route = createFileRoute('/auth/login')({
 })
 
 function RouteComponent() {
+  // TODO: Implement the login route
   return <div>Hello "/auth/login"!</div>
 }

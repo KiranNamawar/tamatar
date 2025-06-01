@@ -1,0 +1,171 @@
+/**
+ * Tamatar Component-Specific Styles
+ *
+ * This file contains component-specific styles that complement the shadcn/ui
+ * base components. These styles follow the Tamatar design system and extend
+ * the base Tailwind utilities.
+ */
+
+/* Dashboard layout specific styles */
+.dashboard-layout {
+	@apply grid min-h-screen;
+	grid-template-areas:
+		"header header"
+		"sidebar main"
+		"footer footer";
+	grid-template-rows: auto 1fr auto;
+	grid-template-columns: auto 1fr;
+}
+
+.dashboard-header {
+	@apply sticky top-0 z-30 border-b bg-background;
+	grid-area: header;
+}
+
+.dashboard-sidebar {
+	@apply border-r bg-sidebar;
+	grid-area: sidebar;
+}
+
+.dashboard-main {
+	@apply flex flex-col p-6;
+	grid-area: main;
+}
+
+.dashboard-footer {
+	@apply border-t;
+	grid-area: footer;
+}
+
+/* Progress log card styles */
+.progress-log-card {
+	@apply transition-all duration-300;
+}
+
+.progress-log-card:hover {
+	@apply shadow-md;
+	transform: translateY(-2px);
+}
+
+/* Resource card styles */
+.resource-card {
+	@apply relative overflow-hidden;
+}
+
+.resource-card-badge {
+	@apply absolute top-2 right-2;
+}
+
+.resource-card-image {
+	@apply aspect-[4/3] w-full object-cover;
+}
+
+.resource-type-video .resource-card-image::before {
+	@apply absolute inset-0 flex items-center justify-center bg-black/20 text-white;
+	content: "▶";
+}
+
+/* Project status indicators */
+.project-status {
+	@apply inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium;
+}
+
+.project-status-active {
+	@apply bg-success/20 text-success;
+}
+
+.project-status-paused {
+	@apply bg-warning/20 text-warning;
+}
+
+.project-status-completed {
+	@apply bg-info/20 text-info;
+}
+
+/* Chart container styles */
+.chart-container {
+	@apply rounded-lg border p-4 h-[300px];
+}
+
+.chart-legend {
+	@apply flex flex-wrap gap-4 mt-4;
+}
+
+.chart-legend-item {
+	@apply flex items-center gap-2 text-xs;
+}
+
+/* Calendar specific styles */
+.calendar-day {
+	@apply relative aspect-square p-1 border text-center;
+}
+
+.calendar-day-has-entry {
+	@apply bg-primary/10;
+}
+
+.calendar-day-today {
+	@apply ring-2 ring-primary ring-offset-2;
+}
+
+/* Focus session timer */
+.focus-timer {
+	@apply flex flex-col items-center justify-center rounded-lg border-2 border-primary p-6 text-center;
+}
+
+.focus-timer-display {
+	@apply text-5xl font-bold tabular-nums;
+}
+
+.focus-timer-controls {
+	@apply mt-4 flex gap-2;
+}
+
+/* Achievement badges */
+.achievement-badge {
+	@apply flex flex-col items-center p-2 text-center;
+}
+
+.achievement-icon {
+	@apply mb-2 h-12 w-12 rounded-full bg-primary/20 p-2 text-primary;
+}
+
+.achievement-locked {
+	@apply opacity-40 grayscale;
+}
+
+/* Skill progress indicators */
+.skill-progress {
+	@apply space-y-2;
+}
+
+.skill-progress-bar {
+	@apply h-2 rounded-full bg-muted;
+}
+
+.skill-progress-value {
+	@apply h-full rounded-full bg-primary;
+}
+
+/* Mobile specific overrides */
+@media (max-width: 768px) {
+	.dashboard-layout {
+		grid-template-areas:
+			"header"
+			"main"
+			"footer";
+		grid-template-columns: 1fr;
+	}
+
+	.dashboard-sidebar {
+		@apply fixed inset-y-0 left-0 z-40 transform -translate-x-full transition-transform w-64;
+	}
+
+	.dashboard-sidebar.open {
+		@apply translate-x-0;
+	}
+
+	.dashboard-main {
+		@apply p-4;
+	}
+}
