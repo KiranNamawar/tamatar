@@ -338,6 +338,36 @@ function ProjectForm() {
 - Create shared type definitions in `src/types/`
 - Use proper generic types for reusable components
 
+### Rule 9: Focused Development Methodology
+
+Follow a structured, single-focus development approach to ensure quality and maintainability:
+
+**Development Cycle:**
+1. **Focus on One Item**: Work on only one module, route, component, or server function at a time
+2. **Complete Implementation**: Fully implement the feature with proper typing, validation, and error handling
+3. **Test Thoroughly**: Verify functionality works as expected with proper testing
+4. **Code Review & Refactoring**: 
+   - Compare with existing code patterns
+   - Identify and eliminate repetitive code
+   - Extract reusable utilities or components
+   - Ensure consistency with architecture patterns
+5. **Update Documentation**: Update relevant files (README, docs, architecture guides)
+6. **Commit & Move Forward**: Only then proceed to the next feature
+
+**Benefits:**
+- Prevents context switching and maintains focus
+- Ensures each feature is properly tested before moving on
+- Promotes code consistency and reusability
+- Keeps documentation current and accurate
+- Reduces technical debt accumulation
+
+**Implementation Guidelines:**
+- Break large features into smaller, focused tasks
+- Use feature branches for each focused development cycle
+- Write comprehensive commit messages explaining what was implemented
+- Include testing steps and validation in commit descriptions
+- Update architecture documentation when introducing new patterns
+
 ## Authentication & Authorization
 
 ### Client-Side Auth Flow

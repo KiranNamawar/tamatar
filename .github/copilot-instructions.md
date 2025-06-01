@@ -89,6 +89,22 @@ src/
 - Use the StatusBadge component for consistent status indicators
 - Implement ThemeToggle for theme switching functionality
 
+## Development Methodology
+Follow a focused, single-item development approach:
+
+1. **Focus on One Item**: Work on only one module, route, component, or server function at a time
+2. **Complete Implementation**: Fully implement the feature with proper typing, validation, and error handling
+3. **Test Thoroughly**: Verify functionality works as expected with proper testing
+4. **Code Review & Refactoring**: 
+   - Compare with existing code patterns
+   - Identify and eliminate repetitive code
+   - Extract reusable utilities or components
+   - Ensure consistency with architecture patterns
+5. **Update Documentation**: Update relevant files (README, docs, architecture guides)
+6. **Commit & Move Forward**: Only then proceed to the next feature
+
+This approach prevents context switching, ensures quality, promotes code reusability, and keeps documentation current.
+
 ## State Management
 - Use TanStack Query for server state (API data, caching, synchronization)
 - Use Zustand for client state that persists across routes (user preferences, UI state)
