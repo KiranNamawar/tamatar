@@ -5,10 +5,9 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 import Header from '../components/Header'
-
-import TanStackQueryLayout from './src/integrations/tanstack-query/layout.tsx'
 
 import appCss from '../styles.css?url'
 
@@ -19,38 +18,36 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: 'TanStack Start Starter',
-      },
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
-  }),
+	head: () => ({
+		meta: [
+			{
+				charSet: "utf-8",
+			},
+			{
+				name: "viewport",
+				content: "width=device-width, initial-scale=1",
+			},
+			{
+				title: "Tamatar",
+			},
+		],
+		links: [
+			{
+				rel: "stylesheet",
+				href: appCss,
+			},
+		],
+	}),
 
-  component: () => (
-    <RootDocument>
-      <Header />
-
-      <Outlet />
-      <TanStackRouterDevtools />
-
-      <TanStackQueryLayout />
-    </RootDocument>
-  ),
-})
+	component: () => (
+		<RootDocument>
+			<Header />
+			<Outlet />
+			<TanStackRouterDevtools />
+			<ReactQueryDevtools buttonPosition="bottom-right" />
+		</RootDocument>
+	),
+});
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
