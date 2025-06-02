@@ -5,7 +5,7 @@ import { createContext, useContext } from "react";
 
 import { cn } from "@/lib/utils";
 
-type TabsVariant = "default" | "glass" | "aurora";
+type TabsVariant = "default" | "glass";
 
 const TabsContext = createContext<{ variant?: TabsVariant }>({});
 
@@ -18,11 +18,6 @@ const tabsListVariants = cva(
 				glass: [
 					"backdrop-blur-md bg-white/30 dark:bg-black/30 border border-white/40 dark:border-white/20",
 					"text-slate-800 dark:text-slate-100 shadow-lg",
-				],
-				aurora: [
-					"bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20",
-					"border border-purple-500/40 dark:border-purple-400/40",
-					"text-foreground dark:text-white shadow-lg",
 				],
 			},
 		},
@@ -49,14 +44,6 @@ const tabsTriggerVariants = cva(
 					"data-[state=active]:text-slate-900 dark:data-[state=active]:text-slate-50",
 					"data-[state=active]:border-white/60 dark:data-[state=active]:border-white/40",
 					"data-[state=active]:shadow-md backdrop-blur-sm",
-				],
-				aurora: [
-					"text-foreground/70 dark:text-white/70 hover:text-purple-900 dark:hover:text-purple-100",
-					"hover:bg-purple-500/20 dark:hover:bg-purple-400/20",
-					"data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500/40 data-[state=active]:via-pink-500/40 data-[state=active]:to-cyan-500/40",
-					"data-[state=active]:text-purple-900 dark:data-[state=active]:text-purple-100",
-					"data-[state=active]:border-purple-500/50 dark:data-[state=active]:border-purple-400/50",
-					"data-[state=active]:shadow-md",
 				],
 			},
 		},

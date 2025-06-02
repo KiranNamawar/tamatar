@@ -20,13 +20,6 @@ const switchVariants = cva(
 					"data-[state=unchecked]:bg-white/20 dark:data-[state=unchecked]:bg-black/20",
 					"data-[state=unchecked]:border-white/30 dark:data-[state=unchecked]:border-white/15",
 				],
-				aurora: [
-					"border-purple-500/30 dark:border-purple-400/30 shadow-lg",
-					"data-[state=checked]:bg-gradient-to-r data-[state=checked]:from-purple-500/40 data-[state=checked]:via-pink-500/40 data-[state=checked]:to-cyan-500/40",
-					"data-[state=checked]:border-purple-500/50 dark:data-[state=checked]:border-purple-400/50",
-					"data-[state=unchecked]:bg-purple-500/15 dark:data-[state=unchecked]:bg-purple-400/15",
-					"data-[state=unchecked]:border-purple-500/30 dark:data-[state=unchecked]:border-purple-400/30",
-				],
 			},
 		},
 		defaultVariants: {
@@ -46,11 +39,6 @@ const switchThumbVariants = cva(
 					"bg-white dark:bg-slate-200 shadow-md",
 					"data-[state=checked]:bg-white dark:data-[state=checked]:bg-slate-100",
 					"data-[state=checked]:shadow-lg",
-				],
-				aurora: [
-					"bg-white dark:bg-slate-200 shadow-md",
-					"data-[state=checked]:bg-white dark:data-[state=checked]:bg-slate-100",
-					"data-[state=checked]:shadow-lg data-[state=checked]:shadow-purple-500/25",
 				],
 			},
 		},

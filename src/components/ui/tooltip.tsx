@@ -14,9 +14,6 @@ const tooltipContentVariants = cva(
 				default: "bg-primary text-primary-foreground",
 				glass:
 					"backdrop-blur-md bg-white/25 dark:bg-black/25 border border-white/30 dark:border-white/15 text-slate-700 dark:text-slate-200",
-				aurora: [
-					"aurora-bg border border-purple-500/30 dark:border-purple-400/30 text-foreground dark:text-white",
-				],
 			},
 		},
 		defaultVariants: {
@@ -77,8 +74,6 @@ function TooltipContent({
 						variant === "default" && "bg-primary fill-primary",
 						variant === "glass" &&
 							"bg-white/20 fill-white/20 dark:bg-white/10 dark:fill-white/10",
-						variant === "aurora" &&
-							"bg-gradient-to-br from-purple-500/80 via-pink-500/80 to-cyan-500/80 fill-purple-500/80",
 					)}
 				/>
 			</TooltipPrimitive.Content>

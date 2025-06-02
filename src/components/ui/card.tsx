@@ -11,8 +11,6 @@ const cardVariants = cva(
 				default: "bg-card text-card-foreground border-border",
 				glass:
 					"glass text-foreground dark:text-white hover-lift border-white/20 dark:border-white/10",
-				aurora:
-					"aurora-bg text-foreground dark:text-white border-2 border-purple-500/30 dark:border-purple-400/30",
 				outline:
 					"border-2 bg-transparent text-foreground hover:bg-accent/50 border-border",
 			},

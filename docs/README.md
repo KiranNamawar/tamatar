@@ -104,11 +104,11 @@ Modern glass morphism effects with backdrop blur, transparency, and elegant bord
 [📖 View Glass Components Documentation](./GLASS_COMPONENTS.md)
 
 ### 🎨 UI Components
-Complete set of accessible, customizable interface components built on Radix UI primitives.
+Complete set of 46 accessible, customizable interface components built on Radix UI primitives.
 
-Available components include: Button, Card, Input, Select, Dialog, Sheet, Tabs, Form controls, Navigation, Data display, and more.
+Categories include: Form Components, Navigation, Data Display, Feedback, Layout, Overlay, Interactive, and Utility components.
 
-[📖 View Style Guide](./STYLE_GUIDE.md)
+[📖 View UI Components Documentation](./UI_COMPONENTS.md) | [📖 View Style Guide](./STYLE_GUIDE.md)
 
 ## Design Principles
 

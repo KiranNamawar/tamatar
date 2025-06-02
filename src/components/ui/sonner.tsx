@@ -36,10 +36,9 @@ const Toaster = ({ className, ...props }: ToasterExtendedProps) => {
 };
 
 // Enhanced toast functions with variants using CSS classes
-const createVariantToast = (variant: "glass" | "aurora") => {
+const createVariantToast = (variant: "glass") => {
 	const variantClasses = {
 		glass: "toast-glass",
-		aurora: "toast-aurora",
 	};
 
 	return (message: string, data?: ExternalToast) => {
@@ -52,11 +51,10 @@ const createVariantToast = (variant: "glass" | "aurora") => {
 
 // Create base variant functions
 const glassToast = createVariantToast("glass");
-const auroraToast = createVariantToast("aurora");
 
 // Create type-specific variant functions
 const createTypedVariantToast = (
-	variant: "glass" | "aurora",
+	variant: "glass",
 	type: "success" | "error" | "warning" | "info",
 ) => {
 	const variantClasses = {
@@ -65,12 +63,6 @@ const createTypedVariantToast = (
 			error: "toast-glass-error",
 			warning: "toast-glass-warning",
 			info: "toast-glass-info",
-		},
-		aurora: {
-			success: "toast-aurora-success",
-			error: "toast-aurora-error",
-			warning: "toast-aurora-warning",
-			info: "toast-aurora-info",
 		},
 	};
 
@@ -157,21 +149,9 @@ const toast = Object.assign(
 			warning: createTypedVariantToast("glass", "warning"),
 			info: createTypedVariantToast("glass", "info"),
 		}),
-		aurora: Object.assign(auroraToast, {
-			success: createTypedVariantToast("aurora", "success"),
-			error: createTypedVariantToast("aurora", "error"),
-			warning: createTypedVariantToast("aurora", "warning"),
-			info: createTypedVariantToast("aurora", "info"),
-		}),
 	},
 ) as typeof sonnerToast & {
 	glass: typeof glassToast & {
-		success: (message: string, data?: ExternalToast) => string | number;
-		error: (message: string, data?: ExternalToast) => string | number;
-		warning: (message: string, data?: ExternalToast) => string | number;
-		info: (message: string, data?: ExternalToast) => string | number;
-	};
-	aurora: typeof auroraToast & {
 		success: (message: string, data?: ExternalToast) => string | number;
 		error: (message: string, data?: ExternalToast) => string | number;
 		warning: (message: string, data?: ExternalToast) => string | number;

@@ -11,8 +11,6 @@ const separatorVariants = cva(
 			variant: {
 				default: "bg-border",
 				glass: "bg-white/30 dark:bg-white/15",
-				aurora:
-					"bg-gradient-to-r from-purple-500/30 via-pink-500/30 to-cyan-500/30",
 			},
 		},
 		defaultVariants: {

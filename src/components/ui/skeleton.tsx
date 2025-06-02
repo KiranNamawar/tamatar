@@ -6,8 +6,6 @@ const skeletonVariants = cva("animate-pulse rounded-md", {
 		variant: {
 			default: "bg-accent",
 			glass: "backdrop-blur-md bg-white/25 dark:bg-black/25",
-			aurora:
-				"bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-cyan-500/20",
 		},
 	},
 	defaultVariants: {

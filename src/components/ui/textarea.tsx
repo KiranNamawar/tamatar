@@ -19,12 +19,6 @@ const textareaVariants = cva(
 					"focus-visible:border-white/50 focus-visible:ring-white/20 focus-visible:ring-[3px]",
 					"aria-invalid:ring-destructive/20 aria-invalid:border-destructive/50",
 				],
-				aurora: [
-					"border border-purple-500/40 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-cyan-500/10",
-					"text-foreground dark:text-white placeholder:text-purple-600/60 dark:placeholder:text-purple-300/60",
-					"focus-visible:from-purple-500/20 focus-visible:via-pink-500/20 focus-visible:to-cyan-500/20",
-					"focus-visible:ring-purple-500/30 focus-visible:ring-[3px] focus-visible:border-purple-500/60",
-				],
 			},
 		},
 		defaultVariants: {

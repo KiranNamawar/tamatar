@@ -21,13 +21,6 @@ const inputVariants = cva(
 					"hover:border-white/40 dark:hover:border-white/30",
 					"placeholder:text-foreground/60 dark:placeholder:text-white/60",
 				],
-				aurora: [
-					"border-2 border-purple-500/40 bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-cyan-500/10 text-foreground dark:text-white",
-					"focus-visible:from-purple-500/20 focus-visible:via-pink-500/20 focus-visible:to-cyan-500/20",
-					"focus-visible:ring-purple-500/30 focus-visible:ring-[3px] focus-visible:border-purple-500/60",
-					"hover:from-purple-500/15 hover:via-pink-500/15 hover:to-cyan-500/15 hover:border-purple-500/50",
-					"placeholder:text-purple-600/60 dark:placeholder:text-purple-300/60",
-				],
 			},
 		},
 		defaultVariants: {

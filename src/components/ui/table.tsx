@@ -9,8 +9,6 @@ const tableVariants = cva("w-full caption-bottom text-sm", {
 			default: "",
 			glass:
 				"backdrop-blur-md bg-white/25 dark:bg-black/25 rounded-lg overflow-hidden",
-			aurora:
-				"bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-cyan-500/10 rounded-lg overflow-hidden border border-purple-500/30 dark:border-purple-400/30",
 		},
 	},
 	defaultVariants: {
@@ -24,8 +22,6 @@ const tableRowVariants = cva("border-b transition-colors", {
 			default: "hover:bg-muted/50 data-[state=selected]:bg-muted",
 			glass:
 				"hover:bg-white/20 dark:hover:bg-black/20 data-[state=selected]:bg-white/30 dark:data-[state=selected]:bg-black/30 border-white/20 dark:border-white/10",
-			aurora:
-				"hover:bg-purple-500/10 data-[state=selected]:bg-purple-500/20 border-purple-500/20 dark:border-purple-400/20",
 		},
 	},
 	defaultVariants: {
@@ -38,8 +34,6 @@ const tableFooterVariants = cva("border-t font-medium [&>tr]:last:border-b-0", {
 		variant: {
 			default: "bg-muted/50",
 			glass: "backdrop-blur-md bg-white/30 dark:bg-black/30",
-			aurora:
-				"bg-gradient-to-r from-purple-500/15 via-pink-500/15 to-cyan-500/15",
 		},
 	},
 	defaultVariants: {

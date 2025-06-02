@@ -20,16 +20,6 @@ const toggleVariants = cva(
 					"data-[state=on]:bg-white/60 dark:data-[state=on]:bg-black/60 data-[state=on]:border-white/70 dark:data-[state=on]:border-white/50",
 					"data-[state=on]:text-slate-900 dark:data-[state=on]:text-slate-50 data-[state=on]:shadow-xl",
 				],
-				aurora: [
-					"border border-purple-500/30 dark:border-purple-400/30",
-					"bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-cyan-500/10",
-					"text-foreground dark:text-white shadow-lg",
-					"hover:from-purple-500/20 hover:via-pink-500/20 hover:to-cyan-500/20",
-					"hover:border-purple-500/40 dark:hover:border-purple-400/40",
-					"data-[state=on]:from-purple-500/30 data-[state=on]:via-pink-500/30 data-[state=on]:to-cyan-500/30",
-					"data-[state=on]:border-purple-500/50 dark:data-[state=on]:border-purple-400/50",
-					"data-[state=on]:text-purple-900 dark:data-[state=on]:text-purple-100 data-[state=on]:shadow-xl",
-				],
 			},
 			size: {
 				default: "h-9 px-2 min-w-9",

@@ -200,13 +200,14 @@ function ShowcasePage() {
 						<MotionDiv animation="fadeInUp" className="space-y-6">
 							<GradientText className="text-6xl font-bold">
 								Tamatar Design System
-							</GradientText>
+							</GradientText>{" "}
 							<MotionText className="text-xl text-muted-foreground max-w-2xl mx-auto">
-								Complete component variants with glass, aurora, and semantic
-								styling. Test all combinations in light and dark modes.
+								Complete component variants with glass morphism styling over
+								aurora backgrounds. Experience our design pattern in light and
+								dark modes.
 							</MotionText>
 							<div className="flex gap-4 justify-center pt-6">
-								<Button variant="aurora" size="lg">
+								<Button variant="glass" size="lg">
 									Get Started
 								</Button>
 								<Button variant="glass" size="lg">
@@ -223,6 +224,7 @@ function ShowcasePage() {
 
 					{/* Button Variants */}
 					<section className="space-y-8">
+						{" "}
 						<MotionDiv animation="fadeInUp">
 							<h2 className="text-3xl font-bold mb-6">Button Variants</h2>
 							<div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -231,7 +233,6 @@ function ShowcasePage() {
 								<Button variant="outline">Outline</Button>
 								<Button variant="ghost">Ghost</Button>
 								<Button variant="glass">Glass</Button>
-								<Button variant="aurora">Aurora</Button>
 								<Button variant="destructive">Destructive</Button>
 								<Button variant="link">Link</Button>
 							</div>
@@ -239,7 +240,7 @@ function ShowcasePage() {
 								<Button size="sm" variant="glass">
 									Small
 								</Button>
-								<Button size="default" variant="aurora">
+								<Button size="default" variant="glass">
 									Default
 								</Button>
 								<Button size="lg" variant="glass">
@@ -257,7 +258,7 @@ function ShowcasePage() {
 							{/* Input Variants */}
 							<div className="space-y-6">
 								<div>
-									<h3 className="text-xl font-semibold mb-4">Input Variants</h3>
+									<h3 className="text-xl font-semibold mb-4">Input Variants</h3>{" "}
 									<div className="grid gap-4">
 										<div className="space-y-2">
 											<Label variant="default">Default Input</Label>
@@ -267,10 +268,6 @@ function ShowcasePage() {
 											<Label variant="glass">Glass Input</Label>
 											<Input variant="glass" placeholder="Glass input..." />
 										</div>
-										<div className="space-y-2">
-											<Label variant="aurora">Aurora Input</Label>
-											<Input variant="aurora" placeholder="Aurora input..." />
-										</div>
 									</div>
 								</div>
 
@@ -278,17 +275,13 @@ function ShowcasePage() {
 								<div>
 									<h3 className="text-xl font-semibold mb-4">
 										Textarea Variants
-									</h3>
+									</h3>{" "}
 									<div className="grid gap-4">
 										<Textarea
 											variant="default"
 											placeholder="Default textarea..."
 										/>
 										<Textarea variant="glass" placeholder="Glass textarea..." />
-										<Textarea
-											variant="aurora"
-											placeholder="Aurora textarea..."
-										/>
 									</div>
 								</div>
 
@@ -297,7 +290,7 @@ function ShowcasePage() {
 									<div>
 										<h3 className="text-xl font-semibold mb-4">
 											Checkbox Variants
-										</h3>
+										</h3>{" "}
 										<div className="space-y-3">
 											<div className="flex items-center space-x-2">
 												<Checkbox id="default-check" variant="default" />
@@ -307,12 +300,6 @@ function ShowcasePage() {
 												<Checkbox id="glass-check" variant="glass" />
 												<Label htmlFor="glass-check" variant="glass">
 													Glass Checkbox
-												</Label>
-											</div>
-											<div className="flex items-center space-x-2">
-												<Checkbox id="aurora-check" variant="aurora" />
-												<Label htmlFor="aurora-check" variant="aurora">
-													Aurora Checkbox
 												</Label>
 											</div>
 										</div>

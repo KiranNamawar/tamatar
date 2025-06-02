@@ -11,7 +11,6 @@ const labelVariants = cva(
 			variant: {
 				default: "text-foreground",
 				glass: "text-slate-700 dark:text-slate-200",
-				aurora: "text-foreground dark:text-white",
 			},
 		},
 		defaultVariants: {
