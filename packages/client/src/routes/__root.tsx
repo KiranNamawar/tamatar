@@ -6,8 +6,6 @@ import {
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 
-import ConvexProvider from "../integrations/convex/provider.tsx";
-
 import TanStackQueryLayout from "../integrations/tanstack-query/layout.tsx";
 
 import appCss from "../styles.css?url";
@@ -180,16 +178,13 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 				href: "/sitemap.xml",
 			},
 		],
-	}),
-	component: () => (
+	}),	component: () => (
 		<RootDocument>
-			<ConvexProvider>
-				<ThemeProvider defaultTheme="system">
-					<Outlet />
-				</ThemeProvider>
-				<TanStackRouterDevtools />
-				<TanStackQueryLayout />
-			</ConvexProvider>
+			<ThemeProvider defaultTheme="system">
+				<Outlet />
+			</ThemeProvider>
+			<TanStackRouterDevtools />
+			<TanStackQueryLayout />
 		</RootDocument>
 	),
 });

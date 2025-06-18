@@ -11,9 +11,7 @@
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check"
-  },
-  "dependencies": {
-    "@convex-dev/react-query": "0.0.0-alpha.8",
+  },  "dependencies": {
     "@fontsource/nunito-sans": "^5.2.5",
     "@hookform/resolvers": "^5.0.1",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -40,10 +38,8 @@
     "@tanstack/zod-adapter": "^1.120.10",
     "@trpc/client": "^11.0.0",
     "@trpc/server": "^11.0.0",
-    "@trpc/tanstack-react-query": "^11.0.0",
-    "class-variance-authority": "^0.7.1",
+    "@trpc/tanstack-react-query": "^11.0.0",    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "convex": "^1.19.2",
     "gql.tada": "^1.8.10",
     "graphql": "^16.11.0",
     "graphql-request": "^7.1.2",
